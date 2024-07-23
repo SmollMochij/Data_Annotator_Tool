@@ -1,0 +1,9 @@
+{
+  "annotatorID": "1234567",
+  "textContent": "John Smith, a software engineer from New York, was born on June 15th, 1985. He is passionate about technology and enjoys hiking in his free time.\n",
+  "annotations": {
+    "NAME": [
+      "John Smith"
+    ]
+  }
+}
