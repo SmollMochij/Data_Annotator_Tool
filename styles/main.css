@@ -237,3 +237,58 @@ input[type="file"] {
     background-image: linear-gradient(rgb(255, 255, 255),#cad7fb);
     background-repeat: no-repeat;
 }
+
+/* create account page */
+.background {
+    min-height:100vh;
+    background:url('../images/signup-background.jpg') no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.second-column {
+    box-shadow: -10px 0px 10px rgb(168,168,168,0.25);
+    min-height:100vh;
+    background-color: white;
+}
+
+
+.form-heading {
+    font-family: 'Share Tech';
+    text-align: center;
+    margin-bottom:50px;
+    font-size:42px;
+}
+.input-heading {
+    display:block;
+    font-family: 'Share Tech';
+    color: #635c5c;
+    font-size:28px;
+}
+
+.text-input {
+    font-size:22px;padding-left:2%;width:100%;border-radius: 10px; border-style:solid;border-color: #CDCDCD;
+
+}
+
+.create-account-button {
+    font-family: 'Share Tech';
+    font-size:200%;
+    background-color: #497AE1;
+    width:100%;
+    height:90px;
+    color:white;
+    border: none;;
+    border-radius:17px;
+}
+
+.create-account-button:hover {
+    font-family: 'Share Tech';
+    font-size:200%;
+    width:100%;
+    height:90px;
+    background-image: linear-gradient(#6f97ed,#497AE1);
+    color:white;
+    border: none;
+    border-radius:17px;
+}
