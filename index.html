@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- Page title -->
+    <title>Data Annotator</title>
+
+    <!-- fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Source Sans 3' rel='stylesheet'>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Google icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="mainBody">
+    <!-- link to javascript file -->
+    <script src="scripts/script.js"></script>
+    <!-- add 3 pixel margin left and right of the page -->
+    <div class="px-3" style="min-height:100vh;height:100%;margin-left:-0.5%">
+        <div class="row" style="min-height:100vh;height:100%">
+            <!-- This div fits its content to use a maximum of 2 columns from bootstrap's 12-column layout (col & 2) for a medium sized screen (md) -->
+            <!-- Navigation bar -->
+            <div class="d-flex flex-column flex-shrink-0 p-3 col-md-1" style="background-color: white; box-shadow: 5px 0px 20px rgba(117, 114, 114, 0.165);">
+                <div class="col-md-12">
+                    <a href="index.html"><img src="svg/dashboard_button.svg" style="width:26px;margin-top:-4px" data-toggle="tooltip" title="Home"/></a>
+                    <a href="index.html" style="color:rgb(125, 118, 118); text-decoration:none;font-weight:bold">Home</a>
+                </div>
+                <div class="col-md-12">
+                    <a href="index.html"><img src="svg/messages_button.svg" style="width:20px;margin-top:-4px" data-toggle="tooltip" title="Messages"/></a>
+                    <a href="index.html" style="color:rgb(125, 118, 118); text-decoration:none;font-weight:bold">Messages</a>
+                </div>
+                <div class="col-md-12">
+                    <a href="test.html" style="color:rgb(69, 69, 69); text-decoration:none;">Test Page 1</a>
+                </div>
+                <div class="col-md-12">
+                    <a href="test2.html" style="color:rgb(69, 69, 69); text-decoration:none;">Test Page 2</a>
+                </div>
+                <div class="col-md-12">
+                    <a href="test3.html" style="color:rgb(69, 69, 69); text-decoration:none;">Test Page 3</a>
+                </div>
+            </div>
+            <!-- Main column -->
+            <div class="col-md-7" >
+                <div class="row">
+                    <nav class="navbar" style="background-color: white; border-bottom: 2px solid rgb(202, 191, 191);">
+                        <div style="margin-left:10px">
+                            <img src="svg/classify_button_unselected.svg" id="classifyToolButton" style="width:26px" data-toggle="tooltip" title="Classify"/>
+                            <img src="svg/erase_button_unselected.svg" id="eraseToolButton" style="width:26px" data-toggle="tooltip" title="Erase"/>
+                        </div>
+                    </nav>
+                </div>
+                <div style="padding-left:80px;padding-right:10px;margin-right:10px">
+                    <h1 style="margin-top:10px">Data Annotator</h1>
+                    <hr/>
+                    <h4>Add annotations to the text below</h4>
+                    <div id="textDiv" style="min-height:50vh;max-height:88vh;overflow:auto;padding-right:80px">
+                        <div style="position:relative" id="textArea">
+                            <!-- filled with text in script.js -->
+                        </div>
+                        <div id="font-size-controls" class="font-size-controls">
+                            <button class="font-size-button" onclick="increaseFont()"><i class="material-icons">add</i></button>
+                            <button class="font-size-button" onclick="decreaseFont()"><i class="material-icons">remove</i></button>
+                        </div>
+                        <!-- dropdown menu of classes -->
+                        <div id="dropdown" class="dropdown" style="display:none;">
+                            <div id="dropdown-content" class="dropdown-content">
+                                <div id="dropdown-links">
+                                    <a data-toggle="modal" onclick="generateColourHEX()" data-target="#exampleModal">
+                                        <i class="material-icons" style="font-size:11px;color:rgb(43, 38, 38)">add</i>
+                                        Add new class
+                                    </a>
+                                    <!-- <a onclick="dropdownClassify('NAME')">
+                                        <i class="material-icons" style="font-size:11px;color: rgb(255, 45, 177)">circle</i>
+                                        NAME
+                                    </a>
+                                    <a onclick="dropdownClassify('CITY')">
+                                        <i class="material-icons" style="font-size:11px;color: rgb(48, 45, 255)">circle</i>
+                                        CITY
+                                    </a>
+                                    <a onclick="dropdownClassify('COMPANY')">
+                                        <i class="material-icons" style="font-size:11px;color: rgb(90, 255, 45)">circle</i>
+                                        COMPANY
+                                    </a>                             -->
+                                </div>
+                                <div style="border-top:solid 1px #DBDBDB;margin-top:12px">
+                                    <a style="margin-top:2px;color:#6B6B6B">Cancel</a>
+                                </div>
+                                <!-- <select id="choice" name="choice"> -->
+                                    <!-- <option value="none">Select a class...</option> -->
+                                <!-- </select> -->
+                                <!-- <input id="submitClassification" type="submit" onclick="submitClassification(choice.value)"/> -->
+                            </div>
+                        </div>
+                        <!-- <div style="width:100px;height:100px;position:absolute;top:200px;left:100px;background: green;"></div> -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- Third column -->
+            <div class="col-md-3" style="background-color: white;box-shadow: -5px 0px 20px rgba(117, 114, 114, 0.165);border-left: solid rgba(0, 0, 0, 0.098) 1px;">
+                <h2 style="margin-top:18px">Classification</h2>
+                <!-- TEXT FILE -->
+                <div class="text-bg-dark p-2">Text File</div>
+                <label class="custom-file-upload">
+                    <input type="file" id="fileinput">
+                    Upload File
+                    <!-- <i class="fa fa-cloud-upload"></i> Custom Upload -->
+                </label>
+                <!-- List of all classes to use for classification -->
+                <div class="text-bg-dark p-2">Available Classes</div>
+                <div id="" style="margin-top:7px">
+                    <ul id="allClasses" style="list-style-type:none;margin-left:-26px">
+                    </ul>
+                    <!-- <input type="radio" name="class" value="Name" id="name"/>
+                    <label for="name">NAME</label>
+                    <i class="material-icons" style="font-size:12px;color: rgb(255, 45, 177)">square</i> -->
+                    <!-- <br/> -->
+                </div>
+                <!-- OLD add class button and text input -->
+                <!-- <input type="text" id="newClass" placeholder="Class name"> -->
+                <!-- <button type="button" id="addClassButton" onclick="addClass(newClass.value)">Add class</button> -->
+                
+                <!-- AVAILABLE CLASSES -->
+                <!-- Add new class button to trigger modal -->
+                <div style="margin-top:4px;margin-bottom:4px">
+                    <button type="button" onclick="generateColourHEX();" id="addClassButton" class="btn btn-dark" style="margin-left:5px;margin-top:5px; margin-bottom: 5px;" data-toggle="modal" data-target="#exampleModal">
+                        Add class
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" style="width:50%;max-width:400px" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create a new class</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h6>Class name</h6>
+                                    <input type="text" id="newClass" oninput="this.value = this.value.toUpperCase()" style="margin-bottom: 10px;" placeholder="E.g. GENDER">
+                                    <h6>Class colour</h6>
+                                    <input type="color" id="classColour" style="margin-bottom:10px;" name="classColour" value="#ffffff">
+                                    <h6>Preview</h6>
+                                    <div style="text-align:center;padding:2px;padding-top:8px;padding-bottom:8px;border-style:solid;border-width:1px;border-radius: 2px;border-color: rgb(116, 116, 116);">
+                                        This is how your <span id="classTest">classification</span> will look.
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" onclick="createClass(newClass.value, classColour.value)" class="btn btn-primary">Create class</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Classify button -->
+                    <button type="button" style="margin-top:5px; margin-bottom: 5px;" id="classifyButton" class="btn btn-dark" onclick="newClassify()">Classify</button>
+                    <!-- View Active Classes button -->
+                    <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" onclick="viewAllActiveClasses()">View active classes</button>
+                </div>
+                
+                <!-- CLASSIFICATIONS -->
+                <div class="text-bg-dark p-2">Classifications</div>
+                <!-- List of all classifications -->
+                <ol style="padding-top:6px; margin-left:-10px; margin-bottom:6px" id="classifications-list">
+                    <li>No classifications yet!</li>
+                </ol>
+
+                <!-- OLD JSON PREVIEW -->
+                <!-- <div class="text-bg-dark p-2">
+                    JSON Preview
+                </div>
+                <div style="margin:5px;border-style: solid;border-width:2px; border-color: rgba(29, 87, 106, 0.276); border-radius: 7px;">
+                    <p id="jsonPreview" style="padding-top:5px;padding-left:5px;padding-right:5px;color:rgba(0, 0, 0, 0.423)">Upload a text file and start annotating to see the preview.</p>
+                </div> -->
+
+                <!-- NEW JSON PREVIEW -->
+                <div class="text-bg-dark p-2">
+                    JSON Preview
+                </div>
+                <div style="padding:10px;margin:5px;margin-top:8px;margin-bottom:8px;border-style: solid;border-width:2px; border-color: rgba(29, 87, 106, 0.276); border-radius: 7px;">
+                    <!-- Annotator ID collapsible -->
+                    <button data-toggle="collapse" class="collapsible-button" data-target="#annotatorIDCollapse">Annotator ID</button>
+                    <div id="annotatorIDCollapse" class="collapse">Upload a text file to see the preview. The file will use your annotator ID.</div>
+                    <br>
+                    <!-- Text Content collapsible -->
+                    <button data-toggle="collapse" class="collapsible-button" data-target="#textCollapse">Text</button>
+                    <div id="textCollapse" class="collapse">Upload a text file to see the preview.</div>
+                    <br>
+                    <!-- Classifications collapsible -->
+                    <button data-toggle="collapse" class="collapsible-button" data-target="#classificationsCollapse">Classifications</button>
+                    <div id="classificationsCollapse" class="collapse">Upload a text file and start annotating to see the preview.</div>
+                    <br>
+                </div>
+
+
+                <!-- EXPORT TO JSON -->
+                <div class="text-bg-dark p-2">
+                    Final Step
+                </div>
+                <div style="margin-top:8px">
+                    <button type="button" onclick="exportToJSON()" class="btn btn-primary">Export to JSON</button>
+                </div>
+                <br>
+                <span id="testSpan">Test span</span>
+                <i class="material-icons" style="font-size:10px;color: rgb(255, 45, 177)">circle</i>
+
+                <br/>
+
+                <!-- BOOTSTRAP COLLAPSE *NOT WORKING* -->
+                <div id="collapsible">
+                    Expand
+                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 5L9 11L2 5" stroke="#363030" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <button onclick="deleteClass('NAME')">Delete</button>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript (for Modal) -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

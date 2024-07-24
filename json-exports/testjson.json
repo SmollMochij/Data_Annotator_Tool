@@ -1,0 +1,25 @@
+{
+  "annotatorID": "1234567",
+  "textContent": "On January 15, 2023, Dr. Emily Johnson, a renowned neurosurgeon at Stanford University, delivered a groundbreaking lecture on advancements in brain-computer interfaces. Attendees from various countries, including the United States, Canada, and Germany, gathered at the International Neurology Conference in San Francisco to hear her speak. Dr. Johnson's work has been pivotal in the field, particularly her research on using AI to assist in complex surgical procedures.\n\nMeanwhile, across the Atlantic, in Paris, the annual Fashion Week showcased the latest designs from top fashion houses such as Chanel, Dior, and Louis Vuitton. Models like Bella Hadid and Naomi Campbell graced the runway, donning exquisite creations that set new trends for the upcoming season. The event, held from March 1 to March 9, 2023, attracted celebrities and fashion enthusiasts from around the world.\n\nIn the world of sports, Lionel Messi led Argentina to victory in the 2022 FIFA World Cup, held in Qatar. The final match, played on December 18, 2022, saw Argentina defeat France in a thrilling penalty shootout. Messi's performance throughout the tournament earned him the Golden Ball award, solidifying his status as one of the greatest footballers of all time.\n\nTech giant Apple Inc. announced the release of their latest product, the iPhone 14, during a special event on September 10, 2023. CEO Tim Cook highlighted the phone's new features, including an improved camera system and longer battery life. The launch took place at the Steve Jobs Theater in Cupertino, California, and was streamed live to millions of viewers globally.\n\nIn the realm of literature, acclaimed author J.K. Rowling released her new book, \"The Enchanted Forest,\" on November 5, 2023. The book, a fantasy novel set in a magical world, quickly climbed the bestseller lists. Rowling, best known for her \"Harry Potter\" series, held a book signing event at Waterstones in London, where fans queued for hours to get their copies autographed.\n\n",
+  "annotations": {
+    "NAME": [
+      "Emily Johnson",
+      "Johnson",
+      "Lionel Messi",
+      " J.K. Rowling"
+    ],
+    "DATE": [
+      "January 15, 2023",
+      "March 9, 2023"
+    ],
+    "PROFESSION": [
+      "neurosurgeon "
+    ],
+    "COUNTRY": [
+      "United States",
+      "Canada",
+      "Germany",
+      "Argentina "
+    ]
+  }
+}

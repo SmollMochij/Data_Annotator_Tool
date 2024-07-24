@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- Page title -->
+    <title>Data Annotator</title>
+
+    <!-- fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Source Sans 3' rel='stylesheet'>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Google icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="newFavicon2.ico">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="main.css">
+</head>
+<body class="mainBody">
+    <!-- link to javascript file -->
+    <script src="script.js"></script>
+    <!-- add 3 pixel margin left and right of the page -->
+    <div class="px-3" style="min-height:100vh;height:100%;margin-left:2%">
+        <div class="row" style="min-height:100vh;height:100%">
+            <!-- This div fits its content to use a maximum of 2 columns from bootstrap's 12-column layout (col & 2) for a medium sized screen (md) -->
+            <!-- Navigation bar -->
+            <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark col-md-1">
+                <div class="col-md-12">
+                    <h4 class="text-white" style="margin-top:7px">Navigation</h4>
+                </div>
+                <div class="col-md-12">
+                    <a href="index.html" style="color:white; text-decoration:none;font-weight:bold">Home</a>
+                </div>
+                <div class="col-md-12">
+                    <a href="test.html" style="color:white; text-decoration:none;">Test Page 1</a>
+                </div>
+                <div class="col-md-12">
+                    <a href="test2.html" style="color:white; text-decoration:none;">Test Page 2</a>
+                </div>
+                <div class="col-md-12">
+                    <a href="test3.html" style="color:white; text-decoration:none;">Test Page 3</a>
+                </div>
+            </div>
+            <!-- Main column -->
+            <div class="col-md-7" style="padding-left:80px;padding-right:90px">
+                <h1 style="margin-top:10px">Data Annotator</h1>
+                <hr/>
+                <h4>Add annotations to the text below</h4>
+                <div id="textDiv">
+                    <div style="position:relative" id="textArea">
+                        <!-- filled with text in script.js -->
+                    </div>
+                    <!-- TODO: change back to display:none -->
+                    <div id="dropdown" class="dropdown" style="display:none;">
+                        <div id="dropdown-content" class="dropdown-content">
+                            <div id="dropdown-links">
+                                <!-- <a onclick="dropdownClassify('NAME')">
+                                    <i class="material-icons" style="font-size:11px;color: rgb(255, 45, 177)">circle</i>
+                                    NAME
+                                </a>
+                                <a onclick="dropdownClassify('CITY')">
+                                    <i class="material-icons" style="font-size:11px;color: rgb(48, 45, 255)">circle</i>
+                                    CITY
+                                </a>
+                                <a onclick="dropdownClassify('COMPANY')">
+                                    <i class="material-icons" style="font-size:11px;color: rgb(90, 255, 45)">circle</i>
+                                    COMPANY
+                                </a>                             -->
+                            </div>
+                            <div style="border-top:solid 1px #DBDBDB;margin-top:12px">
+                                <a style="margin-top:2px;color:#6B6B6B">Cancel</a>
+                            </div>
+                            <!-- <select id="choice" name="choice"> -->
+                                <!-- <option value="none">Select a class...</option> -->
+                            <!-- </select> -->
+                            <!-- <input id="submitClassification" type="submit" onclick="submitClassification(choice.value)"/> -->
+                        </div>
+                    </div>
+                    <!-- <div style="width:100px;height:100px;position:absolute;top:200px;left:100px;background: green;"></div> -->
+                </div>
+            </div>
+            <!-- Third column -->
+            <div class="col-md-3" style="box-shadow: -5px 0px 20px rgba(117, 114, 114, 0.165);border-left: solid rgba(0, 0, 0, 0.098) 1px;">
+                <h2 style="margin-top:18px">Classification</h2>
+                <!-- TEXT FILE -->
+                <div class="text-bg-dark p-2">Text File</div>
+                <label class="custom-file-upload">
+                    <input type="file" id="fileinput">
+                    Upload File
+                    <!-- <i class="fa fa-cloud-upload"></i> Custom Upload -->
+                </label>
+                <!-- List of all classes to use for classification -->
+                <div class="text-bg-dark p-2">Available Classes</div>
+                <div id="" style="margin-top:7px">
+                    <ul id="allClasses" style="list-style-type:none;margin-left:-26px">
+                    </ul>
+                    <!-- <input type="radio" name="class" value="Name" id="name"/>
+                    <label for="name">NAME</label>
+                    <i class="material-icons" style="font-size:12px;color: rgb(255, 45, 177)">square</i> -->
+                    <!-- <br/> -->
+                </div>
+                <!-- OLD add class button and text input -->
+                <!-- <input type="text" id="newClass" placeholder="Class name"> -->
+                <!-- <button type="button" id="addClassButton" onclick="addClass(newClass.value)">Add class</button> -->
+                
+                <!-- AVAILABLE CLASSES -->
+                <!-- Add new class button to trigger modal -->
+                <div style="margin-top:4px;margin-bottom:4px">
+                    <button type="button" id="addClassButton" class="btn btn-dark" style="margin-left:5px;margin-top:5px; margin-bottom: 5px;" data-toggle="modal" data-target="#exampleModal">
+                        Add class
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" style="width:50%;max-width:400px" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create a new class</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h6>Class name</h6>
+                                    <input type="text" id="newClass" oninput="this.value = this.value.toUpperCase()" style="margin-bottom: 10px;" placeholder="E.g. GENDER">
+                                    <h6>Class colour</h6>
+                                    <input type="color" id="classColour" style="margin-bottom:10px;" name="classColour" value="#ffffff">
+                                    <h6>Preview</h6>
+                                    <div style="text-align:center;padding:2px;padding-top:8px;padding-bottom:8px;border-style:solid;border-width:1px;border-radius: 2px;border-color: rgb(116, 116, 116);">
+                                        This is how your <span id="classTest">classification</span> will look.
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" onclick="createClass(newClass.value, classColour.value)" class="btn btn-primary">Create class</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Classify button -->
+                    <button type="button" style="margin-top:5px; margin-bottom: 5px;" id="classifyButton" class="btn btn-dark" onclick="newClassify()">Classify</button>
+                    <!-- View Active Classes button -->
+                    <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" onclick="viewAllActiveClasses()">View active classes</button>
+                </div>
+                
+                <!-- CLASSIFICATIONS -->
+                <div class="text-bg-dark p-2">Classifications</div>
+                <!-- List of all classifications -->
+                <ol style="padding-top:6px; margin-left:-10px; margin-bottom:6px" id="classifications-list">
+                    <li>No classifications yet!</li>
+                </ol>
+
+                <!-- OLD JSON PREVIEW -->
+                <!-- <div class="text-bg-dark p-2">
+                    JSON Preview
+                </div>
+                <div style="margin:5px;border-style: solid;border-width:2px; border-color: rgba(29, 87, 106, 0.276); border-radius: 7px;">
+                    <p id="jsonPreview" style="padding-top:5px;padding-left:5px;padding-right:5px;color:rgba(0, 0, 0, 0.423)">Upload a text file and start annotating to see the preview.</p>
+                </div> -->
+
+                <!-- NEW JSON PREVIEW -->
+                <div class="text-bg-dark p-2">
+                    JSON Preview
+                </div>
+                <div style="padding:10px;margin:5px;margin-top:8px;margin-bottom:8px;border-style: solid;border-width:2px; border-color: rgba(29, 87, 106, 0.276); border-radius: 7px;">
+                    <!-- Annotator ID collapsible -->
+                    <button data-toggle="collapse" class="collapsible-button" data-target="#annotatorIDCollapse">Annotator ID</button>
+                    <div id="annotatorIDCollapse" class="collapse">Upload a text file to see the preview. The file will use your annotator ID.</div>
+                    <br>
+                    <!-- Text Content collapsible -->
+                    <button data-toggle="collapse" class="collapsible-button" data-target="#textCollapse">Text</button>
+                    <div id="textCollapse" class="collapse">Upload a text file to see the preview.</div>
+                    <br>
+                    <!-- Classifications collapsible -->
+                    <button data-toggle="collapse" class="collapsible-button" data-target="#classificationsCollapse">Classifications</button>
+                    <div id="classificationsCollapse" class="collapse">Upload a text file and start annotating to see the preview.</div>
+                    <br>
+                </div>
+
+
+                <!-- EXPORT TO JSON -->
+                <div class="text-bg-dark p-2">
+                    Final Step
+                </div>
+                <div style="margin-top:8px">
+                    <button type="button" onclick="exportToJSON()" class="btn btn-primary">Export to JSON</button>
+                </div>
+                <br>
+                <span id="testSpan">Test span</span>
+                <i class="material-icons" style="font-size:10px;color: rgb(255, 45, 177)">circle</i>
+
+                <br/>
+
+                <!-- BOOTSTRAP COLLAPSE *NOT WORKING* -->
+                <div id="collapsible">
+                    Expand
+                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 5L9 11L2 5" stroke="#363030" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript (for Modal) -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+
+SCRIPT:JS
+var allClasses = [];
+
+//list of each classification (eg "Name":"John")
+var classificationsList = [];
+
+//has the user uploaded a file to be annotated?
+var uploadedfile = false;
+var jsonFile;
+
+var selectedText = "";
+
+function createJSON(textContent) {
+    //CREATE JSON (filler annotatorID)
+    jsonFile = {
+        "annotatorID":"1234567",
+        "textContent": textContent,
+        "annotations": 
+        {}
+    };
+    // document.getElementById("jsonPreview").setAttribute("style", "color:black; padding-top:5px;padding-left:5px;padding-right:5px;");
+    let stringifiedJson = JSON.stringify(jsonFile);
+    updateJSONPreview(stringifiedJson);
+}
+
+function updateJSONPreview(stringifiedJson) {
+    //Show annotatorID
+    console.log(stringifiedJson.substring(1,stringifiedJson.indexOf("textContent")));
+    document.getElementById("annotatorIDCollapse").textContent = stringifiedJson.substring(1,stringifiedJson.indexOf("textContent")-2);
+    //show Text Content
+    console.log(stringifiedJson.substring(stringifiedJson.indexOf("textContent")+13,stringifiedJson.indexOf(`,\"annotations\"`)));
+    document.getElementById("textCollapse").textContent = stringifiedJson.substring(stringifiedJson.indexOf("textContent")+13,stringifiedJson.indexOf(`,\"annotations\"`));
+    //show annotations
+    console.log(stringifiedJson.substring(stringifiedJson.indexOf(`,\"annotations\"`)+15,stringifiedJson.length-1));
+    document.getElementById("classificationsCollapse").textContent = stringifiedJson.substring(stringifiedJson.indexOf(`,\"annotations\"`)+15,stringifiedJson.length-1);
+    console.log(jsonFile);
+    
+}
+
+function submitClassification(className) {
+    console.log(`Classification: ${className}`);
+    let dropdown = document.getElementById("dropdown");
+    dropdown.setAttribute("style", `display:none;`);
+    dropdownClassify(className);
+}
+
+function dropdownClassify(className) {
+    // alert(className);
+    // let selectedText = window.getSelection().toString().trim();
+    // alert(selectedText);
+    console.log("STEXT: " + selectedText);
+    //check if text file has been uploaded first
+    if (document.getElementById("classifyButton").getAttribute("class") == "btn btn-success") {
+        //check if selection actually contains text
+        if(selectedText.length > 0) {
+            console.log("SELECTED TEXT: " + selectedText);
+            let textArea = document.getElementById("textArea");
+            let searchMask = selectedText;
+            let regex = new RegExp(searchMask, "ig");
+            let replaceMask = `$&`;
+
+            //create new list item
+            let newItem = document.createElement("li");
+            newItem.appendChild(document.createTextNode(`${selectedText} : ${className}`));
+            //add list item to the end of the list
+            let clist = document.getElementById("classifications-list");
+            //if there have been no classifications made yet, first reset the list
+            if(clist.innerHTML.trim().toLowerCase() === "<li>No classifications yet!</li>".toLowerCase()) {
+                clist.innerHTML = "";
+            }
+            //then add new classification to the list
+            classificationsList.push(`${selectedText} : ${className}`);
+            console.log(classificationsList);
+            // classificationsHTMLList.appendChild(newItem);
+
+            
+            //add new span to the text
+            document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(regex,
+                `<span data-toggle='tooltip' title='${className}' class='${className}'>${replaceMask}</span>`);
+            console.log(document.getElementById("textArea").innerHTML);   
+
+            let name = className.toUpperCase();
+            console.log("Name: " + name);
+            // jsonFile.annotations[name].push(range.extractContents());
+            jsonFile.annotations[name].push(selectedText);
+            console.log("TEST2:" + JSON.stringify(jsonFile));
+            // document.getElementById("jsonPreview").innerHTML = JSON.stringify(jsonFile);
+            updateJSONPreview(JSON.stringify(jsonFile));
+            
+            updateClassificationsList();
+            spanTest();
+            
+            console.log(document.getElementById("textArea").innerHTML);
+            console.log(document.getElementById("textArea").textContent);
+        }
+    }
+}
+
+
+//when the window finishes loading, find the textArea div and fill it with lorem ipsum
+window.onload = function() {
+    // let testIcon = document.createElement("i");
+    // testIcon.setAttribute("style", "font-size:10px;color: rgb(255, 45, 177)");
+    // testIcon.setAttribute("class", "material-icons");
+    // testIcon.innerHTML = "circle";
+    // document.body.appendChild(testIcon);
+
+    console.log(document.getElementById("textArea"));
+    let dropdown = document.getElementById("dropdown");
+
+    //detect clicking on the body of text
+    document.getElementById("textArea").addEventListener("click", function() {
+
+        //if the user selects text (not just whitespace)
+        if(window.getSelection().toString().trim().length > 0) {
+            // alert(window.getSelection());
+            //create dropdown
+            // let dropdown = document.createElement("div");
+            // document.getElementById("textDiv").appendChild(dropdown);
+
+            dropdown.setAttribute("style", `border-style:solid;border-width:1px;border-color:rgb(71,66,66);padding:10px;display:block;margin:auto;position:absolute;top:${event.pageY+14.5}px;left:${event.pageX-280}px;background: white;`);
+        } else {
+            dropdown.setAttribute("style", `display:none;`);
+        }
+    })
+
+    //
+    window.addEventListener("click", function() {
+        selectedText = window.getSelection().toString().trim();
+        if(window.getSelection().toString().trim().length == 0) {
+            dropdown.setAttribute("style", `display:none;`);
+        }
+    })
+
+    updateClassificationsList();
+    // createJSON("");
+    
+    document.getElementById("textArea").innerHTML = "<strong>This is filler text. Upload a file to replace it!</strong><br>Minim officia mollit" +
+    " non officia minim cupidatat ullamco. Reprehenderit tempor sunt non aliqua aute mollit" +
+    " consequat veniam. Id veniam ad laboris cupidatat dolore cupidatat Lorem do nisi tempor" +
+    " elit incididunt. Cillum consectetur ullamco cillum sunt pariatur anim enim aliqua duis" +
+    " voluptate non eiusmod Lorem. Labore nulla nostrud tempor nostrud non veniam duis tempor" +
+    " amet fugiat aliquip reprehenderit veniam id.Qui in excepteur reprehenderit elit. Ex labore" +
+    " ex duis reprehenderit nostrud. Aliqua est non est do dolor. Eu ex deserunt duis mollit" +
+    " minim cupidatat in consectetur occaecat labore duis enim sint. Est nostrud amet minim sit" +
+    " veniam excepteur eiusmod. Ex adipisicing sint pariatur quis ipsum anim incididunt ut ad" +
+    " tempor ad fugiat sit do. Pariatur irure dolor tempor deserunt.  Pariatur consequat" +
+    " exercitation est anim irure duis deserunt amet adipisicing. Eu veniam aute pariatur" +
+    " incididunt exercitation incididunt. Culpa quis do do velit exercitation dolore est occaecat non." +
+    " Elit anim reprehenderit incididunt excepteur exercitation ut elit ea culpa sunt sunt do.";
+    document.getElementById("textArea").setAttribute("class", "test");
+
+    //UPLOAD TEXT FILE
+    let uploadFileButton = document.getElementById("fileinput");
+    uploadFileButton.addEventListener('change', () => {
+        let files = uploadFileButton.files;
+        if(files.length == 0) {
+            return;
+        }
+        const file = files[0];
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            const file = e.target.result;
+            const lines = file.split(/\r\n |\n/);
+            document.getElementById("textArea").innerHTML = lines.join('\n');
+            //user has uploaded a text file
+            uploadedfile = true;
+            console.log("File uploaded: " + uploadedfile);
+            createJSON(document.getElementById("textArea").innerHTML);
+            document.getElementById("classifyButton").setAttribute("class", "btn btn-success");
+            document.getElementById("addClassButton").setAttribute("class", "btn btn-primary");
+        };
+        reader.onerror = (e) => alert("Problem reading text file!");
+        reader.readAsText(file);
+    })
+
+    console.log(
+        'The page has the following classes:\n  .' +
+        listCSSClasses().join('\n  .')
+    )
+
+    //TEST SPAN
+    let testSpan = document.getElementById("testSpan");
+    testSpan.addEventListener("mouseover", function(e){
+        console.log("hover!");
+        testSpan.setAttribute("style", "cursor:pointer;text-decoration:underline");
+    });
+    testSpan.addEventListener("mouseout", function(e){
+        console.log("leave!");
+        testSpan.setAttribute("style", "text-decoration:none");
+    });
+    testSpan.addEventListener("click", function(e){
+        alert("click!");
+        //more span testing
+        console.log("span - " + document.getElementsByTagName("span")[0]);
+    });
+
+    //SPANS
+    let spans = document.getElementsByTagName("span");
+    for(i = 0; i < spans.length; i++) {
+        console.log(spans[i]);
+        if(spans[i].className.length > 0) {
+            console.log("CLASS " + spans[i].className)
+        }
+    }
+
+    //CLASS HIGHLIGHT PREVIEW
+    // console.log(document.getElementById("classTest"));
+    let selectedColour = document.getElementById("classColour");
+    selectedColour.addEventListener("change", function(e){
+        console.log("COLOUR: " + selectedColour.value);
+        let red = parseInt(selectedColour.value.substr(1,2),16);
+        let green = parseInt(selectedColour.value.substr(3,2), 16);
+        let blue = parseInt(selectedColour.value.substr(5,2), 16);
+        //determine if text colour should be white or black
+        let textColour = "white";
+        if ((red*0.299 + green*0.587 + blue*0.114) >= 186.00) {
+            textColour = "black";
+        }
+        let highlightPreview = document.getElementById("classTest");
+        highlightPreview.setAttribute("style", `font-weight:500;padding-bottom:2px;padding-left:4px;padding-right:4px;color:${textColour};background-color: rgb(${red},${green},${blue});border-radius:5px`);
+    });
+    
+    //collapsible
+    let collapsible = document.getElementById("collapsible");
+    collapsible.addEventListener("mouseover", function(e) {
+        collapsible.setAttribute("style", "cursor:pointer");
+    });
+    collapsible.addEventListener("click", function(e) {
+        alert("a");
+    });
+
+
+    // console.log("Highlight: " + highlightPreview);
+    
+
+    // const toast = new bootstrap.Toast('.toast');
+}
+
+function createClass(name, colourHex) {
+    if(document.getElementById("addClassButton").getAttribute("class") == "btn btn-primary") {
+        name = name.replaceAll(/ /g,"");//remove any spaces
+        if(!allClasses.includes(name.toUpperCase())) {
+            let classesList = document.getElementById("allClasses");
+
+                
+            //convert HEX to rgb values for class colour
+            let red = parseInt(colourHex.substr(1,2),16);
+            let green = parseInt(colourHex.substr(3,2), 16);
+            let blue = parseInt(colourHex.substr(5,2), 16);
+            console.log(`${red}, ${green}, ${blue}`);
+    
+            //create new class list item
+            let newClassListItem = document.createElement("li");
+
+            //add icon
+            let icon = document.createElement("i");
+            icon.setAttribute("class", "material-icons");
+            icon.setAttribute("style", `margin-right:5px; font-size:12px;color:rgb(${red}, ${green}, ${blue})`);
+            icon.innerHTML = "circle";
+            newClassListItem.appendChild(icon);
+
+            newClassListItem.appendChild(document.createTextNode(`${name.toString()}`));
+            classesList.append(newClassListItem);
+            // classesList.appendChild(document.createElement("br"));
+
+    
+            //create radio button for new class
+            // let newClassRadioButton = document.createElement("input");
+            // newClassRadioButton.setAttribute("type", "radio");
+            // newClassRadioButton.setAttribute("style", "margin-top:-5px");
+            // newClassRadioButton.setAttribute("name", "class");
+            // newClassRadioButton.setAttribute("value", name.toString());
+            // newClassRadioButton.setAttribute("id", name.toString().toLowerCase());
+
+
+
+    
+            //create label for radio button
+            // let label = document.createElement("label");
+            // label.setAttribute("for", newClassRadioButton.id);
+            // label.setAttribute("style", "margin-left:5px");
+            // label.innerHTML = name.toString().toUpperCase();
+            // classesList.appendChild(newClassRadioButton);
+            // classesList.appendChild(label);
+
+        
+            //equation to determine text colour
+            //if highlight colour is too bright, text colour becomes black 
+            let textColour = "white";
+            if ((red*0.299 + green*0.587 + blue*0.114) >= 186.00) {
+                textColour = "black";
+            }
+    
+            //create a style for new class
+            var style = document.createElement('style');
+            style.innerHTML = `
+            .${name.toUpperCase()} {
+                background-color: rgb(${red}, ${green}, ${blue});
+                border-radius: 5px;
+                padding-bottom:2px;
+                padding-left:2px;
+                padding-right:2px;
+                color:${textColour};
+                font-weight: 500;
+            }
+            `;
+            document.head.appendChild(style);
+    
+            //TODO: TOOLTIP
+            var tooltipStyle = document.createElement('style');
+            tooltipStyle.innerHTML = `
+            .${name.toUpperCase()}:hover {
+                border-style: double;
+                border-color: rgb(${red}, ${green}, ${blue});
+                border-width: 1px;
+            }
+            `;
+            document.head.appendChild(tooltipStyle);
+            //DEBUG: List all classes in index.html eg. class="row"
+            // alert(
+                // 'The page has the following classes:\n  .' +
+                // listCSSClasses().join('\n  .')
+            // )
+    
+    
+            //insert new class into classesList
+            allClasses.push(name.toUpperCase());
+            // allClasses.forEach(printClass);
+    
+            let newClassEntry = name.toUpperCase().toString();
+            jsonFile.annotations[newClassEntry] = [];
+            // jsonFile.annotations[newClassEntry].push("test");
+            console.log("TEST:" + JSON.stringify(jsonFile));
+    
+            //add to dropdown menu
+            addClassToDropdown(newClassEntry, red, green, blue);
+
+            //insert new class into JSON
+            // jsonFile.annotations[name.toUpperCase()] = "";
+    
+                //new class name
+        // let testClass = "NEWCLASS";
+        //create class in json
+        //put the value into that class in json
+    
+            //reset the input values
+            document.getElementById("classColour").value = "#ffffff";
+            document.getElementById("newClass").value = "";
+            document.getElementById("classTest").setAttribute("style", "");
+    
+            //close the modal
+            $('#exampleModal').modal('hide');
+        }
+        else {
+            alert("Class with the same name already exists!");
+        }
+    } else {
+        alert("Please upload a text file first!");
+    }
+}
+
+function viewAllActiveClasses() {
+    alert(
+        'The page has the following classes:\n  .' +
+        listCSSClasses().join('\n  .')
+    )
+}
+
+//NEW classify function (hopefully)
+function newClassify() {
+    //get the selected text
+    let selectedText = window.getSelection().toString().trim();
+    //check if the selection actually contains words
+    if (document.getElementById("classifyButton").getAttribute("class") == "btn btn-success") {
+        if(selectedText.length > 0) {
+            //log the selected text
+            console.log("TEXT: " + selectedText);
+            //get the main text body
+            let textArea = document.getElementById("textArea");
+            //find the classifications list
+            var classificationsHTMLList = document.getElementById("classifications-list");        
+    
+            //log the (proposed) method of placing each occurrence of the selected text within a span element
+            //PROBLEM with this method is that it replaces lowercase occurrences with uppercase (or vice versa)
+            let searchMask = selectedText;
+            let regex = new RegExp(searchMask, "ig");
+            let replaceMask = `$&`;
+            console.log(textArea.innerHTML.replaceAll(regex, replaceMask));
+            //add new classification to the classifications list
+            var radioGroup = document.getElementsByName("class");
+            let radioSelection = false;
+            //check if a class has been selected first
+            for(i = 0; i < radioGroup.length; i++) {
+                //find the selected class
+                if(radioGroup[i].checked) {
+                    //create new list item
+                    let newItem = document.createElement("li");
+                    newItem.appendChild(document.createTextNode(`${selectedText} : ${radioGroup[i].value}`));
+                    //add list item to the end of the list
+                    let clist = document.getElementById("classifications-list");
+                    //if there have been no classifications made yet, first reset the list
+                    if(clist.innerHTML.trim().toLowerCase() === "<li>No classifications yet!</li>".toLowerCase()) {
+                        clist.innerHTML = "";
+                    }
+                    //then add new classification to the list
+                    classificationsList.push(`${selectedText} : ${radioGroup[i].value}`);
+                    console.log(classificationsList);
+                    // classificationsHTMLList.appendChild(newItem);
+                    //user has selected a class
+                    radioSelection = true;
+                    
+                    //add new span to the text
+                    document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(regex,
+                        `<span data-toggle='tooltip' title='${radioGroup[i].value.toUpperCase()}' class='${radioGroup[i].value.toUpperCase()}'>${replaceMask}</span>`);
+                    console.log(document.getElementById("textArea").innerHTML);   
+
+                    let name = radioGroup[i].value.toUpperCase();
+                    console.log("Name: " + name);
+                    // jsonFile.annotations[name].push(range.extractContents());
+                    jsonFile.annotations[name].push(selectedText);
+                    console.log("TEST2:" + JSON.stringify(jsonFile));
+                    // document.getElementById("jsonPreview").innerHTML = JSON.stringify(jsonFile);
+                    updateJSONPreview(JSON.stringify(jsonFile));
+                    
+                    updateClassificationsList();
+                    spanTest();
+                    
+                    console.log(document.getElementById("textArea").innerHTML);
+                    console.log(document.getElementById("textArea").textContent);
+                    
+                    //break out of loop
+                    break;
+                }
+            }
+            //if the user has not selected a class before attempting to classify
+            if(!radioSelection) {
+                alert("Please select a class first!");
+            }
+        } else {
+            alert("Select text first!");
+        }
+    }
+    else {
+        alert("Please upload a text file first!");
+    }
+}
+
+function updateClassificationsList() {
+    let clist = document.getElementById("classifications-list");
+    //log the list as it is
+    console.log("vvv Classifications HTML list vvv");
+    console.log(clist);
+    //reset list
+    clist.innerHTML = "";
+    console.log(clist.innerHTML);
+    if(classificationsList.length < 1) {
+        let newItem = document.createElement("li");
+        newItem.appendChild(document.createTextNode("No classifications yet!"));
+        clist.appendChild(newItem);
+    } else {
+        //recreate (update) the list
+        for(i = 0; i < classificationsList.length; i++) {
+            let newItem = document.createElement("li");
+            newItem.appendChild(document.createTextNode(classificationsList[i]));
+            //add list item to the end of the list
+            clist.appendChild(newItem);
+        }
+    }
+}
+
+//NEW REMOVE CLASSIFICATION
+function newRemoveClassification(classToDelete, classification) {
+    //debugging
+    console.log(document.getElementById("textArea").innerHTML);
+    console.log(classToDelete);
+    console.log(classification);
+    console.log(`<span data-toggle="tooltip" title="${classToDelete}" style="cursor:pointer">${classification}</span>`);
+    console.log(document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor:pointer">${classification}</span>`, `${classification}`));
+    
+    //update the textArea by replacing all occurrences of the classification
+    document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor:pointer">${classification}</span>`, `${classification}`);
+    document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}">${classification}</span>`, `${classification}`);
+    
+    //remove classification from JSON file
+    console.log(`Before: ${JSON.stringify(jsonFile)}`);
+    // jsonFile.annotations[classToDelete].pop(classification);
+    console.log(jsonFile.annotations[classToDelete]);
+    jsonFile.annotations[classToDelete] = jsonFile.annotations[classToDelete].filter(function(item) {
+        return item !== classification;
+    });
+    console.log(`After: ${JSON.stringify(jsonFile)}`);
+
+    //TODO: remove classification from list of classifications
+    classificationsList = classificationsList.filter(function(item) {
+        console.log(item);
+        console.log(`${classification} : ${classToDelete}`);
+        console.log(item !== `${classification} : ${classToDelete}`);
+        return item !== `${classification} : ${classToDelete}`;
+    });
+
+    //update classifications list
+    updateClassificationsList();
+
+    //update JSON preview
+    updateJSONPreview(JSON.stringify(jsonFile));
+    spanTest();
+}
+
+function classify() {
+    let selectedText = window.getSelection().toString();
+    if(selectedText.length > 0) {
+        console.log(`Text: ${selectedText.innerHTML}`);
+        //check the existence of the classifications list
+        // alert(document.getElementById("classifications-list"));
+        //find the classifications list
+        // var classificationsList = document.getElementById("classifications-list");        
+
+        //create a new list item
+        var newItem = document.createElement("li");
+        //make the selected text the content of the new list item
+        newItem.appendChild(document.createTextNode(selectedText));
+        
+        // alert(document.getElementById("person"));
+        var radioGroup = document.getElementsByName("class");
+        let radioSelection = false;
+        for(i = 0; i < radioGroup.length; i++) {
+            if(radioGroup[i].checked) {
+                newItem.appendChild(document.createTextNode(": " + radioGroup[i].value));
+                //add list item to the end of the list
+                let clist = document.getElementById("classifications-list");
+                if(clist.innerHTML.trim().toLowerCase() === "<li>No classifications yet!</li>".toLowerCase()) {
+                    clist.innerHTML = "";
+                }
+                // classificationsList.appendChild(newItem);
+                radioSelection = true;
+                //alter text appearance
+                let selection = window.getSelection();
+                let range = selection.getRangeAt(0);
+                //use the HTML span tag to highlight the text
+                let span = document.createElement('span');
+                //assign the class to the mark
+                span.className = radioGroup[i].value.toUpperCase();
+                let newClassificaion = range.extractContents();
+                span.appendChild(newClassificaion);
+                // data-toggle="tooltip" title="test"
+                span.setAttribute("data-toggle", "tooltip");
+                span.setAttribute("title", radioGroup[i].value.toUpperCase());
+                //insert the node which highlights the selected text
+                range.insertNode(span);
+                //TODO:add to JSON
+                let name = radioGroup[i].value.toUpperCase();
+                console.log(name);
+                // jsonFile.annotations[name].push(range.extractContents());
+                jsonFile.annotations[name].push(selectedText);
+                console.log("TEST2:" + JSON.stringify(jsonFile));
+                document.getElementById("jsonPreview").innerHTML = JSON.stringify(jsonFile);
+
+                spanTest();
+            }
+        }
+        if(!radioSelection) {
+            alert("Please select a class first!");
+        }
+    }
+    else {
+        alert("Please select text first!");
+    }
+}
+
+function spanTest() {
+    let spans = document.getElementsByTagName("span");
+    console.log(spans);
+
+    //leave the last 3 spans - focusing only on classification spans
+    for(let i=0; i < spans.length-3; i++) {
+        console.log(spans[i].innerHTML);
+        //reset event listeners for each span
+        spans[i].removeEventListener("mouseover", this);
+        spans[i].removeEventListener("click", this);
+        //add hover function
+        spans[i].addEventListener("mouseover", function(e) {
+            spans[i].setAttribute("style","cursor:pointer");
+        });
+        //add click to remove function
+        spans[i].addEventListener("click", function(e) {
+            // alert("Removing classification");
+            // var replacement = document.createTextNode('');
+            // replacement.textContent = spans[i].innerHTML;
+            // spans[i].parentNode.replaceChild(replacement, spans[i]);
+            newRemoveClassification(spans[i].getAttribute("class"), spans[i].innerHTML);
+        });
+    }
+}
+
+function printClass(item, index) {
+    console.log(`${index}. ${item}\n`);
+}
+
+//DEBUG: List all classes in index.html eg. class="row"
+function listCSSClasses () {
+    let classes = new Set();
+    let elementsWithClasses = document.querySelectorAll('[class]');
+    for (let element of elementsWithClasses) {
+        for (let className of element.classList) {
+            classes.add(className);
+        }
+    }
+    return [...classes].sort();
+}
+
+function exportToJSON() {
+    //TODO: convert all classifications to lowercase?
+    alert(JSON.stringify(jsonFile));
+    let stringified = JSON.stringify(jsonFile,null,2);
+    var blob = new Blob([stringified], {type: "application/json"});
+    var url = URL.createObjectURL(blob);
+    
+    var a = document.createElement("a"); //'a' is a fuckin hyperlink which refreshes the page afterward lol try to fix
+    a.download = 'jsonFile.json';
+    a.href = url;
+    a.id = 'jsonFile';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+function addClassToDropdown(newClassName, red, green, blue) {
+    //TESTING: adding classes to dropdown menu
+    // let newClass = document.createElement("option");
+    // newClass.innerHTML = `<option value='${newClassName}'>${newClassName}</option>`;
+
+    // let selectMenu = document.getElementById("choice");
+    // selectMenu.appendChild(newClass);
+    let newClass = document.createElement("a");
+    newClass.setAttribute('onclick', `dropdownClassify('${newClassName}')`);
+    // newClass.onclick = dropdownClassify("Test");
+    // newClass.addEventListener("click", dropdownClassify(`${newClassName}`));
+    let icon = document.createElement("i");
+    icon.setAttribute("style", `margin-right:5px;font-size:11px;color: rgb(${red}, ${green}, ${blue})`);
+    icon.setAttribute("class", "material-icons");
+    icon.innerHTML = "circle";
+    newClass.appendChild(icon);
+    
+    newClass.appendChild(document.createTextNode(newClassName));
+    document.getElementById("dropdown-links").appendChild(newClass);
+
+}
+
+MAIN.CSS
+
+mark {
+    background-color: aqua;
+    color:white;
+}
+
+h3 {
+    color:rgb(0,0,128);
+}
+
+.row {
+    /* background-color: aliceblue; */
+}
+
+.italic {
+    font-style: italic;
+}
+
+#bold {
+    font-weight: bold;
+}
+
+
+span {
+    /* text-decoration: underline; */
+}
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    margin-left: 5px;
+    margin-top:10px;
+    margin-bottom:10px;
+    font: 15px, sans-serif;
+    background-color: rgb(13,110,253);
+    color:white;
+    border-radius: 6px;
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/* OLD */
+/* .name {
+    background-color: rgb(255, 45, 177);
+    border-radius: 5px;
+    padding-bottom:2px;
+    padding-left:2px;
+    padding-right:2px;
+    color:rgb(255, 255, 255);
+    font-weight: 500;
+}
+
+.name:hover{
+    background-color: blue;
+} */
+
+.nav {
+    background-color:rgba(0, 72, 255, 0.197);
+}
+
+/*TODO: TOOLTIP */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color:#fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+}
+
+/* collapsible */
+.collapsible-button {
+    width:100%;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+    padding-left:10px;
+    padding-right:10px;
+    background-color: rgb(61, 69, 76);
+    color:white;
+    margin-bottom: 10px;
+}
+
+.collapse {
+    margin-top:-10px;
+    margin-bottom:-16px;
+    padding:10px;
+    background-color: rgba(0, 0, 0, 0.13);
+    border-width: 2px;
+    border-radius: 0px 0px 4px 4px;
+    max-height:200px;
+    overflow:auto;
+}
+
+
+.btn-dark {
+    border-color:rgb(61, 69, 76, 0.253);
+    background-color: rgba(61, 69, 76, 0.253);
+    color:white;
+}
+
+.dropdown {
+    border: solid rgb(176, 176, 176) 1pt;
+    min-width: 150px;;
+    border-radius: 6px;
+    box-shadow: 5px 5px 10px rgb(0,0,0,0.20);
+    padding:5px 0px 10px 10px;
+    display:block;
+    margin:auto;
+    position:absolute;
+    background: white;
+}
+
+.dropdown-content a {
+    font-family: 'Source Sans 3';
+    font-size: 18px;
+    padding-top: 5px;
+    margin-left:2px;
+    color:black;
+    text-decoration: none;
+    display:block;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(203, 239, 255, 0.297);
+}
+
+.dropbutton {
+
+}
+
+.test {
+    font-size: 20px;
+    word-spacing: 3px;
+    font-family: 'Source Sans 3', Helvetica, sans-serif;
+    color:#363030;
+}
+
+.mainBody {
+    min-height: 100vh;
+    height:100%;
+    background-image: linear-gradient(rgb(255, 255, 255),#F4F8FF);
+    background-repeat: no-repeat;
+}
+
