@@ -113,22 +113,22 @@ window.onload = function() {
     let classifyToolButton = document.getElementById("classifyToolButton");
     //classify tool testing
     classifyToolButton.addEventListener("mouseover", function() {
-        classifyToolButton.setAttribute("style", "width:27px;rotate:3deg;cursor: url('pointer_cursor.svg'), auto");
+        classifyToolButton.setAttribute("style", "width:27px;rotate:3deg;cursor: url('svg/pointer_cursor.svg'), auto");
     });
     classifyToolButton.addEventListener("mouseleave", function() {
         classifyToolButton.setAttribute("style", "width:26px;cursor:auto");
     });
     classifyToolButton.addEventListener("click", function() {
         if(toolSelected !== tool.HIGHLIGHT) {
-            classifyToolButton.setAttribute("src", "classify_button_selected.svg");
-            document.body.setAttribute("style", `cursor: url("classify_cursor.svg"), auto`);
-            eraseButton.setAttribute("src", "erase_button_unselected.svg");
+            classifyToolButton.setAttribute("src", "svg/classify_button_selected.svg");
+            document.body.setAttribute("style", `cursor: url("svg/classify_cursor.svg"), auto`);
+            eraseButton.setAttribute("src", "svg/erase_button_unselected.svg");
 
             toolSelected = tool.HIGHLIGHT;
             console.log(toolSelected); //1
         } else {
-            classifyToolButton.setAttribute("src", "classify_button_unselected.svg");
-            document.body.setAttribute("style", `cursor:auto`);
+            classifyToolButton.setAttribute("src", "svg/classify_button_unselected.svg");
+            document.body.setAttribute("style", `url('svg/pointer_cursor.svg'), auto`);
             toolSelected = tool.NONE;
         }
     });
@@ -136,21 +136,21 @@ window.onload = function() {
     //erase tool
     let eraseButton = document.getElementById("eraseToolButton");
     eraseButton.addEventListener("mouseover", function() {
-        eraseButton.setAttribute("style", "width:27px;rotate:3deg;cursor: url('pointer_cursor.svg'), auto");
+        eraseButton.setAttribute("style", "width:27px;rotate:3deg;cursor: url('svg/pointer_cursor.svg'), auto");
     });
     eraseButton.addEventListener("mouseleave", function() {
         eraseButton.setAttribute("style", "width:26px;cursor:auto");
     });
     eraseButton.addEventListener("click", function() {
         if(toolSelected !== tool.ERASE) {
-            eraseButton.setAttribute("src", "erase_button_selected.svg");
-            document.body.setAttribute("style", `cursor: url("erase_cursor.svg"), auto`);
-            classifyToolButton.setAttribute("src", "classify_button_unselected.svg");
+            eraseButton.setAttribute("src", "svg/erase_button_selected.svg");
+            document.body.setAttribute("style", `cursor: url("svg/erase_cursor.svg"), auto`);
+            classifyToolButton.setAttribute("src", "svg/classify_button_unselected.svg");
 
             toolSelected = tool.ERASE;
             console.log(toolSelected); //2
         } else {
-            eraseButton.setAttribute("src", "erase_button_unselected.svg");
+            eraseButton.setAttribute("src", "svg/erase_button_unselected.svg");
             document.body.setAttribute("style", `cursor:auto`);
             toolSelected = tool.NONE;
         }
@@ -241,7 +241,7 @@ window.onload = function() {
     let testSpan = document.getElementById("testSpan");
     testSpan.addEventListener("mouseover", function(e){
         console.log("hover!");
-        testSpan.setAttribute("style", "cursor: url('erase_cursor.svg'), auto;text-decoration:underline");
+        testSpan.setAttribute("style", "cursor: url('svg/erase_cursor.svg'), auto;text-decoration:underline");
     });
     testSpan.addEventListener("mouseout", function(e){
         console.log("leave!");
@@ -282,7 +282,7 @@ window.onload = function() {
     //collapsible
     let collapsible = document.getElementById("collapsible");
     collapsible.addEventListener("mouseover", function(e) {
-        collapsible.setAttribute("style", "cursor: url('pointer_cursor.svg'), auto");
+        collapsible.setAttribute("style", "cursor: url('svg/pointer_cursor.svg'), auto");
     });
     collapsible.addEventListener("click", function(e) {
         alert("a");
@@ -349,11 +349,11 @@ function createClass(name, colourHex) {
 
             //add delete button
             let deleteButton = document.createElement("img");
-            deleteButton.src = `delete_button.svg`;
+            deleteButton.src = `svg/delete_button.svg`;
             deleteButton.setAttribute("onclick", `deleteClass('${name}')`);
             deleteButton.setAttribute("style", `margin-left:5px;margin-top:-3px`);
             deleteButton.addEventListener("mouseover", function() {
-                deleteButton.setAttribute("style","cursor: url('pointer_cursor.svg'), auto;margin-left:5px;margin-top:-3px");;
+                deleteButton.setAttribute("style","cursor: url('svg/pointer_cursor.svg'), auto;margin-left:5px;margin-top:-3px");;
             });
             newClassListItem.appendChild(deleteButton);
 
@@ -632,12 +632,12 @@ function newRemoveClassification(classToDelete, classification) {
     console.log(document.getElementById("textArea").innerHTML);
     console.log(classToDelete);
     console.log(classification);
-    console.log(`<span data-toggle="tooltip" title="${classToDelete}" style="cursor: url('pointer_cursor.svg'), auto">${classification}</span>`);
-    console.log(document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`));
+    console.log(`<span data-toggle="tooltip" title="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`);
+    console.log(document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`));
     
     if(toolSelected === tool.ERASE) {
         //update the textArea by replacing all occurrences of the classification
-        document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`);
+        document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`);
         document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}">${classification}</span>`, `${classification}`);
         
         //remove classification from JSON file
@@ -741,7 +741,7 @@ function spanTest() {
         spans[i].removeEventListener("click", this);
         //add hover function
         spans[i].addEventListener("mouseover", function(e) {
-            spans[i].setAttribute("style","cursor: url('pointer_cursor.svg'), auto");
+            spans[i].setAttribute("style","cursor: url('svg/pointer_cursor.svg'), auto");
         });
         //add click to remove function
         spans[i].addEventListener("click", function(e) {

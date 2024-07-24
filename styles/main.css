@@ -1,6 +1,6 @@
 html {
     /* TODO: REPLACE CURSOR SVGs WITH PNGs TO HOPEFULLY REMOVE ROUGH EDGES */
-    cursor:url('main_cursor.svg'), auto;
+    cursor:url('../svg/main_cursor.svg'), auto;
 }
 
 mark {
@@ -42,7 +42,7 @@ input[type="file"] {
     border-radius: 6px;
     display: inline-block;
     padding: 8px 12px;
-    cursor:url('pointer_cursor.svg'), auto;
+    cursor:url('../svg/pointer_cursor.svg'), auto;
     ;
 }
 
