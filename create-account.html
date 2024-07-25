@@ -27,39 +27,42 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body class="background">
-    <div class="row">
-        <div class="col-md-7">
-            <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-                <img src="images/logo-message.png" style="width:60%">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7" style="min-height: 100vh;">
+                <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+                    <img src="images/logo-message.png" style="padding-bottom:5%;width:40vw">
+                </div>
+                
             </div>
-        </div>
-        <div class="col-md-5">
-            <div class="d-flex align-items-top justify-content-center" style="padding-top:25%;box-shadow:-4px 0px 30px rgba(161, 158, 158, 0.745);background-color: white;min-height: 100vh">
-                <div style="width:45%;max-width:60%">
-                    <div class="form-heading">Create an Account</div>
-                    <div>
-                        <form>
-                            <section><label for="username"><div class="input-heading">Username</div></label></section>
-                            <section><input type="text" id="username" class="text-input" placeholder="Name"/></section>
-                            
-                            <section style="margin-top:20px;"><label for="email"><div class="input-heading">Email</div></label></section>
-                            <section><input type="text" id="email" class="text-input" placeholder="Email"/></section>
-
-                            <section style="margin-top:20px;"><label for="email"><div class="input-heading">Password</div></label></section>
-                            <section><input type="password" id="email" class="text-input" placeholder="******"/></section>
-
-                            <section style="margin-top:20px;"><label for="email"><div class="input-heading">Confirm Password</div></label></section>
-                            <section><input type="password" id="email" class="text-input" placeholder="******"/></section>
-                        </form>
-                    </div>
-                    <div style="margin-top:50px">
-                        <button onclick="alert(`Account created!`);"class="create-account-button">Create account</button>
+            <div class="col-md-5" style="box-shadow:-4px 0px 30px rgba(161, 158, 158, 0.745);background-color:rgb(255, 255, 255);">
+                <div class="d-flex align-items-center justify-content-center" style="padding-bottom:10%;min-height: 100vh;">
+                    <div style="width:55%;max-width:60%">
+                        <div class="form-heading">Create an Account</div>
+                        <div>
+                            <form>
+                                <section><label for="username"><div class="input-heading">Username</div></label></section>
+                                <section><input type="text" id="username" class="text-input" placeholder="Name"/></section>
+                                
+                                <section style="margin-top:20px;"><label for="email"><div class="input-heading">Email</div></label></section>
+                                <section><input type="text" id="email" class="text-input" placeholder="Email"/></section>
+    
+                                <section style="margin-top:20px;"><label for="email"><div class="input-heading">Password</div></label></section>
+                                <section><input type="password" id="email" class="text-input" placeholder="******"/></section>
+    
+                                <section style="margin-top:20px;"><label for="email"><div class="input-heading">Confirm Password</div></label></section>
+                                <section><input type="password" id="email" class="text-input" placeholder="******"/></section>
+                            </form>
+                        </div>
+                        <div style="margin-top:50px">
+                            <button onclick="alert(`Account created!`);"class="create-account-button">Create account</button>
+                        </div>
+                        <br/>
+                        <section style="color:grey;text-align: right;">Already have an account? <a href="#">Sign in</a></section>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
 </body>
-
+</html>
