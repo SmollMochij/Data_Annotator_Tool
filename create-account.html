@@ -41,24 +41,41 @@
                         <div class="form-heading">Create an Account</div>
                         <div>
                             <form>
-                                <section><label for="username"><div class="input-heading">Username</div></label></section>
+                                <!-- username field -->
+                                <section>
+                                    <label for="username">
+                                        <div class="input-heading">Username</div>
+                                    </label>
+                                </section>
                                 <section><input type="text" id="username" class="text-input" placeholder="Name"/></section>
-                                
-                                <section style="margin-top:20px;"><label for="email"><div class="input-heading">Email</div></label></section>
-                                <section><input type="text" id="email" class="text-input" placeholder="Email"/></section>
+                                <!-- email field -->
+                                <section style="margin-top:20px;">
+                                    <label for="email">
+                                        <div class="input-heading">Email</div>
+                                    </label>
+                                </section>
+                                <section><input type="email" id="email" class="text-input" placeholder="Email"/></section>
+                                <section style="margin-top:20px;">
+                                    <label for="password">
+                                        <div class="input-heading">Password</div>
+                                    </label>
+                                </section>
+                                <section><input type="password" id="password" class="text-input" placeholder="******"/></section>
     
-                                <section style="margin-top:20px;"><label for="email"><div class="input-heading">Password</div></label></section>
-                                <section><input type="password" id="email" class="text-input" placeholder="******"/></section>
-    
-                                <section style="margin-top:20px;"><label for="email"><div class="input-heading">Confirm Password</div></label></section>
-                                <section><input type="password" id="email" class="text-input" placeholder="******"/></section>
+                                <section style="margin-top:20px;">
+                                    <label for="confirmpassword">
+                                        <div class="input-heading">
+                                            Confirm Password</div>
+                                        </label>
+                                    </section>
+                                <section><input type="password" id="confirmpassword" class="text-input" placeholder="******"/></section>
                             </form>
                         </div>
                         <div style="margin-top:50px">
                             <button onclick="alert(`Account created!`);"class="create-account-button">Create account</button>
                         </div>
                         <br/>
-                        <section style="color:grey;text-align: right;">Already have an account? <a href="#">Sign in</a></section>
+                        <section class="sign-in-message" style="color:grey;text-align: right;">Already have an account? <a href="sign-in.html" class="sign-in-link"><p>Sign in</p></a></section>
                     </div>
                 </div>
             </div>
