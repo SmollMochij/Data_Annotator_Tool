@@ -1,0 +1,137 @@
+.background {
+    background:url('../images/landing-page-background-wide1.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
+    /* background-attachment: fixed; */
+    min-height:103vh;
+    padding-top:20px;
+    border-radius: 0px 0px 40px 40px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+a {
+    font-weight: 500;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+.sign-in-button {
+    padding-left:24px;
+    padding-right:24px;
+    padding-top:4px;
+    padding-bottom:4px;
+    font-size:1.2rem;
+    background-image:linear-gradient(#4976d8,#497AE1);
+    color:white;
+    font-family:'Share Tech';
+    border-style:none;
+    border-radius:30px;
+    margin-left:auto;
+}
+
+h1 {
+    font-size: calc(24px + 1vw);
+}
+
+.tagline-image {
+    margin-left:-20px;
+    width:calc(100px + 23vw);
+}
+
+.tagline  {
+    margin-top:30px;
+    width:24vw;
+    color:white;
+    font-family:'Source Sans 3';
+    font-size: calc(18px + 0.4vw);
+}
+
+.about-link {
+    font-family:'Share';
+    color:#363030;
+    font-size:1.2rem;
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color:#363030;
+    margin-right:20px;
+    text-decoration: none;
+}
+
+.about-link:hover {
+    text-decoration: none;
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color:#2965fe;
+    color:#2965fe;
+}
+
+.get-started-button {
+    box-shadow:0px 7px 15px rgba(18, 18, 18, 0.25);
+    margin-top:60px;
+    padding-left:40px;
+    padding-right:40px;
+    padding-top:10px;
+    padding-bottom:8px;
+    font-size:calc(12px + 0.6vw);
+    /* background-color: #497AE1; */
+    background-image:linear-gradient(#4976d8,#497AE1);
+    color:white;
+    font-family:'Share Tech';
+    border-style:none;
+    border-radius:40px;
+}
+
+.get-started-button:hover, .sign-in-button:hover {
+    background-color: #b849e1;
+    background-image:linear-gradient(#4976d8,#5f89e4,#497AE1);
+}
+
+
+.marquee {
+    overflow: hidden;
+}
+
+.marquee-content {
+    display: flex;
+    animation: scrolling 30s linear infinite;
+}
+
+.marquee-content:hover {
+    animation-play-state: paused;
+}
+
+.marquee-item {
+    flex: 0 0 18vw;
+    margin: 0 1vw;
+    /*   flex: 0 0 20vw; */
+    /*   margin: 0 2vw; */
+}
+
+.marquee-item img {
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    /*   padding: 0 20px; */
+}
+
+@keyframes scrolling {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translatex(-144vw);
+    }
+}
+
+.footer {
+    background:url('../images/marquee/tile-background.png') ;
+    padding-top:50px;
+    padding-bottom:50px;
+    height:auto;
+}
