@@ -1,40 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-</head>
-<body>
-    <!-- <script src="scripts/firebase.js"></script> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Realtime Database Connection</title>
+    <!-- Firebase App (the core Firebase SDK) -->
     <script type="module">
         // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-        import firebase from "firebase/app";
-        import "firebase/compat/database";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, onChildAdded } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
         // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-          apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
-          authDomain: "data-annotator-tool.firebaseapp.com",
-          databaseURL: "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
-          projectId: "data-annotator-tool",
-          storageBucket: "data-annotator-tool.appspot.com",
-          messagingSenderId: "913657972954",
-          appId: "1:913657972954:web:94e337e257d3452d7f3de3",
-          measurementId: "G-RWJF94GG05"
+            apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+            authDomain: "data-annotator-tool.firebaseapp.com",
+            databaseURL: "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "data-annotator-tool",
+            storageBucket: "data-annotator-tool.appspot.com",
+            messagingSenderId: "913657972954",
+            appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+            measurementId: "G-RWJF94GG05"
         };
-      
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
 
-        var database = firebase.database();
-        const dbRef = firebase.database.ref();
-        alert(dbRef);
-      </script>
+        // Initialize Realtime Database and get a reference to the service
+        const database = getDatabase(app);
+
+        // Example function to write data
+        function writeUserData(userId, name, email) {
+            set(ref(database, 'users/' + userId), {
+                username: name,
+                email: email
+            });
+        }
+
+        function addRecord() {
+        //write example data (if the key doesn't already exist)
+        let id = (Math.floor(Math.random() * 99999)).toString();
+        writeUserData(`${id}`, 'Nate Doe', 'john.doe@example.com');
+      }
+
+        let button = document.createElement("button");
+        button.textContent = "Add Record";
+        button.addEventListener("click", addRecord);
+        document.body.appendChild(button);
+
+        // read data
+        const usersRef = ref(database, 'users');
+        onValue(usersRef, (snapshot) => {
+          let flist = document.getElementById("list");
+          console.log(flist);
+          flist.innerHTML = "";
+          snapshot.forEach((childSnapshot) => {
+            const data = childSnapshot.val();
+            let newElement = document.createElement("p");
+            newElement.innerHTML = `${childSnapshot.key} ${data.username} : ${data.email}`;
+            // newElement.append(document.createTextNode(data.email + data.username));
+            flist.appendChild(newElement);
+            console.log(data);
+          })
+        });
+
+    </script>
+</head>
+<body>
+    <h1>Firebase Realtime Database Connection</h1>
+    <p>Check your Firebase Realtime Database for the data written by this example.</p>
+    <div id="list">
+
+    </div>
 </body>
-
 </html>
