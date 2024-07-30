@@ -59,6 +59,7 @@
                         <div style="margin-left:10px">
                             <img src="svg/classify_button_unselected.svg" id="classifyToolButton" style="width:26px" data-toggle="tooltip" title="Classify"/>
                             <img src="svg/erase_button_unselected.svg" id="eraseToolButton" style="width:26px" data-toggle="tooltip" title="Erase"/>
+                            <img src="svg/export_json_button.svg" id="exportJsonButton" style="width:26px" data-toggle="modal" data-target="#jsonModal" title="Export"/>
                         </div>
                     </nav>
                 </div>
@@ -171,7 +172,6 @@
                     <!-- View Active Classes button -->
                     <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" onclick="viewAllActiveClasses()">View active classes</button>
                 </div>
-                
                 <!-- CLASSIFICATIONS -->
                 <div class="text-bg-dark p-2">Classifications</div>
                 <!-- List of all classifications -->
@@ -206,6 +206,32 @@
                     <br>
                 </div>
 
+                <!-- JSON Modal -->
+                <div class="modal fade" id="jsonModal" tabindex="-1" role="dialog" aria-labelledby="jsonModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" style="width:50%;max-width:400px" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Export to JSON</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h6>Preview</h6>
+                                <div
+                                    style="text-align:center;padding:2px;padding-top:8px;padding-bottom:8px;border-style:solid;border-width:1px;border-radius: 2px;border-color: rgb(116, 116, 116);">
+                                    This is how your json file will look.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" onclick="alert('json')"
+                                    class="btn btn-primary">Export</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- EXPORT TO JSON -->
                 <div class="text-bg-dark p-2">
