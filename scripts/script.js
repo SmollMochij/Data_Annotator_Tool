@@ -32,6 +32,18 @@ function createJSON(textContent) {
 }
 
 function updateJSONPreview(stringifiedJson) {
+    let jsonString = JSON.stringify(jsonFile, null, 2);
+    jsonString = jsonString.replace('textContent\":', 'textContent":<br>');
+    document.getElementById('jsonPreviewText').innerHTML = jsonString;
+    document.getElementById('jsonPreviewText').innerHTML = document.getElementById('jsonPreviewText').innerHTML.replace('"annotatorID"', '<span style="color:rgb(185, 255, 0)">"annotatorID"</span>');
+    document.getElementById('jsonPreviewText').innerHTML = document.getElementById('jsonPreviewText').innerHTML.replace('"textContent"', '<span style="color:rgb(185, 255, 0)">"textContent"</span>');
+    document.getElementById('jsonPreviewText').innerHTML = document.getElementById('jsonPreviewText').innerHTML.replace('"annotations"', '<span style="color:rgb(185, 255, 0)">"annotations"</span>');
+
+    // console.log(JSON.stringify(jsonFile, null, 2));
+    // console.log(document.getElementById('jsonPreviewText').innerHTML);
+    // console.log(document.getElementById('jsonPreviewText').innerHTML);
+    // alert(JSON.stringify(jsonFile, null, 2));
+
     //Show annotatorID
     console.log(stringifiedJson.substring(1,stringifiedJson.indexOf("textContent")));
     document.getElementById("annotatorIDCollapse").textContent = stringifiedJson.substring(1,stringifiedJson.indexOf("textContent")-2);
@@ -109,11 +121,10 @@ function dropdownClassify(className) {
 
 //when the window finishes loading, find the textArea div and fill it with lorem ipsum
 window.onload = function() {
-
     let classifyToolButton = document.getElementById("classifyToolButton");
     //classify tool testing
     classifyToolButton.addEventListener("mouseover", function() {
-        classifyToolButton.setAttribute("style", "width:27px;rotate:3deg;cursor: url('svg/pointer_cursor.svg'), auto");
+        classifyToolButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
     });
     classifyToolButton.addEventListener("mouseleave", function() {
         classifyToolButton.setAttribute("style", "width:26px;cursor:auto");
@@ -136,7 +147,7 @@ window.onload = function() {
     //erase tool
     let eraseButton = document.getElementById("eraseToolButton");
     eraseButton.addEventListener("mouseover", function() {
-        eraseButton.setAttribute("style", "width:27px;rotate:3deg;cursor: url('svg/pointer_cursor.svg'), auto");
+        eraseButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:27px;cursor: url('svg/pointer_cursor.svg'), auto");
     });
     eraseButton.addEventListener("mouseleave", function() {
         eraseButton.setAttribute("style", "width:26px;cursor:auto");
@@ -175,7 +186,7 @@ window.onload = function() {
             // let dropdown = document.createElement("div");
             // document.getElementById("textDiv").appendChild(dropdown);
 
-            dropdown.setAttribute("style", `border-style:solid;border-width:1px;border-color:rgb(71,66,66);padding:10px;display:block;margin:auto;position:absolute;top:${event.pageY+14.5}px;left:${event.pageX-280}px;background: white;`);
+            dropdown.setAttribute("style", `border-style:solid;border-width:1px;border-color:rgb(71,66,66);padding:10px;z-index:4;display:block;margin:auto;position:absolute;top:${event.pageY-50}px;left:${event.pageX-280}px;background: white;`);
         } else {
             dropdown.setAttribute("style", `display:none;`);
         }
@@ -239,19 +250,19 @@ window.onload = function() {
 
     //TEST SPAN
     let testSpan = document.getElementById("testSpan");
-    testSpan.addEventListener("mouseover", function(e){
-        console.log("hover!");
-        testSpan.setAttribute("style", "cursor: url('svg/erase_cursor.svg'), auto;text-decoration:underline");
-    });
-    testSpan.addEventListener("mouseout", function(e){
-        console.log("leave!");
-        testSpan.setAttribute("style", "text-decoration:none");
-    });
-    testSpan.addEventListener("click", function(e){
-        alert("click!");
-        //more span testing
-        console.log("span - " + document.getElementsByTagName("span")[0]);
-    });
+    // testSpan.addEventListener("mouseover", function(e){
+    //     console.log("hover!");
+    //     testSpan.setAttribute("style", "cursor: url('svg/erase_cursor.svg'), auto;text-decoration:underline");
+    // });
+    // testSpan.addEventListener("mouseout", function(e){
+    //     console.log("leave!");
+    //     testSpan.setAttribute("style", "text-decoration:none");
+    // });
+    // testSpan.addEventListener("click", function(e){
+    //     alert("click!");
+    //     //more span testing
+    //     console.log("span - " + document.getElementsByTagName("span")[0]);
+    // });
 
     //SPANS
     let spans = document.getElementsByTagName("span");
@@ -280,13 +291,13 @@ window.onload = function() {
     });
     
     //collapsible
-    let collapsible = document.getElementById("collapsible");
-    collapsible.addEventListener("mouseover", function(e) {
-        collapsible.setAttribute("style", "cursor: url('svg/pointer_cursor.svg'), auto");
-    });
-    collapsible.addEventListener("click", function(e) {
-        alert("a");
-    });
+    // let collapsible = document.getElementById("collapsible");
+    // collapsible.addEventListener("mouseover", function(e) {
+    //     collapsible.setAttribute("style", "cursor: url('svg/pointer_cursor.svg'), auto");
+    // });
+    // collapsible.addEventListener("click", function(e) {
+    //     alert("a");
+    // });
 
 
     // console.log("Highlight: " + highlightPreview);

@@ -96,10 +96,11 @@ input[type="file"] {
     font-weight: bold;
     width: 30px;
     height: 30px;
-    margin: 0 auto;
+    margin-right:5px;
+    /* margin: 0 auto; */
     padding: 0;
-    display: table-cell;
-    vertical-align: middle;
+    /* display: table-cell; */
+    /* vertical-align: middle; */
 }
 
 .font-size-button:hover {

@@ -1,0 +1,74 @@
+.side-nav {
+    padding: 10px;
+}
+
+/* style each link in the side navigation bar */
+.nav-link {
+    font-family: 'Source Sans 3';
+    font-size:18px;
+    height:40px;
+    display:flex;
+    align-items: center;
+    background-color: white;
+}
+
+.nav-link:hover {
+    cursor:pointer;
+    border-radius: 5px;
+    background-color: rgba(134, 217, 235, 0.212);
+    /* background-image: radial-gradient(rgba(127, 241, 239, 0.731),rgba(0,0,0,0),rgba(0, 0, 0, 0)); */
+}
+
+/* .nav-link > a {
+    padding-top:5px;
+    padding-bottom:5px;
+} */
+
+.logo {
+    margin-top:5%;
+    width:calc(10px + 6vw);
+}
+
+@media (max-width: 1640px) {
+    .nav-link a {
+        display:none;
+        visibility: hidden;
+    }
+    .logo {
+        content:url('/svg/logo_small.svg');
+        /* display:none; */
+        /* visibility: hidden; */
+    }
+}
+
+.back-arrow{
+    width:34px;
+    padding-right:16px;
+}
+
+.back-arrow:hover {
+    cursor: pointer;
+}
+
+/* .side-nav > a {
+    display:block;
+    padding-top:5px;
+    padding-bottom:5px;
+    background-color: aquamarine;
+} */
+
+/* .side-nav > a:hover {
+    cursor:pointer;
+    background-color: blue;
+} */
+
+@media (max-height: 300px) {
+    #top-bar {
+        visibility: hidden;
+        display:none;
+    }
+}
+
+#top-bar {
+    background-color: red;
+}
