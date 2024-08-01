@@ -147,7 +147,7 @@ window.onload = function() {
     //erase tool
     let eraseButton = document.getElementById("eraseToolButton");
     eraseButton.addEventListener("mouseover", function() {
-        eraseButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:27px;cursor: url('svg/pointer_cursor.svg'), auto");
+        eraseButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
     });
     eraseButton.addEventListener("mouseleave", function() {
         eraseButton.setAttribute("style", "width:26px;cursor:auto");

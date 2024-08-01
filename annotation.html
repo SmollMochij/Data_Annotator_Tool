@@ -35,7 +35,7 @@
             <div class="col-md-1 d-flex align-items-center justify-content-start px-4">
                 <img class="logo" src="svg/logo.svg"/>
             </div>
-            <div class="col-md d-flex justify-content-start" style="font-family:'Source Sans 3';display:flex;margin-top: auto;margin-bottom: auto;">
+            <div class="col-md d-flex" style="font-family:'Source Sans 3';display:flex;margin-top: auto;margin-bottom: auto;">
                 <span style="font-size:20px;font-weight:bold">Project Manager</span>
                 <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span> 
                 <span style="font-size:20px;">Annotation</span>
@@ -48,27 +48,27 @@
             <div class="col-md-1" style="z-index:1;box-shadow: 5px 0px 5px rgba(59, 59, 59, 0.111);background-color:rgb(255, 255, 255);">
                 <nav class="side-nav">
                     <div class="nav-link">
-                        <div style="width:40px">
-                            <img src="svg/dashboard_button.svg"/>
+                        <div>
+                            <img style="width:28px;" src="images/button-icons/dashboard-button-unselected.png"/>
                         </div>
                         <div>
-                            <a>Dashboard</a>
+                            <a style="margin-left:5px;">Dashboard</a>
                         </div>
                     </div>
                     <div class="nav-link">
-                        <div style="width:40px">
-                            <img src="svg/projects_active.svg"/>
+                        <div>
+                            <img style="width:28px;" src="images/button-icons/projects-button-selected.png"/>
                         </div>
                         <div>
-                            <a>Projects</a>
+                            <a style="margin-left:5px";>Projects</a>
                         </div>
                     </div>
                     <div class="nav-link">
-                        <div style="width:40px">
-                            <img src="svg/annotators_button.svg"/>
+                        <div>
+                            <img style="width:28px;" src="images/button-icons/annotators-button-unselected.png"/>
                         </div>
                         <div>
-                            <a>Annotators</a>
+                            <a style="margin-left:5px;">Annotators</a>
                         </div>
                     </div>
                 </nav>
@@ -81,6 +81,7 @@
                             <img src="svg/classify_button_unselected.svg" id="classifyToolButton" style="width:26px;" data-toggle="tooltip" title="Classify"/>
                             <img src="svg/erase_button_unselected.svg" id="eraseToolButton" style="width:26px" data-toggle="tooltip" title="Erase"/>
                             <img src="svg/export_json_button.svg" id="exportJsonButton" style="width:26px" data-toggle="modal" data-target="#jsonModal" title="Export"/>
+                            <img src="svg/instructions-button.svg" id="instructionsButton" style="width:26px" data-toggle="tooltip" title="Instructions"/>
                     </div>
                     <!-- Back button & project name | file name -->
                     <div class="col-md-5">
@@ -259,5 +260,10 @@
         </div>
     </div>
 </div>
+<!-- Optional JavaScript (for Modal) -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

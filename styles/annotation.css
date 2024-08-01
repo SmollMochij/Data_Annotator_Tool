@@ -6,6 +6,7 @@
 .nav-link {
     font-family: 'Source Sans 3';
     font-size:18px;
+    padding-right:5px;
     height:40px;
     display:flex;
     align-items: center;
@@ -15,14 +16,10 @@
 .nav-link:hover {
     cursor:pointer;
     border-radius: 5px;
-    background-color: rgba(134, 217, 235, 0.212);
+    background-color: rgba(171, 200, 201, 0.178);
     /* background-image: radial-gradient(rgba(127, 241, 239, 0.731),rgba(0,0,0,0),rgba(0, 0, 0, 0)); */
 }
 
-/* .nav-link > a {
-    padding-top:5px;
-    padding-bottom:5px;
-} */
 
 .logo {
     margin-top:5%;
