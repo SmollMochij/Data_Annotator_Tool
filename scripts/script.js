@@ -1,4 +1,5 @@
 var allClasses = [];
+var markedDone = false;
 
 const tool = {
     NONE: 0,
@@ -60,7 +61,8 @@ function updateJSONPreview(stringifiedJson) {
 function submitClassification(className) {
     console.log(`Classification: ${className}`);
     let dropdown = document.getElementById("dropdown");
-    dropdown.setAttribute("style", `display:none;`);
+    dropdown.style.display = "none";
+    // dropdown.setAttribute("style", `display:none;`);
     dropdownClassify(className);
 }
 
@@ -94,7 +96,6 @@ function dropdownClassify(className) {
             classificationsList.push(`${selectedText} : ${className}`);
             console.log(classificationsList);
             // classificationsHTMLList.appendChild(newItem);
-
             
             //add new span to the text
             document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(regex,
@@ -111,6 +112,8 @@ function dropdownClassify(className) {
             
             updateClassificationsList();
             spanTest();
+
+            displayNotification(`New classification: ${className} - ${selectedText}`);
             
             // console.log(document.getElementById("textArea").innerHTML);
             // console.log(document.getElementById("textArea").textContent);
@@ -118,6 +121,28 @@ function dropdownClassify(className) {
     }
 }
 
+function displayNotification(message) {
+    //notification
+    setTimeout(function() {
+        // document.getElementById("notification").style.display = "none";
+        document.getElementById("notification").style.display = "flex";
+        document.getElementById("notification").style.animation = "fadein 500ms";
+        setTimeout(function() {
+            document.getElementById("notification").style.opacity = "100";
+        }, 500)
+    }, 0);
+
+    document.getElementById("notification").style.display = "flex";
+    document.getElementById("notification-text").textContent = message;
+
+    setTimeout(function() {
+        // document.getElementById("notification").style.display = "none";
+        document.getElementById("notification").style.animation = "fadeout 500ms";
+        setTimeout(function() {
+            document.getElementById("notification").style.display = "none";
+        }, 400)
+    }, 2000);
+}
 
 //when the window finishes loading, find the textArea div and fill it with lorem ipsum
 window.onload = function() {
@@ -125,9 +150,12 @@ window.onload = function() {
     //classify tool testing
     classifyToolButton.addEventListener("mouseover", function() {
         classifyToolButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
+        // document.getElementById("classifyTip").setAttribute("display", "inline-block");
+        document.getElementById("classifyTip").style.display = "inline-block";
     });
     classifyToolButton.addEventListener("mouseleave", function() {
         classifyToolButton.setAttribute("style", "width:26px;cursor:auto");
+        document.getElementById("classifyTip").style.display = "none";
     });
     classifyToolButton.addEventListener("click", function() {
         if(toolSelected !== tool.HIGHLIGHT) {
@@ -148,9 +176,12 @@ window.onload = function() {
     let eraseButton = document.getElementById("eraseToolButton");
     eraseButton.addEventListener("mouseover", function() {
         eraseButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
+        document.getElementById("eraseTip").style.marginLeft = '-40px';
+        document.getElementById("eraseTip").style.display = "inline-block";
     });
     eraseButton.addEventListener("mouseleave", function() {
         eraseButton.setAttribute("style", "width:26px;cursor:auto");
+        document.getElementById("eraseTip").style.display = "none";
     });
     eraseButton.addEventListener("click", function() {
         if(toolSelected !== tool.ERASE) {
@@ -167,6 +198,78 @@ window.onload = function() {
         }
     });
 
+    //export tool
+    let exportButton = document.getElementById("exportJsonButton");
+    exportButton.addEventListener("mouseover", function() {
+        exportButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
+        document.getElementById("jsonTip").style.marginLeft = '-44px';
+        document.getElementById("jsonTip").style.display = "inline-block";
+    });
+    exportButton.addEventListener("mouseleave", function() {
+        exportButton.setAttribute("style", "width:26px;cursor:auto");
+        document.getElementById("jsonTip").style.display = "none";
+    });
+
+
+    //instructions tool
+    let instructionsButton = document.getElementById("instructionsButton");
+    instructionsButton.addEventListener("mouseover", function() {
+        instructionsButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
+        document.getElementById("instructionsTip").style.display = "inline-block";
+        document.getElementById("instructionsTip").style.marginLeft = "-54px";
+
+    });
+    instructionsButton.addEventListener("mouseleave", function() {
+        instructionsButton.setAttribute("style", "width:26px;cursor: auto");
+        document.getElementById("instructionsTip").style.display = "none";
+    });
+
+    //font size buttons
+    let increaseFontButton = document.getElementById("increaseFont");
+    increaseFontButton.addEventListener("mouseover", function() { 
+        increaseFontButton.style.borderRadius = "4px";
+        increaseFontButton.style.backgroundColor = "rgba(80,168,226,0.3)";
+        document.getElementById("increaseFontTip").style.display = "inline-block";
+    });
+    increaseFontButton.addEventListener("mouseleave", function() { 
+        increaseFontButton.setAttribute("style", "");
+        document.getElementById("increaseFontTip").style.display = "none";
+    });
+    let decreaseFontButton = document.getElementById("decreaseFont");
+    decreaseFontButton.addEventListener("mouseover", function() { 
+        decreaseFontButton.style.borderRadius = "4px";
+        decreaseFontButton.style.backgroundColor = "rgba(80,168,226,0.3)";
+        document.getElementById("decreaseFontTip").style.display = "inline-block";
+        // document.getElementById("decreaseFontTip").style.zIndex = "10";
+    });
+    decreaseFontButton.addEventListener("mouseleave", function() { 
+        decreaseFontButton.setAttribute("style", "");
+        document.getElementById("decreaseFontTip").style.display = "none";
+    });
+
+    //mark as done button
+    let markDoneButton = document.getElementById("markDoneButton");
+    let doneCircle = document.getElementById("doneCircle");
+    markDoneButton.addEventListener("mouseover", function() {
+        markDoneButton.style.cursor = "pointer";
+    })
+    markDoneButton.addEventListener("click", function() {
+        if(!markedDone) {
+            markDoneButton.style.backgroundColor = "#47DE56";
+            markDoneButton.firstChild.textContent = "Marked done!"
+            doneCircle.src = "./svg/circle_done.svg";
+            markedDone = true;
+            console.log(doneCircle)
+        } else {
+            markDoneButton.style.backgroundColor = "#939393";
+            markDoneButton.firstChild.textContent = "Mark as done"
+            doneCircle.src = "./svg/circle.svg";
+            markedDone = false;
+            console.log(doneCircle)
+        }
+    })
+
+
     // let testIcon = document.createElement("i");
     // testIcon.setAttribute("style", "font-size:10px;color: rgb(255, 45, 177)");
     // testIcon.setAttribute("class", "material-icons");
@@ -177,7 +280,7 @@ window.onload = function() {
     let dropdown = document.getElementById("dropdown");
 
     //detect clicking on the body of text
-    document.getElementById("textArea").addEventListener("click", function() {
+    document.getElementById("textArea").addEventListener("click", function(event) {
 
         //if the user selects text (not just whitespace)
         if(window.getSelection().toString().trim().length > 0 && toolSelected === tool.HIGHLIGHT) {
@@ -186,7 +289,11 @@ window.onload = function() {
             // let dropdown = document.createElement("div");
             // document.getElementById("textDiv").appendChild(dropdown);
 
-            dropdown.setAttribute("style", `border-style:solid;border-width:1px;border-color:rgb(71,66,66);padding:10px;z-index:4;display:block;margin:auto;position:absolute;top:${event.pageY-50}px;left:${event.pageX-280}px;background: white;`);
+            // dropdown.setAttribute("style", `border-style:solid;border-width:1px;border-color:rgb(71,66,66);padding:10px;z-index:100;display:block;margin:auto;position:absolute;top:${event.pageY}px;left:${event.pageX}px;background: white;`);
+            dropdown.style.display = 'block';
+            dropdown.style.position = 'fixed';
+            dropdown.style.left = (event.pageX - 16) + 'px';
+            dropdown.style.top = (event.pageY + 16) + 'px';
         } else {
             dropdown.setAttribute("style", `display:none;`);
         }
@@ -238,6 +345,9 @@ window.onload = function() {
             createJSON(document.getElementById("textArea").innerHTML);
             document.getElementById("classifyButton").setAttribute("class", "btn btn-success");
             document.getElementById("addClassButton").setAttribute("class", "btn btn-primary");
+            //notification
+            displayNotification("File uploaded succesfully!");
+
         };
         reader.onerror = (e) => alert("Problem reading text file!");
         reader.readAsText(file);
@@ -322,9 +432,11 @@ function deleteClass(name) {
         //remove class from dropdown
         removeClassFromDropdown(name);
         //TODO: delete all classifications
-        alert("Class deleted!");
+        displayNotification(`Class deleted: ${name}`);
+        // alert("Class deleted!");
     } else {
-        alert("Class not found!");
+        displayNotification("Class not found!");
+        // alert("Class not found!");
     }
 }
 
@@ -674,6 +786,9 @@ function newRemoveClassification(classToDelete, classification) {
         //update JSON preview
         updateJSONPreview(JSON.stringify(jsonFile));
         spanTest();
+
+        //notification
+        displayNotification(`Removed classification: ${classification}`);
     } else {
         alert(`${classification} : ${classToDelete}`);
     }
@@ -745,7 +860,7 @@ function spanTest() {
     console.log(spans);
 
     //leave the last 3 spans - focusing only on classification spans
-    for(let i=0; i < spans.length-3; i++) {
+    for(let i=0; i < spans.length-9; i++) {
         console.log(spans[i].innerHTML);
         //reset event listeners for each span
         spans[i].removeEventListener("mouseover", this);

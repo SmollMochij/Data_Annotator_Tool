@@ -36,7 +36,7 @@
                 <img class="logo" src="svg/logo.svg"/>
             </div>
             <div class="col-md d-flex" style="font-family:'Source Sans 3';display:flex;margin-top: auto;margin-bottom: auto;">
-                <span style="font-size:20px;font-weight:bold">Project Manager</span>
+                <span class="user-type">Project Manager</span>
                 <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span> 
                 <span style="font-size:20px;">Annotation</span>
             </div>
@@ -78,10 +78,23 @@
                 <div class="row align-items-center" style="padding-left:1em;border-bottom:solid 2px #ecebeb;height:50px;background-color:rgb(255, 255, 255);box-shadow: 0px 0px 25px rgba(170, 187, 170, 0.25);">
                     <!-- Toolbar -->
                     <div class="col-5">
-                            <img src="svg/classify_button_unselected.svg" id="classifyToolButton" style="width:26px;" data-toggle="tooltip" title="Classify"/>
-                            <img src="svg/erase_button_unselected.svg" id="eraseToolButton" style="width:26px" data-toggle="tooltip" title="Erase"/>
-                            <img src="svg/export_json_button.svg" id="exportJsonButton" style="width:26px" data-toggle="modal" data-target="#jsonModal" title="Export"/>
-                            <img src="svg/instructions-button.svg" id="instructionsButton" style="width:26px" data-toggle="tooltip" title="Instructions"/>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/classify_button_unselected.svg" id="classifyToolButton" style="width:26px;"/>
+                            <div class="toolbar-tip" id="classifyTip">Classify</div>
+                        </div>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/erase_button_unselected.svg" id="eraseToolButton" style="width:26px"/>
+                            <div class="toolbar-tip" id="eraseTip">Erase</div>
+                        </div>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/export_json_button.svg" id="exportJsonButton" style="width:26px" data-toggle="modal" data-target="#jsonModal"/>
+                            <div class="toolbar-tip" id="jsonTip">Export</div>
+                        </div>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/instructions-button.svg" id="instructionsButton" style="width:26px"/>
+                            <div class="toolbar-tip" id="instructionsTip">Instructions</div>
+
+                        </div>
                     </div>
                     <!-- Back button & project name | file name -->
                     <div class="col-md-5">
@@ -91,8 +104,16 @@
                         <span style="color:#4e6fa2;font-size:18px;font-family:'Archivo';">Data File Name</span>
                     </div>
                     <div class="col-md-2 d-flex justify-content-end">
-                        <button class="font-size-button" onclick="increaseFont()"><i class="material-icons">add</i></button>
-                        <button class="font-size-button" onclick="decreaseFont()"><i class="material-icons">remove</i></button>
+                        <div>
+                            <img id="increaseFont" class="font-size-button" onclick="increaseFont()" src="svg/zoom-in-button.svg">
+                            <div id="increaseFontTip" class="toolbar-tip">+ Size</div>
+                        </div>
+                        <div>
+                            <img id="decreaseFont" class="font-size-button" onclick="decreaseFont()" src="svg/zoom-out-button.svg">
+                            <div id="decreaseFontTip" class="toolbar-tip">- Size</div>
+                        </div>
+                        <!-- <button class="font-size-button" onclick="increaseFont()"><i class="material-icons">add</i></button>
+                        <button class="font-size-button" onclick="decreaseFont()"><i class="material-icons">remove</i></button> -->
                     </div>
                     
                 </div>
@@ -122,7 +143,7 @@
                                         COMPANY
                                     </a>                             -->
                                 </div>
-                                <div style="border-top:solid 1px #DBDBDB;margin-top:12px">
+                                <div style="border-top:solid 1px #DBDBDB;margin-top:12px;">
                                     <a style="margin-top:2px;color:#6B6B6B">Cancel</a>
                                 </div>
                                 <!-- <select id="choice" name="choice"> -->
@@ -133,11 +154,20 @@
                         </div>
                         <!-- <div style="width:100px;height:100px;position:absolute;top:200px;left:100px;background: green;"></div> -->
                     </div>
+                    <!-- notification -->
+                    <div id="notification" class="notification">
+                        <div id="close-notification-button" class="close-button">
+                            <img src="svg/close-button-light.svg">
+                        </div>
+                        <div id="notification-text" class="notification-text">
+                            This is a small notification
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Annotation Interface Sidebar -->
-            <div class="col-md-3" style="box-shadow: -5px 0px 5px rgba(59, 59, 59, 0.111);;background-color: rgb(255, 255, 255);">
-                <h2 style="margin-top:18px">Classification</h2>
+            <div class="col-md-3" style="box-shadow: -5px 0px 5px rgba(59, 59, 59, 0.111);background-color: rgb(255, 255, 255);">
+                <h2 style="margin-top:18px;">Classification</h2>
                 <!-- TEXT FILE -->
                 <div class="text-bg-dark p-2">Text File</div>
                 <label class="custom-file-upload">
@@ -231,6 +261,16 @@
                     <br>
                 </div>
 
+                <div class="text-bg-dark p-2">
+                    Final Step
+                </div>
+                <div style="display:flex;justify-content: center;margin-top:8px;">
+                    <div id="markDoneButton" style="transition-duration:2s;display:flex;justify-content:center;align-items:center;background-color:#939393;color:white;width:60%;height:70px;border-radius: 14px;border:none;font-family:'Source Sans 3';font-size:18px;">
+                        Mark as done
+                        <img id="doneCircle" style="margin-left:12px" src="svg/circle.svg">
+                    </div>
+                </div>
+
                 <!-- JSON Modal -->
                 <div class="modal fade" id="jsonModal" tabindex="-1" role="dialog" aria-labelledby="jsonModalLabel"
                     aria-hidden="true">
@@ -256,6 +296,8 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>
