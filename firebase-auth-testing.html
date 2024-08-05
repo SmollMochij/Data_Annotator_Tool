@@ -7,7 +7,6 @@
     <title>Firebase Realtime Database Connection</title>
     <!-- Firebase App (the core Firebase SDK) -->
     <script type="module">
-        alert();
         // var database = firebase.database();
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
@@ -30,22 +29,26 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        alert("Connected");
-
         // Authentication
         const auth = getAuth(app);
-        let email = "peepee@gmail.com";
+        let email = "cnx7823@autuni.ac.nz";
         let password = "aye@%TJOSk2323";
+
+        // put it in a button
+        function buttonClicked() {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
+                alert('User created successfully: ' + user.email);
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-            })
-        
+                alert('Error: ' + errorMessage + ' (Code: ' + errorCode + ')');
+            });
+        }
 
+        document.getElementById('SubmitButton').addEventListener('click', buttonClicked);
     </script>
 </head>
 <body>
@@ -53,7 +56,7 @@
     <p>Check your Firebase Realtime Database for the data written by this example.</p>
     <p>Create Account</p>
     
-    <button>Submit</button>
+    <button id="SubmitButton"> Submit </button>
 </body>
 
 </html>
