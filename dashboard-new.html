@@ -87,6 +87,7 @@
     </style>
 </head>
 <body id="dash-body">
+    <script src="scripts/dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div class="container-fluid" >
         <div id="logo-and-header" class="row" style="z-index:500;">
@@ -115,15 +116,15 @@
                     </ul>
                 </div>
                 <div class="col-md-10 mx-auto pt-5 px-3">
-                    <div class="row px-4">
-                        <div class="col-md" style="height:52vh;background-color: rgba(255, 24, 193, 0);">
+                    <div class="row px-4" style="min-height:700px;">
+                        <div class="col-md" style="background-color: rgba(255, 24, 193, 0);">
                             <div class="row p-1" style="background-color:rgba(0, 255, 68, 0);height:70%">
                                 <div class="col-md">
-                                    <div class="card" style="height:100%">
+                                    <div class="card" id="card1" style="height:100%">
                                         <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
                                             <h4>Projects</h4>
                                         </div>
-                                        <div class="card-body" style="font-family:'Source Sans 3">
+                                        <div class="card-body" id="card1body" style="font-family:'Source Sans 3'">
                                             <div class="row justify-content-center" style="height:20%">
                                                 <div class="col-md-3" style="text-align: center;">
                                                     <span style="font-weight:bold;display:block;color:#363030;font-size:32px">36</span>
