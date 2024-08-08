@@ -1,0 +1,66 @@
+<html>
+<head>
+    <title>File upload testing</title>
+</head>
+
+<body>
+    <script>
+        
+        window.onload = function() {
+            document.getElementById("uploadButton").addEventListener("change", function () {
+                // let files = document.getElementById("uploadButton").files
+                let fr = new FileReader()
+                fr.onload = function() {
+                    // const file = files[0];
+                    console.log(fr)
+                    console.log(fr.result)
+                    document.getElementById("textArea").textContent = fr.result;
+                }
+                fr.readAsText(this.files[0]);
+                // const lines = file.target.result.split(/\r\n |\n/);
+                // console.log(lines.join('\n'))
+            })
+
+
+            // console.log("Hello World")
+            // let filesList = document.getElementById("listOfFiles")
+            // let uploadButton = document.getElementById("uploadButton")
+            // uploadButton.addEventListener('change', () => {
+            //     console.log(uploadButton.files.length)
+            //     let file = uploadButton.files[0]
+            //     for(let i = 0; i < uploadButton.files.length; i++) {
+            //         console.log(file)
+            //         // console.log(uploadButton.files[0].value)
+            //         let validType = '.txt'
+            //         const extension = file.name.split('.').pop()
+            //         console.log(extension)
+            //         console.log(extension == 'txt')
+            //         if(extension == 'txt') {
+            //             let newElement = document.createElement("li")
+            //             newElement.textContent = uploadButton.files[i].name
+            //             console.log(uploadButton.files[i].result)
+            //             filesList.appendChild(newElement)
+            //         }
+            //     }
+            // })
+        }
+    </script>
+    <div>
+        <pre id="textArea" style="font-family: Arial">This is preformatted
+            text
+        </pre>
+    </div>
+    <div id="test">
+        Upload a file
+        <ol id="listOfFiles">
+            <!-- uploaded files go here -->
+        </ol>
+    </div>
+    <div id="fileUploadDiv">
+        <form>
+            <input id="uploadButton" type="file" accept=".txt" multiple />
+        </form>
+    </div>
+
+</body>
+</html>
