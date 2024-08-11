@@ -74,7 +74,7 @@
                             </form>
                         </div>
                         <div style="margin-top:50px">
-                            <button onclick="alert(`Account created!`);"class="create-account-button">Create account</button>
+                            <button id="SubmitButton" onclick="alert(`Button Clicked!`);" class="create-account-button">Create account</button>
                         </div>
                         <br/>
                         <section class="sign-in-message">Already have an account? <a href="sign-in.html" class="sign-in-link">Sign in</a></section>
@@ -83,5 +83,16 @@
             </div>
         </div>
     </div>
+    <!-- Javascript -->
+    <script type="module">
+        import {createUser} from "./scripts/firebase.js";
+        let email = document.getElementById("email");
+        let password = document.getElementById("password");
+
+        function clickHandling() {
+            createUser(email, password);
+        }
+        document.getElementById("SubmitButton").addEventListener('click', clickHandling);
+    </script>
 </body>
 </html>
