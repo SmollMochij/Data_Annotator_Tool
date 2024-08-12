@@ -1,66 +1,198 @@
 <html>
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Source Sans 3' rel='stylesheet'>
+
     <title>File upload testing</title>
+    <style>
+        input[type="file"] {
+            display:none;
+        }
+        .uploadFile {
+            width:100px;
+            height:50px;
+            color:blue;
+        }
+        .uploadFile:hover {
+            cursor:pointer;
+        }
+        h2 {
+            font-weight: 500;
+            font-family: 'Share Tech';
+        }
+        ol {
+            font-family: 'Source Sans 3';
+            font-size:16px;
+            list-style:none;
+            counter-reset:item;
+        }
+        li {
+            counter-increment: item;
+            margin-bottom:5px;
+        }
+        li:before {
+            content: counter(item);
+            background-image:url('svg/green-file.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            color:white;
+            width:1.4em;
+            height:1.4em;
+            margin-left: -10px;
+            padding-left: 4px;
+            padding-right: 2px;
+            text-align: left;
+            display: inline-block;
+        }
+    </style>
 </head>
 
 <body>
-    <script>
-        
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, onChildAdded } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+            authDomain: "data-annotator-tool.firebaseapp.com",
+            databaseURL: "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "data-annotator-tool",
+            storageBucket: "data-annotator-tool.appspot.com",
+            messagingSenderId: "913657972954",
+            appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+            measurementId: "G-RWJF94GG05"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Initialize Realtime Database and get a reference to the service
+        const database = getDatabase(app);
+
+        //add each uploaded file to the database
+        function addFileToDatabase(name, content) {
+            //Project P000001 is just a placeholder for now
+            //5lbncsVlmchrGAa2NwY6UWL5PnF3 is the id from a random authentication user
+
+            //then use file name as key
+            name = name.substring(0,name.indexOf(".")) //remove the extension (.txt) to get the filename
+            set(ref(database, `Projects/P000001/Files/${name}`), {
+                assignedAnnotator: "5lbncsVlmchrGAa2NwY6UWL5PnF3",
+                fileContent: content
+            }).catch((error) => {
+                alert(error)
+            })
+        }
+
         window.onload = function() {
-            document.getElementById("uploadButton").addEventListener("change", function () {
-                // let files = document.getElementById("uploadButton").files
-                let fr = new FileReader()
-                fr.onload = function() {
-                    // const file = files[0];
-                    console.log(fr)
-                    console.log(fr.result)
-                    document.getElementById("textArea").textContent = fr.result;
+            //find the upload files button on webpage
+            var uploadButton = document.getElementById("uploadButton")
+            //assign an event listener to detect uploaded files
+            uploadButton.addEventListener("change", function () {
+                //for each file uploaded
+                for(let i = 0; i < uploadButton.files.length ; i++) {
+                    //use the FileReader to read its contents
+                    let fr = new FileReader()
+                    fr.onload = function() {
+                        //log the FileReader's ready state (0 = EMPTY, 1 = LOADING, 2 = DONE)
+                        console.log(`fr:${fr}`)
+                        console.log(`fr.readyState:${fr.readyState}`)
+                        console.log(`fr.result:${fr.result}`)
+                        console.log(`uploadButton.files[i].name ${uploadButton.files[i].name}`)
+
+                        addFileToDatabase(uploadButton.files[i].name, fr.result)
+
+                        let fileExtension = uploadButton.files[i].name.split('.').pop();
+                        console.log(fileExtension)
+                        
+                        if(fileExtension == 'txt') {
+                            let newFileName = document.createElement("li")
+                            newFileName.textContent = uploadButton.files[i].name
+                            document.getElementById("listOfFileNames").appendChild(newFileName)
+
+                            let newContent = document.createElement("li")
+                            newContent.textContent = fr.result;
+                            console.log(newContent.textContent)
+                            document.getElementById("listOfFiles").appendChild(newContent);
+                            console.log(`Success: ${uploadButton.files[i].name} is a text file`)
+                        } else {
+                            alert(`Error: ${uploadButton.files[i].name} is not a valid text file! Please upload .txt files only`)
+                        }
+                    }
+                    fr.onerror = function(event) {
+                        alert(`Error reading file: ${uploadButton.files[i].name}`);
+                    }
+                    fr.readAsText(this.files[i]);
                 }
-                fr.readAsText(this.files[0]);
-                // const lines = file.target.result.split(/\r\n |\n/);
-                // console.log(lines.join('\n'))
             })
 
-
-            // console.log("Hello World")
-            // let filesList = document.getElementById("listOfFiles")
-            // let uploadButton = document.getElementById("uploadButton")
-            // uploadButton.addEventListener('change', () => {
-            //     console.log(uploadButton.files.length)
-            //     let file = uploadButton.files[0]
-            //     for(let i = 0; i < uploadButton.files.length; i++) {
-            //         console.log(file)
-            //         // console.log(uploadButton.files[0].value)
-            //         let validType = '.txt'
-            //         const extension = file.name.split('.').pop()
-            //         console.log(extension)
-            //         console.log(extension == 'txt')
-            //         if(extension == 'txt') {
-            //             let newElement = document.createElement("li")
-            //             newElement.textContent = uploadButton.files[i].name
-            //             console.log(uploadButton.files[i].result)
-            //             filesList.appendChild(newElement)
-            //         }
-            //     }
-            // })
+            //reset button
+            let resetButton = document.getElementById("reset")
+            resetButton.addEventListener("click", function() {
+                document.getElementById("listOfFileNames").innerHTML = "";
+                document.getElementById("listOfFiles").innerHTML = "";
+                document.getElementById("uploadButton").value = '';
+            })
+            
         }
     </script>
+    <div style="padding:30px;border: 2px blue solid;" id="databaseDiv">
+        Database
+    </div>
     <div>
         <pre id="textArea" style="font-family: Arial">This is preformatted
             text
         </pre>
     </div>
+    <!-- Uploader -->
+    <div style="
+            display:flex;
+            margin-left:auto;
+            margin-right:auto;
+            width:660px;
+            height:410px;
+            padding:12px;
+            border-radius: 20px;
+            border:1px solid rgba(0, 0, 0, 0.133);
+            max-height:500px;">
+            <!-- left side -->
+            <div style="
+                width:100%;
+                padding-left:18px;
+                padding-right:18px;
+                border: 4px solid #87E878;
+                border-radius:12px">
+                <!-- left side -->
+                <h2>Add new data files</h2>
+                <div style="float:left;width:50%">
+                    <div id="fileUploadDiv">
+                        <label class="uploadFile">
+                            <img src="svg/file-upload-button.svg" style="width:330px">
+                            <input id="uploadButton" type="file" accept=".txt" multiple />
+                        </label>
+                    </div>
+
+                    <button type="reset" id="reset">Reset</button>
+                </div>
+                <!-- right side -->
+                <div style="float:left;width:50%">
+                    <div id="filenames" style="margin-left:14px;max-height:300px;overflow:auto;;font-family:'Arial';line-height: 1.6rem;">
+                        <ol id="listOfFileNames">
+                            <!-- <li>example1.txt</li>
+                            <li>example2.txt</li>
+                            <li>example2.txt</li>
+                            <li>example2.txt</li> -->
+                        </ol>
+                    </div>
+                </div>
+            </div>
+    </div>
     <div id="test">
-        Upload a file
         <ol id="listOfFiles">
+        <strong>Uploaded content:</strong>
             <!-- uploaded files go here -->
         </ol>
     </div>
-    <div id="fileUploadDiv">
-        <form>
-            <input id="uploadButton" type="file" accept=".txt" multiple />
-        </form>
-    </div>
-
 </body>
 </html>
