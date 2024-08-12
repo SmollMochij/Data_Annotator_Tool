@@ -105,10 +105,17 @@
             let confirmpassword = document.getElementById("confirmpassword").value;
             let username = document.getElementById("username").value;
 
+            //check if password matches confirm password
             if (password == confirmpassword) {
-                createUser(email, password);
+                //check if password is at least 6 characters long
+                if(password.length > 5) {
+                    alert("New user created")
+                    createUser(email, password);
+                } else {
+                    alert("Password needs to be at least 6 characters")
+                }
             } else {
-                alert("Input password does not match confirm password");
+                alert("Password does not match confirm password");
             }
         }
 
