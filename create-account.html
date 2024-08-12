@@ -84,7 +84,7 @@
                             </form>
                         </div>
                         <div style="margin-top:50px">
-                            <button id="SubmitButton" onclick="alert(`Button Clicked!`);"
+                            <button id="SubmitButton""
                                 class="create-account-button">Create account</button>
                         </div>
                         <br />
@@ -105,12 +105,11 @@
             let confirmpassword = document.getElementById("confirmpassword").value;
             let username = document.getElementById("username").value;
 
-            //check if password matches confirm password
+            // check if password matches confirm password
             if (password == confirmpassword) {
-                //check if password is at least 6 characters long
+                // check if password is at least 6 characters long
                 if(password.length > 5) {
-                    alert("New user created")
-                    createUser(email, password);
+                    createUser(username, email, password);
                 } else {
                     alert("Password needs to be at least 6 characters")
                 }

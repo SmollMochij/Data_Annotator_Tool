@@ -23,11 +23,12 @@ import { getDatabase, ref, set, onValue, onChildAdded } from "https://www.gstati
     // Authentication
     const auth = getAuth();
 
-    export function createUser(email, password) {
+    export function createUser(username, email, password) {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
                 alert('User created successfully: ' + user.email);
+                writeUserData(user.uid, username, user.email, password);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -35,3 +36,13 @@ import { getDatabase, ref, set, onValue, onChildAdded } from "https://www.gstati
                 alert('Error: ' + errorMessage + ' (Code: ' + errorCode + ')');
             });
     }
+
+    function writeUserData(userId, username, email, password) {
+        alert(`${userId}, ${username}, ${email}, ${password}`)
+        set(ref(database, 'users/' + userId), {
+            username: username,
+            email: email,
+            password: password
+        });
+    }
+
