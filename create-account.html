@@ -43,8 +43,15 @@
                         <div class="form-heading">Create an Account</div>
                         <div>
                             <form>
-                                <!-- username field -->
+                                <!-- unique account creation code field -->
                                 <section>
+                                    <label for="code">
+                                        <div class="input-heading">Access Code</div>
+                                    </label>
+                                </section>
+                                <section><input type="text" id="code" class="text-input" placeholder="AA1111"/></section>
+                                <!-- username field -->
+                                <section style="margin-top:20px;">
                                     <label for="username">
                                         <div class="input-heading">Username</div>
                                     </label>
@@ -56,7 +63,8 @@
                                         <div class="input-heading">Email</div>
                                     </label>
                                 </section>
-                                <section><input type="email" id="email" class="text-input" placeholder="Email"/></section>
+                                <section><input type="email" id="email" class="text-input" placeholder="email@domain.com"/></section>
+                                <!-- password field -->
                                 <section style="margin-top:20px;">
                                     <label for="password">
                                         <div class="input-heading">Password</div>
