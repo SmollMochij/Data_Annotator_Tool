@@ -9,7 +9,7 @@
     <script type="module">
         // var database = firebase.database();
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
         import { getDatabase, ref, set, onValue, onChildAdded } from
             "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
@@ -49,6 +49,7 @@
         }
 
         document.getElementById('SubmitButton').addEventListener('click', buttonClicked);
+
     </script>
 </head>
 

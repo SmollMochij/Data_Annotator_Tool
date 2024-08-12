@@ -102,10 +102,14 @@
         function clickHandling() {
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
+            let confirmpassword = document.getElementById("confirmpassword").value;
+            let username = document.getElementById("username").value;
 
-            createUser(email, password);
-            alert('email' + email);
-            alert('password' + password);
+            if (password == confirmpassword) {
+                createUser(email, password);
+            } else {
+                alert("Input password does not match confirm password");
+            }
         }
 
         document.getElementById("SubmitButton").addEventListener('click', clickHandling);
