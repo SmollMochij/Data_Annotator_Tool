@@ -70,8 +70,22 @@
                 <!-- Additional projects can be added here -->
             </select>
 
-            <button type="button">Assign Annotator to Project</button>
+            <button type="button" onclick="assignAnnotator()">Assign Annotator to Project</button>
         </div>
     </div>
+
+    <script>
+        function assignAnnotator() {
+            // Get the selected annotator and project values
+            const annotator = document.getElementById('annotator-select').value;
+            const project = document.getElementById('project-select').value;
+
+            // Display a confirmation message
+            alert(`Annotator ${annotator} has been assigned to ${project}.`);
+
+            // Here, you can add code to send data to the server or update the UI as needed.
+        }
+    </script>
 </body>
 </html>
+    
