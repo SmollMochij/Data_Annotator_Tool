@@ -70,8 +70,25 @@ export function signInUser(email, password) {
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(`${errorCode} : ${errorMessage}`)
-        console.log(`${errorCode} : ${errorMessage}`)
+
+        // Specific error messages
+        switch (errorCode) {
+            case 'auth/internal-error':
+                alert('No account found with this email.');
+                break;
+            case 'auth/wrong-password':
+                alert('Incorrect password.');
+                break;
+            case 'auth/invalid-email':
+                alert('Invalid email format.');
+                break;
+            case 'auth/invalid-login-credentials':
+                alert('Wrong email / password');
+                break;
+            default:
+                alert(`${errorCode} : ${errorMessage}`);
+                break;
+        }
   });
 }
 
