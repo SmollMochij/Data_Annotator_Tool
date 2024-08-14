@@ -80,7 +80,7 @@ function dropdownClassify(className) {
             console.log("SELECTED TEXT: " + selectedText);
             let textArea = document.getElementById("textArea");
             let searchMask = selectedText;
-            let regex = new RegExp(searchMask, "ig");
+            let regex = new RegExp(searchMask, "ig"); //ig = case insensitive https://regex101.com/
             let replaceMask = `$&`;
 
             //create new list item
