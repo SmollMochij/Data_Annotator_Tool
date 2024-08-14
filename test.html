@@ -2,90 +2,273 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Manager Assignment Page</title>
+    <title>Dash</title>
+    <link href='https://fonts.googleapis.com/css?family=Source Sans 3' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Source Sans Pro' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Archivo' rel='stylesheet'>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/annotation.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+        @media (max-height: 500px) {
+            #logo-and-header {
+                display:none;
+                visibility: hidden;
+            }
         }
-        h1 {
-            color: #333;
+        #dash-body {
+            min-height:100vh;
+            background-image: url('images/annotation-background-gradient6.jpg');
+            background-size:cover;
         }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        #logo-and-header {
+            height:10%;
+            position:relative;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0px 5px 5px rgba(59, 59, 59, 0.111);
         }
-        .assign-form {
-            margin-top: 20px;
+        .card {
+            border: 0px;
+            box-shadow: 0px 4px 10px rgba(59, 59, 59, 0.25);
         }
-        .assign-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+        h4 {
+            padding-top:4px;
+            font-family: 'Source Sans Pro';
+            font-weight: 500;
+            color:#363030;
         }
-        .assign-form select,
-        .assign-form button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .nav-a {
+            padding-left: 4%;
+            padding-top:4px;
+            font-family: 'Source Sans 3';
+            font-size: 18px;
         }
-        .assign-form button {
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
+        .list-item {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
         }
-        .assign-form button:hover {
-            background-color: #0056b3;
+        .list-item img {
+            border-radius: 50%;
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+        .list-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows wrapping to the next line if necessary */
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Assign Annotators to Projects</h1>
-        <p>As a Project Manager, you can assign annotators to different projects using the form below.</p>
-        
-        <div class="assign-form">
-            <label for="annotator-select">Select Annotator:</label>
-            <select id="annotator-select">
-                <option value="annotator1">Annotator 1</option>
-                <option value="annotator2">Annotator 2</option>
-                <option value="annotator3">Annotator 3</option>
-                <!-- Additional annotators can be added here -->
-            </select>
-            
-            <label for="project-select">Select Project:</label>
-            <select id="project-select">
-                <option value="project1">Project 1</option>
-                <option value="project2">Project 2</option>
-                <option value="project3">Project 3</option>
-                <!-- Additional projects can be added here -->
-            </select>
-
-            <button type="button" onclick="assignAnnotator()">Assign Annotator to Project</button>
+<body id="dash-body">
+    <script src="scripts/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="container-fluid" >
+        <div id="logo-and-header" class="row" style="z-index:500;">
+            <div class="col-md-1" id="logo" style="display:flex; justify-content: center; align-items: center;">
+                <img src="images/navbar_logo.png" style="min-width:100px">
+            </div>
+            <div class="col-md-11 mb-2" style="display:flex; align-items: center;">
+                <span class="user-type">Project Manager</span>
+                <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span> 
+                <span style="font-size:20px;">Dashboard</span>
+            </div>
         </div>
+        <main>
+            <div class="row" style="min-height:90%;max-height:90%;">
+                <div class="col-md-1 px-0 pt-4" style="box-shadow: 5px 0px 5px rgba(59, 59, 59, 0.111);background-color: rgb(255, 255, 255);">
+                    <ul class="nav flex-column">
+                        <li style="background-color:rgba(233, 233, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 5px rgb(71, 54, 255)">
+                            <img src="images/button-icons/dashboard-button-selected.png" style="height:60%;padding-right:2%">
+                            <span class="nav-a">Dashboard</span>
+                        </li>
+                        <li style="background-color:rgba(233, 237, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 4px rgb(255, 255, 255);background-color: white;">
+                            <img src="images/button-icons/annotators-button-unselected.png" style="height:60%;padding-right:2%">
+                            <span class="nav-a">Annotators</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-10 mx-auto pt-5 px-3">
+                    <div class="row px-4" style="min-height:700px;">
+                        <div class="col-md" style="background-color: rgba(255, 24, 193, 0);">
+                            <div class="row p-1" style="background-color:rgba(0, 255, 68, 0);height:70%">
+                                <div class="col-xs">
+                                    <div class="card" id="card1" style="height:100%">
+                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
+                                            <h4>Projects</h4>
+                                        </div>
+                                        <div class="card-body" id="card1body" style="font-family:'Source Sans 3'">
+                                            <div class="row justify-content-center" style="height:20%" style="min-width:100%">
+                                                <div class="col-sm-3" style="text-align: center;">
+                                                    <span style="font-weight:bold;display:block;color:#363030;font-size:clamp(20px,2vw,40px)">36</span>
+                                                    <span style="color:#363030;">Total</span>
+                                                </div>
+                                                <div class="col-sm-3" style="text-align: center;">
+                                                    <span style="font-weight:bold;display:block;color:#7876D2;font-size:clamp(20px,2vw,40px)">30</span>
+                                                    <span style="color:#7876D2;">Active</span>
+                                                </div>
+                                                <div class="col-sm-3" style="text-align: center;">
+                                                    <span style="font-weight:bold;display:block;color:#47A450;font-size:clamp(20px,2vw,40px)">6</span>
+                                                    <span style="color:#47A450;">Done</span>
+                                                </div>
+                                            </div>
+                                            <div class="row pt-4" style="height:80%">
+                                                <div class="col-md">
+                                                    <div style="display:flex;justify-content: center;align-items: center; height:100%;width:50%;margin:auto">
+                                                        <canvas id="myChart"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pt-3 p-1" style="background-color:rgb(98, 37, 240,0);height:30%">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%">
+                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
+                                            <h4>Settings</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            Col 1 Row 2
+                                        </div>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md" style="display:grid; background-color: rgba(0, 255, 255, 0);min-height:100%">
+                            <div class="row p-1" style="background-color:rgba(0, 0, 255, 0);">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%">
+                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
+                                            <h4>Overview</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            Col 2 Row 1
+                                        </div>
+                                    </div>                                
+                                </div>
+                            </div>
+                            <div class="row p-1" style="background-color: rgba(166, 255, 0, 0);">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%">
+                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
+                                            <h4>New Project</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            Col 2 Row 2
+                                        </div>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md" style="background-color: rgba(166, 255, 0, 0);">
+                            <div class="row p-1" style="height:100%">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%">
+                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
+                                            <h4>Active Projects</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-container">
+                                                <li class="list-item">
+                                                    <img src="https://via.placeholder.com/50" alt="Project Alpha">
+                                                    <span>Project Alpha</span>
+                                                </li>
+                                                <li class="list-item">
+                                                    <img src="https://via.placeholder.com/50" alt="Project Beta">
+                                                    <span>Project Beta</span>
+                                                </li>
+                                                <li class="list-item">
+                                                    <img src="https://via.placeholder.com/50" alt="Project Gamma">
+                                                    <span>Project Gamma</span>
+                                                </li>
+                                                <!-- Add more active projects here -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-3 px-4" style="height:30vh">
+                        <div class="col-md" style="background-color: rgba(153, 205, 50, 0);">
+                            <div class="row p-1" style="height:100%">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%">
+                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
+                                            <h4>Annotators</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-container">
+                                                <li class="list-item">
+                                                    <img src="https://via.placeholder.com/50" alt="Annotator One">
+                                                    <span>Annotator One</span>
+                                                </li>
+                                                <li class="list-item">
+                                                    <img src="https://via.placeholder.com/50" alt="Annotator Two">
+                                                    <span>Annotator Two</span>
+                                                </li>
+                                                <li class="list-item">
+                                                    <img src="https://via.placeholder.com/50" alt="Annotator Three">
+                                                    <span>Annotator Three</span>
+                                                </li>
+                                                <!-- Add more annotators here -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>
-        function assignAnnotator() {
-            // Get the selected annotator and project values
-            const annotator = document.getElementById('annotator-select').value;
-            const project = document.getElementById('project-select').value;
-
-            // Display a confirmation message
-            alert(`Annotator ${annotator} has been assigned to ${project}.`);
-
-            // Here, you can add code to send data to the server or update the UI as needed.
+        let active = 30;
+        let done = 6;
+        const ctx = document.getElementById('myChart');
+        const doughData = {
+            labels: ['Active', 'Done'],
+            datasets: [{
+                data: [30, 6],
+                backgroundColor: [
+                    'rgba(120,118,210,1)',
+                    'rgba(135,226,92,1)',
+                ],
+                borderColor: [
+                    'rgba(120,118,210,1)',
+                    'rgba(135,226,92,1)',
+                ],
+                spacing: 5,
+            }],
+        };
+        const doughOptions = {
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            scales: {
+                y: {
+                    display: false
+                }
+            },
         }
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: doughData,
+            options: doughOptions,
+        });
     </script>
 </body>
 </html>
-    
