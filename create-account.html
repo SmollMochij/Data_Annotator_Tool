@@ -49,6 +49,13 @@
                         <div class="form-heading">Create an Account</div>
                         <div>
                             <form>
+                                <!-- unique account creation code field -->
+                                <section>
+                                    <label for="code">
+                                        <div class="input-heading">Access Code</div>
+                                    </label>
+                                </section>
+                                <section><input type="text" id="code" class="text-input" placeholder="AA1111"/></section>
                                 <!-- username field -->
                                 <section>
                                     <label for="username">
@@ -79,8 +86,7 @@
                                             Confirm Password</div>
                                     </label>
                                 </section>
-                                <section><input type="password" id="confirmpassword" class="text-input"
-                                        placeholder="******" /></section>
+                                <section><input type="password" id="confirmpassword" class="text-input" placeholder="******" /></section>
                             </form>
                         </div>
                         <div style="margin-top:50px">
@@ -100,6 +106,7 @@
         import { createUser } from "./scripts/firebase.js";
 
         function clickHandling() {
+            let inputCode = document.getElementById("code").value;
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
             let confirmpassword = document.getElementById("confirmpassword").value;
@@ -109,7 +116,7 @@
             if (password == confirmpassword) {
                 // check if password is at least 6 characters long
                 if (password.length > 5) {
-                    createUser(username, email, password);
+                    createUser(username, email, password, inputCode);
                 } else {
                     alert("Password needs to be at least 6 characters")
                 }

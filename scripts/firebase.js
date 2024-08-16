@@ -10,6 +10,8 @@ import {
   getDatabase,
   ref,
   set,
+  get,
+  child,
   onValue,
   onChildAdded,
 } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
@@ -34,17 +36,41 @@ const database = getDatabase(app);
 // Authentication
 const auth = getAuth();
 
-export function createUser(username, email, password) {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      alert("User created successfully: " + user.email);
-      writeUserData(user.uid, username, user.email, password);
+export function createUser(username, email, password, inputCode) {
+  const dbRef = ref(getDatabase());
+
+  get(child(dbRef, `AccountCodes/${inputCode}`))
+    .then((snapshot) => {
+      // Checks if the code used is in the database and false
+      if (snapshot.exists()) {
+        const codeData = snapshot.val();
+        if (codeData.Used === false) {
+          console.log("Code is valid");
+          createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              const user = userCredential.user;
+              alert("User created successfully: " + user.email);
+
+              // Write user's data in the database
+              writeUserData(user.uid, username, user.email, password);
+
+              // Mark input code as user
+              markCodeAsTrue(inputCode);
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              alert("Error: " + errorMessage + " (Code: " + errorCode + ")");
+            });
+        } else {
+            alert ("Code has already been used");
+        }
+      } else {
+        alert("The code entered is invalid");
+      }
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert("Error: " + errorMessage + " (Code: " + errorCode + ")");
+      alert("Error: " + error.message);
     });
 }
 
@@ -53,42 +79,46 @@ function writeUserData(userId, username, email, password) {
   set(ref(database, "users/" + userId), {
     username: username,
     email: email,
-    password: password,
+  });
+}
+
+function markCodeAsTrue(inputCode) {
+  set(ref(database, `AccountCodes/` + inputCode), {
+    Used: true,
   });
 }
 
 export function signInUser(email, password) {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        const userId = userCredential.uid;
-        const dbRef = ref(getDatabase());
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      const userId = userCredential.uid;
+      const dbRef = ref(getDatabase());
 
-        window.location.href = "../landing.html"
+      window.location.href = "../landing.html";
     })
     .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+      const errorCode = error.code;
+      const errorMessage = error.message;
 
-        // Specific error messages
-        switch (errorCode) {
-            case 'auth/internal-error':
-                alert('No account found with this email.');
-                break;
-            case 'auth/wrong-password':
-                alert('Incorrect password.');
-                break;
-            case 'auth/invalid-email':
-                alert('Invalid email format.');
-                break;
-            case 'auth/invalid-login-credentials':
-                alert('Wrong email / password');
-                break;
-            default:
-                alert(`${errorCode} : ${errorMessage}`);
-                break;
-        }
-  });
+      // Specific error messages
+      switch (errorCode) {
+        case "auth/internal-error":
+          alert("No account found with this email.");
+          break;
+        case "auth/wrong-password":
+          alert("Incorrect password.");
+          break;
+        case "auth/invalid-email":
+          alert("Invalid email format.");
+          break;
+        case "auth/invalid-login-credentials":
+          alert("Wrong email / password");
+          break;
+        default:
+          alert(`${errorCode} : ${errorMessage}`);
+          break;
+      }
+    });
 }
-
