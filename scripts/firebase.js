@@ -52,7 +52,7 @@ export function createUser(username, email, password, inputCode) {
               alert("User created successfully: " + user.email);
 
               // Write user's data in the database
-              writeUserData(user.uid, username, user.email, password);
+              writeUserData(user.uid, username, user.email);
 
               // Mark input code as user
               markCodeAsTrue(inputCode);
@@ -74,8 +74,7 @@ export function createUser(username, email, password, inputCode) {
     });
 }
 
-function writeUserData(userId, username, email, password) {
-  alert(`${userId}, ${username}, ${email}, ${password}`);
+function writeUserData(userId, username, email) {
   set(ref(database, "users/" + userId), {
     username: username,
     email: email,
