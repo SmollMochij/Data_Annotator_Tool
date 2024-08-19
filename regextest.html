@@ -7,7 +7,7 @@
     <script>
         window.onload = function() {
             let pre = document.getElementById("text")
-            let selectedText = "john"
+            let selectedText = "John"
             /*
                 REGEX: (?<=^|\s|"|')john(?=['"?\s,;:.])
                 ----------
@@ -21,8 +21,8 @@
             let pattern = `(?<=^|\\s|"|')${selectedText}(?=['"\\s,;:.])`
             let reg = new RegExp(pattern, "ig")
             let replaceMask = `<span style='background-color:blue;color:white'>$&</span>` //replace with itself +
-            // pre.innerHTML = pre.innerHTML.replaceAll("John", "Mike")
             pre.innerHTML = pre.innerHTML.replaceAll(reg, replaceMask)
+            // pre.innerHTML = pre.innerHTML.replaceAll("John", "Mike")
         }
     </script>
     <div>

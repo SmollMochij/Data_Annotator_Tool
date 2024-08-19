@@ -79,10 +79,7 @@ function dropdownClassify(className) {
         if(selectedText.length > 0) {
             console.log("SELECTED TEXT: " + selectedText);
             let textArea = document.getElementById("textArea");
-            let searchMask = selectedText;
-            let regex = new RegExp(searchMask, "ig"); //ig = case insensitive https://regex101.com/
-            let replaceMask = `$&`;
-
+            
             //create new list item
             let newItem = document.createElement("li");
             newItem.appendChild(document.createTextNode(`${selectedText} : ${className}`));
@@ -98,9 +95,20 @@ function dropdownClassify(className) {
             // classificationsHTMLList.appendChild(newItem);
             
             //add new span to the text
-            document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(regex,
-                `<span data-toggle='tooltip' title='${className}' class='${className}'>${replaceMask}</span>`);
-            console.log(document.getElementById("textArea").innerHTML);   
+            // let searchMask = selectedText;
+            // let regex = new RegExp(searchMask, "ig"); //ig = case insensitive https://regex101.com/
+            // let replaceMask = `$&`;
+            // document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(regex,
+            //     `<span data-toggle='tooltip' title='${className}' class='${className}'>${replaceMask}</span>`);
+            // console.log(document.getElementById("textArea").innerHTML);   
+
+            //NEW
+            let pattern = `(?<=^|\\s|"|')${selectedText}(?=['"\\s,;:.])`
+            let reg = new RegExp(pattern, "ig")
+            let replaceMask = `<span data-toggle='tooltip' title=${className} class='${className}'>$&</span>` //replace with itself +
+            document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(reg, replaceMask)
+            // document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(reg,
+            //     `<span data-toggle='tooltip' title='${className}' class='${className}'>${replaceMask}</span>`);
 
             let name = className.toUpperCase();
             console.log("Name: " + name);
@@ -281,9 +289,9 @@ window.onload = function() {
 
     //detect clicking on the body of text
     document.getElementById("textArea").addEventListener("click", function(event) {
-
         //if the user selects text (not just whitespace)
         if(window.getSelection().toString().trim().length > 0 && toolSelected === tool.HIGHLIGHT) {
+            console.log(window.getSelection().toString().trim())
             // alert(window.getSelection());
             //create dropdown
             // let dropdown = document.createElement("div");
@@ -751,6 +759,7 @@ function decreaseFont() {
 
 //NEW REMOVE CLASSIFICATION
 function newRemoveClassification(classToDelete, classification) {
+    //TODO: update function to remove classifications with CASE INSENSITIVITY included
     //debugging
     console.log(document.getElementById("textArea").innerHTML);
     console.log(classToDelete);
@@ -856,11 +865,14 @@ function classify() {
 }
 
 function spanTest() {
-    let spans = document.getElementsByTagName("span");
+    //GET ALL SPANS (highlighted/classified words) in the text area
+    let spans = document.getElementById("textArea").getElementsByTagName("span")
     console.log(spans);
 
-    //leave the last 3 spans - focusing only on classification spans
-    for(let i=0; i < spans.length-9; i++) {
+    //spans  to exclude
+
+    //focusing on classification spans
+    for(let i=0; i < spans.length; i++) {
         console.log(spans[i].innerHTML);
         //reset event listeners for each span
         spans[i].removeEventListener("mouseover", this);
