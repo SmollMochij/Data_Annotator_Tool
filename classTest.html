@@ -7,7 +7,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue, onChildAdded, query } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+        import { getDatabase, ref, set, onValue, onChildAdded, query, limitToLast, limitToFirst, child, get} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -29,6 +29,7 @@
             // Initialize Realtime Database and get a reference to the service
             const database = getDatabase(app);
     
+            //TODO: change this (see calendar event)
             // const reference = ref(database, 'Projects/P000001/Classes/NAME/BackgroundRGB')
             onValue(ref(database, '/Projects/P000001/Classes/NAME/'), (snapshot) => {
                 let backgroundColour = `rgb(${snapshot.val().BackgroundRGB})`
@@ -39,13 +40,22 @@
                 console.log(`${textColour}`)
                 document.getElementById("text").style.color = textColour
             })
-            query(ref(database, 'Test').limitToLast(1), (snapshot) => {
-                alert(snapshot.val())
+
+
+            document.getElementById("add").addEventListener("click", function() {
+                alert('Adding...')
+                get(child(ref(database), 'Projects/P000001/Classes/NAME/Classifications')).then((snapshot) => {
+                    console.log(snapshot.val())
+                    set(ref(database, `Projects/P000001/Classes/NAME/Classifications/${snapshot.size+1}`), {
+                        value: 'James'
+                    })
+                })
             })
         }
     </script>
     <span id="text">
         This is some text
     </span>
+    <button id="add">Click to add</button>
 </body>
 </html>
