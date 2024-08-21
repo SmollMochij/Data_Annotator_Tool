@@ -74,8 +74,8 @@
       const database = getDatabase(app);
 
       function sendEmail(email, accessCode) {
-        const subject = "Your New Access Code";
-        const body = `Here is your new access code: ${accessCode}`;
+        const subject = "Your Access Code";
+        const body = `Thank you for signing with us! Here is your new access code: ${accessCode}\n\nLogin via this website: http://127.0.0.1:3000/create-account.html`;
         window.open(
           `mailto:${email}?subject=${encodeURIComponent(
             subject
@@ -126,8 +126,6 @@
               // Save to Firebase Realtime Database
               const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
               await set(newLoginRef, {
-                email: email,
-                loginCode: newLoginCode,
                 Used: false,
               });
 
