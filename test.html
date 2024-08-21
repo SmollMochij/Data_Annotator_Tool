@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Dash</title>
@@ -8,8 +9,10 @@
     <link href='https://fonts.googleapis.com/css?family=Archivo' rel='stylesheet'>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="styles/main.css">
@@ -17,42 +20,52 @@
     <style>
         @media (max-height: 500px) {
             #logo-and-header {
-                display:none;
+                display: none;
                 visibility: hidden;
             }
         }
+
         #dash-body {
-            min-height:100vh;
+            min-height: 100vh;
             background-image: url('images/annotation-background-gradient6.jpg');
-            background-size:cover;
+            background-size: cover;
         }
+
         #logo-and-header {
-            height:10%;
-            position:relative;
+            height: 10%;
+            position: relative;
             background-color: rgb(255, 255, 255);
             box-shadow: 0px 5px 5px rgba(59, 59, 59, 0.111);
         }
+
         .card {
             border: 0px;
             box-shadow: 0px 4px 10px rgba(59, 59, 59, 0.25);
+            border-radius: 25px;
+            overflow: hidden;
+            padding-left: 10px;
         }
+
         h4 {
-            padding-top:4px;
+            padding-top: 4px;
             font-family: 'Source Sans Pro';
             font-weight: 500;
-            color:#363030;
+            color: #363030;
         }
+
         .nav-a {
             padding-left: 4%;
-            padding-top:4px;
+            padding-top: 4px;
             font-family: 'Source Sans 3';
             font-size: 18px;
         }
+
         .list-item {
             display: flex;
             align-items: center;
             margin-right: 10px;
         }
+
         .list-item img {
             border-radius: 50%;
             margin-right: 10px;
@@ -60,36 +73,137 @@
             height: 50px;
             object-fit: cover;
         }
+
         .list-container {
             display: flex;
-            flex-wrap: wrap; /* Allows wrapping to the next line if necessary */
+            flex-wrap: wrap;
+            /* Allows wrapping to the next line if necessary */
+        }
+
+        .file-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allows wrapping to the next line if there are too many items */
+            gap: 0px;
+            /* Space between items */
+        }
+
+        .file-grid-container {
+            max-height: 300px;
+            /* Adjust the height as needed */
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            /* Space between items */
+        }
+
+        .file-item {
+            width: 100px;
+            /* Adjust the width as needed */
+            text-align: center;
+            border: 1px solid #ddd;
+            /* Add a border to the file items */
+            border-radius: 5px;
+            /* Optional: rounded corners */
+            padding: 5px;
+            /* Space inside the border */
+            background-color: #fff;
+            /* Background color for file items */
+        }
+
+        .file-item img {
+            width: 74px;
+            /* Adjust the icon size as needed */
+            height: 114px;
+            object-fit: contain;
+            /* Ensures the image is scaled correctly without distortion */
+        }
+
+        .file-item p {
+            margin-top: 5px;
+            font-size: 14px;
+            /* Adjust text size as needed */
+        }
+
+        /* Hidden file input */
+        .file-input {
+            display: none;
+        }
+
+        /* Style for the upload button */
+        .upload-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+
+        .upload-button img {
+            width: 74px;
+            height: 114px;
+        }
+
+        /* Customize the scrollbar */
+        .file-grid-container::-webkit-scrollbar {
+            width: 12px;
+            /* Width of the scrollbar */
+        }
+
+        .file-grid-container::-webkit-scrollbar-thumb {
+            background-color: #ffffff;
+            /* Color of the scrollbar thumb */
+            border-radius: 10px;
+            /* Rounded corners of the scrollbar thumb */
+        }
+
+        .file-grid-container::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+            /* Color of the scrollbar track */
+            border-radius: 10px;
+            /* Rounded corners of the scrollbar track */
+        }
+
+        .file-grid-container::-webkit-scrollbar-thumb:hover {
+            background-color: #ffffff;
+            /* Darker color for the scrollbar thumb on hover */
         }
     </style>
+
 </head>
+
 <body id="dash-body">
     <script src="scripts/dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <div class="container-fluid" >
+    <div class="container-fluid">
         <div id="logo-and-header" class="row" style="z-index:500;">
             <div class="col-md-1" id="logo" style="display:flex; justify-content: center; align-items: center;">
                 <img src="images/navbar_logo.png" style="min-width:100px">
             </div>
             <div class="col-md-11 mb-2" style="display:flex; align-items: center;">
                 <span class="user-type">Project Manager</span>
-                <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span> 
+                <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span>
                 <span style="font-size:20px;">Dashboard</span>
             </div>
         </div>
         <main>
             <div class="row" style="min-height:90%;max-height:90%;">
-                <div class="col-md-1 px-0 pt-4" style="box-shadow: 5px 0px 5px rgba(59, 59, 59, 0.111);background-color: rgb(255, 255, 255);">
+                <div class="col-md-1 px-0 pt-4"
+                    style="box-shadow: 5px 0px 5px rgba(59, 59, 59, 0.111);background-color: rgb(255, 255, 255);">
                     <ul class="nav flex-column">
-                        <li style="background-color:rgba(233, 233, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 5px rgb(71, 54, 255)">
-                            <img src="images/button-icons/dashboard-button-selected.png" style="height:60%;padding-right:2%">
-                            <span class="nav-a">Dashboard</span>
+                        <li
+                            style="background-color:rgba(233, 233, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 5px rgb(71, 54, 255)">
+                            <img src="images/button-icons/dashboard-button-selected.png"
+                                style="height:60%;padding-right:2%">
+                            <span class="nav-a">Projects </span>
                         </li>
-                        <li style="background-color:rgba(233, 237, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 4px rgb(255, 255, 255);background-color: white;">
-                            <img src="images/button-icons/annotators-button-unselected.png" style="height:60%;padding-right:2%">
+                        <li
+                            style="background-color:rgba(233, 237, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 4px rgb(255, 255, 255);background-color: white;">
+                            <img src="images/button-icons/annotators-button-unselected.png"
+                                style="height:60%;padding-right:2%">
                             <span class="nav-a">Annotators</span>
                         </li>
                     </ul>
@@ -97,130 +211,114 @@
                 <div class="col-md-10 mx-auto pt-5 px-3">
                     <div class="row px-4" style="min-height:700px;">
                         <div class="col-md" style="background-color: rgba(255, 24, 193, 0);">
-                            <div class="row p-1" style="background-color:rgba(0, 255, 68, 0);height:70%">
-                                <div class="col-xs">
-                                    <div class="card" id="card1" style="height:100%">
-                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
-                                            <h4>Projects</h4>
+                            <div class="row pt-3 p-1" style="background-color:rgb(98, 37, 240,0);height:30%">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%; padding: 20px;">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h3>First Project</h3>
+                                            <h3 style="margin-left: auto;">Project ID: P000001</h3>
                                         </div>
-                                        <div class="card-body" id="card1body" style="font-family:'Source Sans 3'">
-                                            <div class="row justify-content-center" style="height:20%" style="min-width:100%">
-                                                <div class="col-sm-3" style="text-align: center;">
-                                                    <span style="font-weight:bold;display:block;color:#363030;font-size:clamp(20px,2vw,40px)">36</span>
-                                                    <span style="color:#363030;">Total</span>
+                                        <p class="card-text">This is the project description</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- New Card with Upload Button and File Grid -->
+                            <div class="row pt-3 p-1" style="background-color:rgb(98, 37, 240,0);height:30%">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%; padding: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4>Data Files (17)</h4>
+                                                <div class="d-flex flex-row mb-3">
+                                                    <h6 class="me-3">• All (17)</h6>
+                                                    <h6 class="me-3">• Done</h6>
+                                                    <h6 class="me-3">• Todo</h6>
+                                                    <h6 class="me-3">• Unassigned</h6>
                                                 </div>
-                                                <div class="col-sm-3" style="text-align: center;">
-                                                    <span style="font-weight:bold;display:block;color:#7876D2;font-size:clamp(20px,2vw,40px)">30</span>
-                                                    <span style="color:#7876D2;">Active</span>
-                                                </div>
-                                                <div class="col-sm-3" style="text-align: center;">
-                                                    <span style="font-weight:bold;display:block;color:#47A450;font-size:clamp(20px,2vw,40px)">6</span>
-                                                    <span style="color:#47A450;">Done</span>
-                                                </div>
-                                            </div>
-                                            <div class="row pt-4" style="height:80%">
-                                                <div class="col-md">
-                                                    <div style="display:flex;justify-content: center;align-items: center; height:100%;width:50%;margin:auto">
-                                                        <canvas id="myChart"></canvas>
+                                                <!-- Scroll wheel -->
+                                                <div class="file-container"
+                                                    style="max-height: 300px; overflow-y: auto;">
+                                                    <!-- File Grid Layout -->
+                                                    <div class="file-container">
+                                                        <!-- Upload file button -->
+                                                        <div class="file-item">
+                                                            <img src="upload.png" alt="File Icon">
+                                                            <p>New file</p>
+                                                        </div>
+                                                        <!-- Repeat for other files -->
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>testfile.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>projectmanager.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>annotator.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>test.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>something.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>data.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>bcis.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>idk.txt</p>
+                                                        </div>
+                                                        <div class="file-item">
+                                                            <img src="todo.png" alt="File Icon">
+                                                            <p>blahblah.txt</p>
+                                                        </div>
+                                                        <!-- Add more file items as needed -->
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row pt-3 p-1" style="background-color:rgb(98, 37, 240,0);height:30%">
-                                <div class="col-md">
-                                    <div class="card" style="height:100%">
-                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
-                                            <h4>Settings</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            Col 1 Row 2
-                                        </div>
-                                    </div>                                
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md" style="display:grid; background-color: rgba(0, 255, 255, 0);min-height:100%">
-                            <div class="row p-1" style="background-color:rgba(0, 0, 255, 0);">
-                                <div class="col-md">
-                                    <div class="card" style="height:100%">
-                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
-                                            <h4>Overview</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            Col 2 Row 1
-                                        </div>
-                                    </div>                                
-                                </div>
-                            </div>
-                            <div class="row p-1" style="background-color: rgba(166, 255, 0, 0);">
-                                <div class="col-md">
-                                    <div class="card" style="height:100%">
-                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
-                                            <h4>New Project</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            Col 2 Row 2
-                                        </div>
-                                    </div>                                
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md" style="background-color: rgba(166, 255, 0, 0);">
-                            <div class="row p-1" style="height:100%">
-                                <div class="col-md">
-                                    <div class="card" style="height:100%">
-                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
-                                            <h4>Active Projects</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <ul class="list-container">
-                                                <li class="list-item">
-                                                    <img src="https://via.placeholder.com/50" alt="Project Alpha">
-                                                    <span>Project Alpha</span>
-                                                </li>
-                                                <li class="list-item">
-                                                    <img src="https://via.placeholder.com/50" alt="Project Beta">
-                                                    <span>Project Beta</span>
-                                                </li>
-                                                <li class="list-item">
-                                                    <img src="https://via.placeholder.com/50" alt="Project Gamma">
-                                                    <span>Project Gamma</span>
-                                                </li>
-                                                <!-- Add more active projects here -->
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row pt-3 px-4" style="height:30vh">
-                        <div class="col-md" style="background-color: rgba(153, 205, 50, 0);">
-                            <div class="row p-1" style="height:100%">
-                                <div class="col-md">
-                                    <div class="card" style="height:100%">
-                                        <div class="card-header" style="background-color: white;border-bottom:1px solid rgba(0, 0, 0, 0.148)">
-                                            <h4>Annotators</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <ul class="list-container">
-                                                <li class="list-item">
-                                                    <img src="https://via.placeholder.com/50" alt="Annotator One">
-                                                    <span>Annotator One</span>
-                                                </li>
-                                                <li class="list-item">
-                                                    <img src="https://via.placeholder.com/50" alt="Annotator Two">
-                                                    <span>Annotator Two</span>
-                                                </li>
-                                                <li class="list-item">
-                                                    <img src="https://via.placeholder.com/50" alt="Annotator Three">
-                                                    <span>Annotator Three</span>
-                                                </li>
-                                                <!-- Add more annotators here -->
-                                            </ul>
+
                                         </div>
                                     </div>
                                 </div>
@@ -228,47 +326,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="row pt-3 p-1" style="background-color:rgb(98, 37, 240,0);height:30%">
+                    <div class="col-md">
+                        <div class="card" style="height:100%">
+                        </div>
+                    </div>
+                </div>
         </main>
     </div>
-
-    <script>
-        let active = 30;
-        let done = 6;
-        const ctx = document.getElementById('myChart');
-        const doughData = {
-            labels: ['Active', 'Done'],
-            datasets: [{
-                data: [30, 6],
-                backgroundColor: [
-                    'rgba(120,118,210,1)',
-                    'rgba(135,226,92,1)',
-                ],
-                borderColor: [
-                    'rgba(120,118,210,1)',
-                    'rgba(135,226,92,1)',
-                ],
-                spacing: 5,
-            }],
-        };
-        const doughOptions = {
-            cutout: '60%',
-            plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-            scales: {
-                y: {
-                    display: false
-                }
-            },
-        }
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: doughData,
-            options: doughOptions,
-        });
-    </script>
 </body>
 </html>
