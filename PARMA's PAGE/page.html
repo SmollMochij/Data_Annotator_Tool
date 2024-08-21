@@ -73,6 +73,19 @@
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
 
+<<<<<<< Updated upstream
+=======
+      function sendEmail(email, accessCode) {
+        const subject = "Your New Access Code";
+        const body = `Here is your new access code: ${accessCode}`;
+        window.open(
+          `mailto:${email}?subject=${encodeURIComponent(
+            subject
+          )}&body=${encodeURIComponent(body)}`
+        );
+      }
+
+>>>>>>> Stashed changes
       window.onload = function () {
         document
           .getElementById("generateButton")
@@ -125,6 +138,12 @@
               alert(
                 `Email successfully registered! Your access code is ${newLoginCode}.`
               );
+<<<<<<< Updated upstream
+=======
+
+              // Send email with access code
+              sendEmail(email, newLoginCode);
+>>>>>>> Stashed changes
             } catch (error) {
               console.error("Error writing to database:", error);
               alert("Error saving data. Please check the console.");
