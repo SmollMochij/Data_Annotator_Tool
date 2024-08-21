@@ -232,6 +232,29 @@ window.onload = function() {
         document.getElementById("instructionsTip").style.display = "none";
     });
 
+    //save tool
+    let saveChangesButton = document.getElementById("saveChangesButton")
+    saveChangesButton.addEventListener("mouseover",
+    function() {
+        saveChangesButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
+        document.getElementById("saveChangesTip").style.display = "inline-block";
+        document.getElementById("saveChangesTip").style.marginLeft = "-54px";
+    });
+
+    saveChangesButton.addEventListener("mouseleave",
+        function() {
+            saveChangesButton.setAttribute("style", "width:26px;cursor: auto");
+            document.getElementById("saveChangesTip").style.display = "none";
+        }
+    )
+
+    saveChangesButton.addEventListener("click",
+        function() {
+            alert("Saving changes...")
+            
+        }
+    )
+
     //font size buttons
     let increaseFontButton = document.getElementById("increaseFont");
     increaseFontButton.addEventListener("mouseover", function() { 
