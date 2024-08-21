@@ -74,10 +74,10 @@
         function addFileToDatabase(name, content) {
             //Project P000001 is just a placeholder for now
             //5lbncsVlmchrGAa2NwY6UWL5PnF3 is the id from a random authentication user
-
             //then use file name as key
+            let project = "P000001"
             name = name.substring(0,name.indexOf(".")) //remove the extension (.txt) to get the filename
-            set(ref(database, `Projects/P000001/Files/${name}`), {
+            set(ref(database, `Projects/${project}/Files/${name}`), {
                 assignedAnnotator: "5lbncsVlmchrGAa2NwY6UWL5PnF3",
                 fileContent: content
             }).catch((error) => {
