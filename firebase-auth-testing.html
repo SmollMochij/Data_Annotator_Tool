@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Realtime Database Connection</title>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script type="module">
+        // var database = firebase.database();
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        import { getDatabase, ref, set, onValue, onChildAdded } from
+            "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE", authDomain: "data-annotator-tool.firebaseapp.com",
+            databaseURL: "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "data-annotator-tool",
+            storageBucket: "data-annotator-tool.appspot.com",
+            messagingSenderId: "913657972954",
+            appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+            measurementId: "G-RWJF94GG05"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Authentication
+        const auth = getAuth(app);
+        let email = "nathansellar15@gmail.com";
+        let password = "aye@%TJOSk2323";
+
+        // put it in a button
+        function buttonClicked() {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert('User created successfully: ' + user.email);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert('Error: ' + errorMessage + ' (Code: ' + errorCode + ')');
+                });
+        }
+
+        document.getElementById('SubmitButton').addEventListener('click', buttonClicked);
+
+    </script>
+</head>
+
+<body>
+    <h1>Firebase Realtime Database Connection</h1>
+    <p>Check your Firebase Realtime Database for the data written by this example.</p>
+    <p>Create Account</p>
+
+    <button id="SubmitButton"> Submit </button>
+</body>
+
+</html>
