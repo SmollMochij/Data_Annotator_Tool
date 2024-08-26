@@ -15,8 +15,8 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/annotation.css">
+    <!-- <link rel="stylesheet" href="styles/main.css"> -->
+    <!-- <link rel="stylesheet" href="styles/annotation.css"> -->
     <style>
         @media (max-height: 500px) {
             #logo-and-header {
@@ -27,7 +27,7 @@
 
         #dash-body {
             min-height: 100vh;
-            background-image: url('images/annotation-background-gradient6.jpg');
+            /* background-image: url('images/annotation-background-gradient6.jpg'); */
             background-size: cover;
         }
 
@@ -103,7 +103,7 @@
             width: 100px;
             /* Adjust the width as needed */
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid #ffffff;
             /* Add a border to the file items */
             border-radius: 5px;
             /* Optional: rounded corners */
@@ -125,6 +125,10 @@
             margin-top: 5px;
             font-size: 14px;
             /* Adjust text size as needed */
+        }
+
+        .file-item:hover {
+            cursor:pointer;
         }
 
         /* Hidden file input */
@@ -171,17 +175,76 @@
             background-color: #ffffff;
             /* Darker color for the scrollbar thumb on hover */
         }
+
+        .test {
+            color:blue;
+        }
     </style>
 
 </head>
 
 <body id="dash-body">
-    <script src="scripts/dashboard.js"></script>
+    <!-- <script src="scripts/dashboard.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+                // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, onChildAdded } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+            authDomain: "data-annotator-tool.firebaseapp.com",
+            databaseURL: "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "data-annotator-tool",
+            storageBucket: "data-annotator-tool.appspot.com",
+            messagingSenderId: "913657972954",
+            appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+            measurementId: "G-RWJF94GG05"
+        };
+
+        window.onload = function() {
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            // Initialize Realtime Database and get a reference to the service
+            const database = getDatabase(app);
+
+            const projectRef = ref(database, `Projects/P000001`)
+            onValue(projectRef, (snapshot) => {
+                document.getElementById("title").textContent = snapshot.val().ProjectTitle
+                document.getElementById("desc").textContent = snapshot.val().Description
+                document.getElementById("id").textContent = `Project ID: ${snapshot.val().ProjectID}`
+            })
+
+            // read data
+            const projectFilesRef = ref(database, 'Projects/P000001/Files');
+            onValue(projectFilesRef, (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    // const data = childSnapshot.val();
+                    console.log(childSnapshot.key);
+
+                    let fileItem = document.createElement("div")
+                    fileItem.setAttribute("class", "file-item");
+                    let img = document.createElement("img")
+                    img.src = "todo.png"
+                    img.alt = "File"
+                    let name = document.createElement("p")
+                    name.textContent = childSnapshot.key
+
+                    fileItem.appendChild(img)
+                    fileItem.appendChild(name)
+                    document.getElementById("files").appendChild(fileItem)
+                })
+            });
+        }
+
+    </script>
     <div class="container-fluid">
         <div id="logo-and-header" class="row" style="z-index:500;">
             <div class="col-md-1" id="logo" style="display:flex; justify-content: center; align-items: center;">
-                <img src="images/navbar_logo.png" style="min-width:100px">
+                <!-- <img src="images/navbar_logo.png" style="min-width:100px"> -->
             </div>
             <div class="col-md-11 mb-2" style="display:flex; align-items: center;">
                 <span class="user-type">Project Manager</span>
@@ -196,14 +259,14 @@
                     <ul class="nav flex-column">
                         <li
                             style="background-color:rgba(233, 233, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 5px rgb(71, 54, 255)">
-                            <img src="images/button-icons/dashboard-button-selected.png"
-                                style="height:60%;padding-right:2%">
+                            <!-- <img src="images/button-icons/dashboard-button-selected.png"
+                                style="height:60%;padding-right:2%"> -->
                             <span class="nav-a">Projects </span>
                         </li>
                         <li
                             style="background-color:rgba(233, 237, 255, 0.898);padding-left:5%;display:flex;align-items:center;height:50px;border-left:solid 4px rgb(255, 255, 255);background-color: white;">
-                            <img src="images/button-icons/annotators-button-unselected.png"
-                                style="height:60%;padding-right:2%">
+                            <!-- <img src="images/button-icons/annotators-button-unselected.png"
+                                style="height:60%;padding-right:2%"> -->
                             <span class="nav-a">Annotators</span>
                         </li>
                     </ul>
@@ -215,10 +278,10 @@
                                 <div class="col-md">
                                     <div class="card" style="height:100%; padding: 20px;">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h3>First Project</h3>
-                                            <h3 style="margin-left: auto;">Project ID: P000001</h3>
+                                            <h3 id="title">First Project</h3>
+                                            <h3 style="margin-left: auto;" id="id">Project ID: P000001</h3>
                                         </div>
-                                        <p class="card-text">This is the project description</p>
+                                        <p class="card-text" id="desc">This is the project description</p>
                                     </div>
                                 </div>
                             </div>
@@ -239,82 +302,12 @@
                                                 <div class="file-container"
                                                     style="max-height: 300px; overflow-y: auto;">
                                                     <!-- File Grid Layout -->
-                                                    <div class="file-container">
+                                                    <div  id="files" class="file-container">
                                                         <!-- Upload file button -->
-                                                        <div class="file-item">
+                                                        <div class="file-item" onclick="alert('file uploader appears here')"">
                                                             <img src="upload.png" alt="File Icon">
                                                             <p>New file</p>
                                                         </div>
-                                                        <!-- Repeat for other files -->
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>testfile.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>projectmanager.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>annotator.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>test.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>something.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>data.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>bcis.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>idk.txt</p>
-                                                        </div>
-                                                        <div class="file-item">
-                                                            <img src="todo.png" alt="File Icon">
-                                                            <p>blahblah.txt</p>
-                                                        </div>
-                                                        <!-- Add more file items as needed -->
                                                     </div>
                                                 </div>
                                             </div>
