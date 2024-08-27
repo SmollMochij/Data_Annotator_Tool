@@ -358,31 +358,31 @@ window.onload = function() {
     document.getElementById("textArea").setAttribute("style", "font-size:20px; word-spacing:3px; font-family:'Source Sans 3', Helvetica, sans-serif; color:#363030");
 
     //UPLOAD TEXT FILE
-    let uploadFileButton = document.getElementById("fileinput");
-    uploadFileButton.addEventListener('change', () => {
-        let files = uploadFileButton.files;
-        if(files.length == 0) {
-            return;
-        }
-        const file = files[0];
-        let reader = new FileReader();
-        reader.onload = (e) => {
-            const file = e.target.result;
-            const lines = file.split(/\r\n |\n/);
-            document.getElementById("textArea").innerHTML = lines.join('\n');
-            //user has uploaded a text file
-            uploadedfile = true;
-            console.log("File uploaded: " + uploadedfile);
-            createJSON(document.getElementById("textArea").innerHTML);
-            document.getElementById("classifyButton").setAttribute("class", "btn btn-success");
-            document.getElementById("addClassButton").setAttribute("class", "btn btn-primary");
-            //notification
-            displayNotification("File uploaded succesfully!");
+    // let uploadFileButton = document.getElementById("fileinput");
+    // uploadFileButton.addEventListener('change', () => {
+    //     let files = uploadFileButton.files;
+    //     if(files.length == 0) {
+    //         return;
+    //     }
+    //     const file = files[0];
+    //     let reader = new FileReader();
+    //     reader.onload = (e) => {
+    //         const file = e.target.result;
+    //         const lines = file.split(/\r\n |\n/);
+    //         document.getElementById("textArea").innerHTML = lines.join('\n');
+    //         //user has uploaded a text file
+    //         uploadedfile = true;
+    //         console.log("File uploaded: " + uploadedfile);
+    //         createJSON(document.getElementById("textArea").innerHTML);
+    //         document.getElementById("classifyButton").setAttribute("class", "btn btn-success");
+    //         document.getElementById("addClassButton").setAttribute("class", "btn btn-primary");
+    //         //notification
+    //         displayNotification("File uploaded succesfully!");
 
-        };
-        reader.onerror = (e) => alert("Problem reading text file!");
-        reader.readAsText(file);
-    })
+    //     };
+    //     reader.onerror = (e) => alert("Problem reading text file!");
+    //     reader.readAsText(file);
+    // })
 
     console.log(
         'The page has the following classes:\n  .' +
