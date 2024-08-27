@@ -16,6 +16,7 @@
       }
       .container {
         background-color: #fff;
+        width:400px;
         padding: 40px;
         border-radius: 8px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -25,11 +26,12 @@
         margin-bottom: 20px;
       }
       .form-group {
+        width:100%;
         margin-bottom: 20px;
       }
       .form-group input {
-        width: 100%;
         padding: 12px;
+        padding-right: 110px;
         border: 1px solid #ccc;
         border-radius: 4px;
       }
@@ -74,8 +76,11 @@
       const database = getDatabase(app);
 
       function sendEmail(email, accessCode) {
-        const subject = "Your Access Code";
-        const body = `Thank you for signing with us! Here is your new access code: ${accessCode}\n\nLogin via this website: http://127.0.0.1:3000/create-account.html`;
+        const subject = "Data Annotator - Project Manager Access Code";
+        const body = `Hi ${email},\n\nThank you for signing up with us! Here is your unique access code: ${accessCode}
+        \n\nVisit this link to create your Project Manager account on Data Annotator: \nhttp://127.0.0.1:3000/create-account.html\n\n
+        Enquiries? 
+        Please contact Dr. Nand\n\n-------------------\n\nData Annotator`;
         window.open(
           `mailto:${email}?subject=${encodeURIComponent(
             subject
@@ -131,7 +136,7 @@
 
               console.log("Data saved successfully.");
               alert(
-                `Email successfully registered! Your access code is ${newLoginCode}.`
+                `Email successfully registered! Their access code is ${newLoginCode}.`
               );
 
               // Send email with access code
@@ -146,18 +151,19 @@
   </head>
   <body>
     <div class="container">
-      <h2>Create New Access Code</h2>
+      <h2>Create new access code</h2>
       <form id="generateForm">
         <div class="form-group">
-          <input
+          <p style="text-align: center;line-height: 150%;">Enter the email address of the project manager you want to create an account on Data Annotator</p>
+          <input style="margin-bottom:20px;width:100%;padding:12px;box-sizing:border-box"
             type="email"
             id="email"
-            placeholder="Enter your email"
+            placeholder="Enter email"
             required
-          />
-        </div>
+            />
+            <button id="generateButton" class="btn">Generate</button>
+          </div>
       </form>
-      <button id="generateButton" class="btn">Generate</button>
     </div>
   </body>
 </html>
