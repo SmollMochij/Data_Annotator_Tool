@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Data Annotator Dashboard</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+3"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXhW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- Google Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <style>
+      body {
+        font-family: "Source Sans Pro", sans-serif;
+        margin: 0;
+        background-color: #f9f9f9;
+      }
+
+      .wrapper {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 220px;
+        background-color: #ffffff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        padding: 20px 0;
+        position: fixed;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .logo img {
+        width: 150px;
+      }
+
+      .nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-grow: 1; /* Allow the nav list to take up available space */
+      }
+
+      .nav li {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        cursor: pointer;
+        color: #333;
+        transition: background-color 0.3s;
+      }
+
+      .nav li.active {
+        background-color: rgba(233, 233, 255, 0.898);
+        border-left: 4px solid #4736ff;
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .nav li:hover {
+        background-color: #f1f1f1;
+      }
+
+      .nav li img {
+        margin-right: 10px;
+      }
+
+      .main-content {
+        flex: 1;
+        margin-left: 220px;
+        padding: 10px 20px;
+        overflow-y: auto; /* Allow scrolling for the main content */
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ffffff;
+        padding: 10px 15px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-profile img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      .user-profile .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .user-profile .user-info .name {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .user-profile .user-info .role {
+        font-size: 12px;
+        color: #888;
+      }
+
+      .user-profile .material-icons {
+        font-size: 20px;
+        color: #888;
+        margin-left: 5px;
+        cursor: pointer;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        align-items: start;
+      }
+
+      .card {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+
+      .card h4 {
+        font-size: 16px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+      }
+
+      .project-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      .project-stats div {
+        text-align: center;
+      }
+
+      .chart-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        height: 200px; /* Constrain height */
+        width: 200px; /* Constrain width */
+        margin: auto; /* Center chart */
+      }
+
+      .chart {
+        width: 100%;
+        height: 100%;
+      }
+
+      .assigned-projects {
+        display: flex;
+        flex-direction: column;
+        height: 300px; /* Adjusted height for the card */
+        overflow-y: auto; /* Enable vertical scrolling */
+        padding-right: 10px; /* Add some padding for the scrollbar */
+      }
+
+      .project-item {
+        margin-bottom: 15px;
+      }
+
+      .progress-bar-container {
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        height: 10px;
+        margin-bottom: 5px;
+      }
+
+      .progress-bar {
+        height: 100%;
+        border-radius: 5px;
+      }
+
+      .progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 5px;
+      }
+
+      .annotators {
+        display: flex;
+        align-items: center;
+      }
+
+      .annotators img {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        margin-right: 5px;
+      }
+
+      .more-annotators {
+        font-size: 14px;
+        color: #555;
+        margin-left: 5px;
+      }
+
+      .annotation-team {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 15px;
+      }
+
+      .annotator-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100px;
+        margin: 0 10px;
+      }
+
+      .annotator-card img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-bottom: 5px;
+      }
+
+      .annotator-card span {
+        font-size: 14px;
+        color: #333;
+      }
+
+      .sidebar .settings {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        margin-top: auto; /* Align at the bottom */
+        cursor: pointer;
+        color: #555;
+        font-size: 14px;
+      }
+
+      .sidebar .settings:hover {
+        background-color: #f1f1f1;
+      }
+
+      .sidebar .settings .material-icons {
+        margin-right: 5px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div>
+          <div class="logo">
+            <img src="images/navbar_logo.png" alt="Data Annotator Logo" />
+          </div>
+          <ul class="nav">
+            <li class="active">
+              <span class="material-icons">home</span>
+              <span>Dashboard</span>
+            </li>
+            <li>
+              <span class="material-icons">star</span>
+              <span>Projects</span>
+            </li>
+            <li>
+              <span class="material-icons">group</span>
+              <span>Team</span>
+            </li>
+          </ul>
+        </div>
+        <!-- Settings Button -->
+        <div class="settings">
+          <span class="material-icons">settings</span>
+          <span>Settings</span>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+          <div class="logo-text">
+            <span class="logo-text-bold">Annotator</span> | Dashboard
+          </div>
+          <!-- User Profile Section -->
+          <div class="user-profile">
+            <img src="images/user.png" alt="User Avatar" />
+            <div class="user-info">
+              <span class="name">Name</span>
+              <span class="role">Annotator</span>
+            </div>
+            <span class="material-icons">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+          <!-- Projects Card -->
+          <div class="card">
+            <h4>Projects</h4>
+            <div class="project-stats">
+              <div><strong>5</strong> <br />Assigned to</div>
+              <div style="color: #7876d2"><strong>4</strong> <br />Active</div>
+              <div style="color: #47a450"><strong>1</strong> <br />Done</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="projectsChart" class="chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Assigned Projects Card -->
+          <div class="card assigned-projects">
+            <h4>Assigned Projects</h4>
+
+            <!-- Project Item 1 -->
+            <div class="project-item">
+              <p><strong>Project Name</strong></p>
+              <p>Date created: 25/01/2024</p>
+              <p>Files annotated</p>
+              <div class="progress-bar-container">
+                <div
+                  class="progress-bar"
+                  style="width: 80%; background-color: #47a450"
+                ></div>
+              </div>
+              <div class="progress-info">
+                <span>8/10</span>
+                <div class="annotators">
+                  <img src="images/user.png" alt="Annotator" />
+                  <img src="images/user.png" alt="Annotator" />
+                  <img src="images/user.png" alt="Annotator" />
+                  <span class="more-annotators">+1</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Item 2 -->
+            <div class="project-item">
+              <p><strong>Project Name</strong></p>
+              <p>Date created: 25/01/2024</p>
+              <p>Files annotated</p>
+              <div class="progress-bar-container">
+                <div
+                  class="progress-bar"
+                  style="width: 15%; background-color: #f76c5e"
+                ></div>
+              </div>
+              <div class="progress-info">
+                <span>2/14</span>
+                <div class="annotators">
+                  <img src="images/annotator4.jpg" alt="Annotator" />
+                  <img src="images/annotator5.jpg" alt="Annotator" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Item 3 -->
+            <div class="project-item">
+              <p><strong>Project Name</strong></p>
+              <p>Date created: 25/01/2024</p>
+              <p>Files annotated</p>
+              <div class="progress-bar-container">
+                <div
+                  class="progress-bar"
+                  style="width: 50%; background-color: #f7b500"
+                ></div>
+              </div>
+              <div class="progress-info">
+                <span>1/2</span>
+                <div class="annotators">
+                  <img src="images/annotator6.jpg" alt="Annotator" />
+                  <img src="images/annotator7.jpg" alt="Annotator" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Item 4 -->
+            <div class="project-item">
+              <p><strong>Project Name</strong></p>
+              <p>Date created: 25/01/2024</p>
+              <p>Files annotated</p>
+              <div class="progress-bar-container">
+                <div
+                  class="progress-bar"
+                  style="width: 85%; background-color: #47a450"
+                ></div>
+              </div>
+              <div class="progress-info">
+                <span>17/20</span>
+                <div class="annotators">
+                  <img src="images/annotator8.jpg" alt="Annotator" />
+                  <img src="images/annotator9.jpg" alt="Annotator" />
+                  <img src="images/annotator10.jpg" alt="Annotator" />
+                  <span class="more-annotators">+2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Annotation Team Section -->
+          <div class="card">
+            <h4>Annotation Team</h4>
+            <div class="annotation-team">
+              <div class="annotator-card">
+                <img src="images/user.png" alt="Annotator" />
+                <span>Ann. Name</span>
+              </div>
+              <div class="annotator-card">
+                <img src="images/user.png" alt="Annotator" />
+                <span>Ann. Name</span>
+              </div>
+              <div class="annotator-card">
+                <img src="images/user.png" alt="Annotator" />
+                <span>Ann. Name</span>
+              </div>
+              <div class="annotator-card">
+                <img src="images/user.png" alt="Annotator" />
+                <span>Ann. Name</span>
+              </div>
+              <div class="annotator-card">
+                <img src="images/user.png" alt="Annotator" />
+                <span>Ann. Name</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart.js Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById("projectsChart").getContext("2d");
+        const projectsChart = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["Active", "Done"],
+            datasets: [
+              {
+                data: [4, 1],
+                backgroundColor: ["#7876D2", "#47A450"],
+                borderColor: ["#7876D2", "#47A450"],
+                borderWidth: 1,
+                spacing: 5 /* Add some spacing between segments */,
+              },
+            ],
+          },
+          options: {
+            cutout: "60%" /* Adjust cutout to keep chart compact */,
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
