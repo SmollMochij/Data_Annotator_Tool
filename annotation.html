@@ -29,7 +29,7 @@
 </head>
 <body>
     <!-- link to javascript file -->
-    <script src="scripts/script.js"></script>
+    <script type="module" src="scripts/script.js"></script>
     <div id="top-bar" class="container-fluid" style="position:relative;z-index:2;height:6vh;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.163);">
         <div class="row" style="height:100%;background-color: rgb(255, 255, 255);">
             <div class="col-md-1 d-flex align-items-center justify-content-start px-4">
@@ -103,22 +103,20 @@
                     </div>
                     <!-- Back button & project name | file name -->
                     <div class="col-md-5">
-                        <img src="svg/back_arrow.svg" class="back-arrow" onclick="window.location = 'sign-in.html'">
-                        <span style="color:#453737;font-size:18px;font-family:'Archivo'">Project Name</span>
+                        <img src="svg/back_arrow.svg" class="back-arrow" onclick="window.location = 'dashboard-temp.html'">
+                        <span id="projectNameSpan" style="color:#453737;font-size:18px;font-family:'Archivo'">Project Name</span>
                         <span style="color:#cbc4c4;font-size:22px;padding-left:10px;padding-right:10px">|</span> 
-                        <span style="color:#4e6fa2;font-size:18px;font-family:'Archivo';">Data File Name</span>
+                        <span id="dataFileNameSpan" style="color:#4e6fa2;font-size:18px;font-family:'Archivo';">Data File Name</span>
                     </div>
                     <div class="col-md-2 d-flex justify-content-end">
                         <div>
-                            <img id="increaseFont" class="font-size-button" onclick="increaseFont()" src="svg/zoom-in-button.svg">
+                            <img id="increaseFont" class="font-size-button" src="svg/zoom-in-button.svg">
                             <div id="increaseFontTip" class="toolbar-tip">+ Size</div>
                         </div>
                         <div>
-                            <img id="decreaseFont" class="font-size-button" onclick="decreaseFont()" src="svg/zoom-out-button.svg">
+                            <img id="decreaseFont" class="font-size-button" src="svg/zoom-out-button.svg">
                             <div id="decreaseFontTip" class="toolbar-tip">- Size</div>
                         </div>
-                        <!-- <button class="font-size-button" onclick="increaseFont()"><i class="material-icons">add</i></button>
-                        <button class="font-size-button" onclick="decreaseFont()"><i class="material-icons">remove</i></button> -->
                     </div>
                     
                 </div>
@@ -131,33 +129,16 @@
                         <div id="dropdown" class="dropdown" style="display:none;">
                             <div id="dropdown-content" class="dropdown-content">
                                 <div id="dropdown-links">
-                                    <a data-toggle="modal" onclick="generateColourHEX()" data-target="#exampleModal">
+                                    <a data-toggle="modal" id="dropdownAddNewClassButton" data-target="#exampleModal">
                                         <i class="material-icons" style="font-size:11px;color:rgb(43, 38, 38)">add</i>
                                         Add new class
                                     </a>
-                                    <!-- <a onclick="dropdownClassify('NAME')">
-                                        <i class="material-icons" style="font-size:11px;color: rgb(255, 45, 177)">circle</i>
-                                        NAME
-                                    </a>
-                                    <a onclick="dropdownClassify('CITY')">
-                                        <i class="material-icons" style="font-size:11px;color: rgb(48, 45, 255)">circle</i>
-                                        CITY
-                                    </a>
-                                    <a onclick="dropdownClassify('COMPANY')">
-                                        <i class="material-icons" style="font-size:11px;color: rgb(90, 255, 45)">circle</i>
-                                        COMPANY
-                                    </a>                             -->
                                 </div>
                                 <div style="border-top:solid 1px #DBDBDB;margin-top:12px;">
                                     <a style="margin-top:2px;color:#6B6B6B">Cancel</a>
                                 </div>
-                                <!-- <select id="choice" name="choice"> -->
-                                    <!-- <option value="none">Select a class...</option> -->
-                                <!-- </select> -->
-                                <!-- <input id="submitClassification" type="submit" onclick="submitClassification(choice.value)"/> -->
                             </div>
                         </div>
-                        <!-- <div style="width:100px;height:100px;position:absolute;top:200px;left:100px;background: green;"></div> -->
                     </div>
                     <!-- notification -->
                     <div id="notification" class="notification">
@@ -197,7 +178,7 @@
                 <!-- AVAILABLE CLASSES -->
                 <!-- Add new class button to trigger modal -->
                 <div style="margin-top:4px;margin-bottom:4px">
-                    <button type="button" onclick="generateColourHEX();" id="addClassButton" class="btn btn-dark" style="margin-left:5px;margin-top:5px; margin-bottom: 5px;" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" id="addClassButton" class="btn btn-dark" style="margin-left:5px;margin-top:5px; margin-bottom: 5px;" data-toggle="modal" data-target="#exampleModal">
                         Add class
                     </button>
                     <!-- Modal -->
@@ -222,15 +203,15 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" onclick="createClass(newClass.value, classColour.value)" class="btn btn-primary">Create class</button>
+                                    <button type="button" id="createClassButton" class="btn btn-primary">Create class</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Classify button -->
-                    <button type="button" style="margin-top:5px; margin-bottom: 5px;" id="classifyButton" class="btn btn-dark" onclick="newClassify()">Classify</button>
+                    <!-- <button type="button" style="margin-top:5px; margin-bottom: 5px;" id="classifyButton" class="btn btn-dark" onclick="newClassify()">Classify</button> -->
                     <!-- View Active Classes button -->
-                    <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" onclick="viewAllActiveClasses()">View active classes</button>
+                    <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" id="viewActiveClassesButton">View active classes</button>
                 </div>
                 <!-- CLASSIFICATIONS -->
                 <div class="text-bg-dark p-2">Classifications</div>
@@ -295,7 +276,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" onclick="exportToJSON()"
+                                <button type="button" id="exportToJSONButton"
                                     class="btn btn-primary">Export</button>
                             </div>
                         </div>
