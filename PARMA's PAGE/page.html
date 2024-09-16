@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Access Code</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+      .container {
+        background-color: #fff;
+        width:400px;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .form-group {
+        width:100%;
+        margin-bottom: 20px;
+      }
+      .form-group input {
+        padding: 12px;
+        padding-right: 110px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+    <!-- Add Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+        get,
+        query,
+        orderByChild,
+        equalTo,
+      } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+        authDomain: "data-annotator-tool.firebaseapp.com",
+        databaseURL:
+          "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "data-annotator-tool",
+        storageBucket: "data-annotator-tool.appspot.com",
+        messagingSenderId: "913657972954",
+        appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+        measurementId: "G-RWJF94GG05",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      function sendEmail(email, accessCode) {
+        const subject = "Data Annotator - Project Manager Access Code";
+        const body = `Hi ${email},\n\nThank you for signing up with us! Here is your unique access code: ${accessCode}
+        \n\nVisit this link to create your Project Manager account on Data Annotator: \nhttp://127.0.0.1:3000/create-account.html\n\n
+        Enquiries? 
+        Please contact Dr. Nand\n\n-------------------\n\nData Annotator`;
+        window.open(
+          `mailto:${email}?subject=${encodeURIComponent(
+            subject
+          )}&body=${encodeURIComponent(body)}`
+        );
+      }
+
+      window.onload = function () {
+        document
+          .getElementById("generateButton")
+          .addEventListener("click", async function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById("email").value.trim();
+            console.log("Email entered:", email);
+
+            if (!email) {
+              alert("Please enter an email.");
+              return;
+            }
+
+            // Reference to the AccountCodes node
+            const accountCodesRef = ref(database, "AccountCodes");
+            const emailQuery = query(
+              accountCodesRef,
+              orderByChild("email"),
+              equalTo(email)
+            );
+
+            try {
+              // Check if email already exists
+              const emailSnapshot = await get(emailQuery);
+              if (emailSnapshot.exists()) {
+                alert("This email already has an associated access code.");
+                return;
+              }
+
+              // Generate unique Access Code
+              let newLoginCode;
+              let codeSnapshot;
+              do {
+                newLoginCode = `PM${String(Date.now()).slice(-4)}`;
+                codeSnapshot = await get(
+                  ref(database, `AccountCodes/${newLoginCode}`)
+                );
+              } while (codeSnapshot.exists());
+
+              // Save to Firebase Realtime Database
+              const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
+              await set(newLoginRef, {
+                Used: false,
+              });
+
+              console.log("Data saved successfully.");
+              alert(
+                `Email successfully registered! Their access code is ${newLoginCode}.`
+              );
+
+              // Send email with access code
+              sendEmail(email, newLoginCode);
+            } catch (error) {
+              console.error("Error writing to database:", error);
+              alert("Error saving data. Please check the console.");
+            }
+          });
+      };
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Create new access code</h2>
+      <form id="generateForm">
+        <div class="form-group">
+          <p style="text-align: center;line-height: 150%;">Enter the email address of the project manager you want to create an account on Data Annotator</p>
+          <input style="margin-bottom:20px;width:100%;padding:12px;box-sizing:border-box"
+            type="email"
+            id="email"
+            placeholder="Enter email"
+            required
+            />
+            <button id="generateButton" class="btn">Generate</button>
+          </div>
+      </form>
+    </div>
+  </body>
+</html>

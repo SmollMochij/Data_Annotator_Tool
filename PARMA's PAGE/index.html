@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Access Code</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+      }
+      .container {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+    <!-- Add Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+      } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+        authDomain: "data-annotator-tool.firebaseapp.com",
+        databaseURL:
+          "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "data-annotator-tool",
+        storageBucket: "data-annotator-tool.appspot.com",
+        messagingSenderId: "913657972954",
+        appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+        measurementId: "G-RWJF94GG05",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      window.onload = function (e) {
+        document
+          .getElementById("generateButton")
+          .addEventListener("click", function () {});
+
+          document
+           .getElementById("generateForm")
+           .addEventListener("submit", function (event) {
+             event.preventDefault();
+
+             const email = document.getElementById("email").value;
+             console.log("Email entered:", email);
+
+             // Generate Access Code
+             const loginCounterRef = ref(database, "loginCounter");
+             transaction(
+               loginCounterRef,
+               (currentValue) => (currentValue || 0) + 1
+             )
+               .then((transactionResult) => {
+                 const loginCode = `PM${String(
+                   transactionResult.snapshot.val()
+                 ).padStart(4, "0")}`;
+                 console.log("Generated login code:", loginCode);
+
+                 // Save to Firebase Realtime Database
+                 const newLoginRef = ref(database, "logins").push();
+                 return set(newLoginRef, {
+                   email: email,
+                   loginCode: loginCode,
+                   used: false,
+                 });
+               })
+               .then(() => {
+                 console.log("Data saved successfully.");
+                 alert(`Access code ${loginCode} generated and saved.`);
+               })
+               .catch((error) => {
+                 console.error("Error:", error);
+                 alert("Error saving data. Please check the console.");
+               });
+           });
+          
+      };
+
+      
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Create New Access Code</h2>
+      <form id="generateForm">
+        <div class="form-group">
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+      </form>
+      <button id="generateButton" class="btn">Generate</button>
+    </div>
+  </body>
+</html>

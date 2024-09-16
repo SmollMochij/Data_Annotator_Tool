@@ -1,13 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Testing Page 2</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import the necessary Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+            authDomain: "data-annotator-tool.firebaseapp.com",
+            databaseURL: "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "data-annotator-tool",
+            storageBucket: "data-annotator-tool.appspot.com",
+            messagingSenderId: "913657972954",
+            appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+            measurementId: "G-RWJF94GG05"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Function to fetch users from Firebase and display them
+        function fetchUsers() {
+            const usersRef = ref(database, 'users');
+            onValue(usersRef, (snapshot) => {
+                const usersList = document.getElementById('usersList');
+                usersList.innerHTML = ''; // Clear the list before adding new items
+                
+                const users = snapshot.val();
+                for (const userId in users) {
+                    if (users.hasOwnProperty(userId)) {
+                        const user = users[userId];
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${user.name} (${user.email})`;
+                        usersList.appendChild(listItem);
+                    }
+                }
+            });
+        }
+
+        // Fetch and display users when the page loads
+        window.onload = fetchUsers;
+    </script>
 </head>
 <body>
-    <script src="testscript2.js"></script>
-    <div id="testbody">On January 15, 2023, Dr. Emily Johnson, a renowned neurosurgeon at Stanford University, delivered a groundbreaking lecture on advancements in brain-computer interfaces. Attendees from various countries, including the United States, Canada, and Germany, gathered at the International Neurology Conference in San Francisco to hear her speak. Dr. Johnson's work has been pivotal in the field, particularly her research on using AI to assist in complex surgical procedures. Meanwhile, across the Atlantic, in Paris, the annual Fashion Week showcased the latest designs from top fashion houses such as Chanel, Dior, and Louis Vuitton. Models like Bella Hadid and Naomi Campbell graced the runway, donning exquisite creations that set new trends for the upcoming season. The event, held from March 1 to March 9, 2023, attracted celebrities and fashion enthusiasts from around the world.</div>
-    <div id="unicodeTest">Unicode test:</div>
-    <div id="jsonTest"></div>
+    <h1>Signed Up Users</h1>
+    <ul id="usersList"></ul>
+       
 </body>
-
 </html>

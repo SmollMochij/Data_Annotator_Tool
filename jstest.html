@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Testing</title>
+</head>
+<body>
+    <script>
+        // alert(test)
+        const queryString = window.location.search;
+        console.log(queryString)
+        const urlParams = new URLSearchParams(queryString)
+        const filename = urlParams.get('filename')
+        const project = urlParams.get('project')
+        console.log(filename)
+        if(project == null || filename == null) {
+            alert("Error: Text file not selected. Please return to the project page and select a text file from there.")
+        } else {
+            alert(`Project: ${project} | File selected: ${filename}`)
+        }
+    </script>
+
+
+</body>
+</html>

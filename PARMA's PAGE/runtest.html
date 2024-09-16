@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Firebase Connection</title>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+      } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+        authDomain: "data-annotator-tool.firebaseapp.com",
+        databaseURL:
+          "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "data-annotator-tool",
+        storageBucket: "data-annotator-tool.appspot.com",
+        messagingSenderId: "913657972954",
+        appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+        measurementId: "G-RWJF94GG05",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      window.onload = function () {
+        const testRef = ref(database, "testConnection");
+
+        set(testRef, {
+          message: "Hello, Firebase!",
+        })
+          .then(() => {
+            console.log("Data saved successfully.");
+            alert("Firebase connection is successful!");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Error saving data. Please check the console.");
+          });
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Check Console for Firebase Connection Status</h1>
+  </body>
+</html>

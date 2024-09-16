@@ -1,7 +1,7 @@
 /* create account page */
 .background {
     min-height:100vh;
-    background:url('../images/sign-in-background1.jpg') no-repeat;
+    background:url('../images/sign-in-background1-no-logo.jpg') no-repeat;
     background-size: cover;
     background-attachment: fixed;
 }
