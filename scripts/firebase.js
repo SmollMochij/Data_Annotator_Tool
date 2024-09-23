@@ -56,6 +56,8 @@ export function createUser(username, email, password, inputCode) {
 
               // Mark input code as user
               markCodeAsTrue(inputCode);
+
+              window.location.href = "/dashboard-temp.html"
             })
             .catch((error) => {
               const errorCode = error.code;
@@ -95,7 +97,7 @@ export function signInUser(email, password) {
       const userId = userCredential.uid;
       const dbRef = ref(getDatabase());
 
-      window.location.href = "../landing.html";
+      window.location.href = "../dashboard-temp.html";
     })
     .catch((error) => {
       const errorCode = error.code;

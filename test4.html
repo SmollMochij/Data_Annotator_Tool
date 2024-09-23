@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<head>
+    <title>More testing</title>
+</head>
+
+<body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        import {
+            getDatabase,
+            ref,
+            set,
+            get,
+            child,
+            onValue,
+            onChildAdded,
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+            authDomain: "data-annotator-tool.firebaseapp.com",
+            databaseURL:
+                "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "data-annotator-tool",
+            storageBucket: "data-annotator-tool.appspot.com",
+            messagingSenderId: "913657972954",
+            appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+            measurementId: "G-RWJF94GG05",
+        };
+
+
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        let projectID = 'P000001'
+        let classesRef = ref(database, `Projects/${projectID}/Classes`)
+        // read data
+        const usersRef = ref(database, 'users');
+        onValue(classesRef, (snapshot) => {
+            let flist = document.getElementById("list");
+            snapshot.forEach((childSnapshot) => {
+                const data = childSnapshot.val();
+                let newElement = document.createElement("p");
+                newElement.innerHTML = `${childSnapshot.key}:<br> ${data.BackgroundHEX}<br> ${data.Classifications}<br>${data.TextColour}`;
+                let classificationslist = data.Classifications.split(",")
+                for(let i = 0; i < classificationslist.length; i++) {
+                    console.log("CLASSIFICATION: " + classificationslist[i])
+                }
+                console.log(classificationslist)
+                document.body.appendChild(newElement)
+                console.log(data);
+            })
+        });
+    </script>
+</body>

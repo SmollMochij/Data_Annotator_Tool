@@ -7,6 +7,7 @@
 
     <!-- fonts -->
     <link href='https://fonts.googleapis.com/css?family=Source Sans 3' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Archivo' rel='stylesheet'>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -24,102 +25,142 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/annotation.css">
 </head>
-<body class="mainBody">
+<body>
     <!-- link to javascript file -->
-    <script src="scripts/script.js"></script>
-    <!-- add 3 pixel margin left and right of the page -->
-    <div class="px-3" style="min-height:100vh;height:100%;margin-left:-0.5%">
-        <div class="row" style="min-height:100vh;height:100%">
-            <!-- This div fits its content to use a maximum of 2 columns from bootstrap's 12-column layout (col & 2) for a medium sized screen (md) -->
-            <!-- Navigation bar -->
-            <div class="d-flex flex-column flex-shrink-0 p-3 col-md-1" style="background-color: white; box-shadow: 5px 0px 20px rgba(117, 114, 114, 0.165);">
-                <div class="col-md-12">
-                    <a href="index.html"><img src="svg/dashboard_button.svg" style="width:26px;margin-top:-4px" data-toggle="tooltip" title="Home"/></a>
-                    <a href="index.html" style="color:rgb(125, 118, 118); text-decoration:none;font-weight:bold">Home</a>
-                </div>
-                <div class="col-md-12">
-                    <a href="index.html"><img src="svg/messages_button.svg" style="width:20px;margin-top:-4px" data-toggle="tooltip" title="Messages"/></a>
-                    <a href="index.html" style="color:rgb(125, 118, 118); text-decoration:none;font-weight:bold">Messages</a>
-                </div>
-                <div class="col-md-12">
-                    <a href="test.html" style="color:rgb(69, 69, 69); text-decoration:none;">Test Page 1</a>
-                </div>
-                <div class="col-md-12">
-                    <a href="test2.html" style="color:rgb(69, 69, 69); text-decoration:none;">Test Page 2</a>
-                </div>
-                <div class="col-md-12">
-                    <a href="test3.html" style="color:rgb(69, 69, 69); text-decoration:none;">Test Page 3</a>
-                </div>
+    <script type="module" src="scripts/script.js"></script>
+    <div id="top-bar" class="container-fluid" style="position:relative;z-index:2;height:6vh;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.163);">
+        <div class="row" style="height:100%;background-color: rgb(255, 255, 255);">
+            <div class="col-md-1 d-flex align-items-center justify-content-start px-4">
+                <img class="logo" src="svg/logo.svg"/>
             </div>
-            <!-- Main column -->
-            <div class="col-md-7" >
-                <div class="row">
-                    <nav class="navbar" style="background-color: white; border-bottom: 2px solid rgb(202, 191, 191);">
-                        <div style="margin-left:10px">
-                            <img src="svg/classify_button_unselected.svg" id="classifyToolButton" style="width:26px" data-toggle="tooltip" title="Classify"/>
-                            <img src="svg/erase_button_unselected.svg" id="eraseToolButton" style="width:26px" data-toggle="tooltip" title="Erase"/>
-                            <img src="svg/export_json_button.svg" id="exportJsonButton" style="width:26px" data-toggle="modal" data-target="#jsonModal" title="Export"/>
+            <div class="col-md d-flex" style="font-family:'Source Sans 3';display:flex;margin-top: auto;margin-bottom: auto;">
+                <span class="user-type">Project Manager</span>
+                <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span> 
+                <span style="font-size:20px;">Annotation</span>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="height:94vh;background-image: url('images/annotation-background-gradient6.jpg');background-size:cover">
+        <div class="row" style="height:100%">
+            <!-- Side Navigation Bar -->
+            <div class="col-md-1" style="z-index:1;box-shadow: 5px 0px 5px rgba(59, 59, 59, 0.111);background-color:rgb(255, 255, 255);">
+                <nav class="side-nav">
+                    <div class="nav-link">
+                        <div>
+                            <img style="width:28px;" src="images/button-icons/dashboard-button-unselected.png"/>
                         </div>
-                    </nav>
+                        <div>
+                            <a style="margin-left:5px;">Dashboard</a>
+                        </div>
+                    </div>
+                    <div class="nav-link">
+                        <div>
+                            <img style="width:28px;" src="images/button-icons/projects-button-selected.png"/>
+                        </div>
+                        <div>
+                            <a style="margin-left:5px";>Projects</a>
+                        </div>
+                    </div>
+                    <div class="nav-link">
+                        <div>
+                            <img style="width:28px;" src="images/button-icons/annotators-button-unselected.png"/>
+                        </div>
+                        <div>
+                            <a style="margin-left:5px;">Annotators</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- Annotation Interface Body -->
+            <div class="col-md-8">
+                <div class="row align-items-center" style="padding-left:1em;border-bottom:solid 2px #ecebeb;height:50px;background-color:rgb(255, 255, 255);box-shadow: 0px 0px 25px rgba(170, 187, 170, 0.25);">
+                    <!-- Toolbar -->
+                    <div class="col-5">
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/classify_button_unselected.svg" id="classifyToolButton" style="width:26px;"/>
+                            <div class="toolbar-tip" id="classifyTip">Classify</div>
+                        </div>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/erase_button_unselected.svg" id="eraseToolButton" style="width:26px"/>
+                            <div class="toolbar-tip" id="eraseTip">Erase</div>
+                        </div>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/export_json_button.svg" id="exportJsonButton" style="width:26px" data-toggle="modal" data-target="#jsonModal"/>
+                            <div class="toolbar-tip" id="jsonTip">Export</div>
+                        </div>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/instructions-button.svg" id="instructionsButton" style="width:26px"/>
+                            <div class="toolbar-tip" id="instructionsTip">Instructions</div>
+
+                        </div>
+                        <div style="width:26px;display:inline;">
+                            <img src="svg/save-button.svg" id="saveChangesButton" style="width:26px"/>
+                            <div class="toolbar-tip" id="saveChangesTip">Save changes</div>
+
+                        </div>
+                    </div>
+                    <!-- Back button & project name | file name -->
+                    <div class="col-md-5">
+                        <img src="svg/back_arrow.svg" class="back-arrow" onclick="window.location = 'dashboard-temp.html'">
+                        <span id="projectNameSpan" style="color:#453737;font-size:18px;font-family:'Archivo'">Project Name</span>
+                        <span style="color:#cbc4c4;font-size:22px;padding-left:10px;padding-right:10px">|</span> 
+                        <span id="dataFileNameSpan" style="color:#4e6fa2;font-size:18px;font-family:'Archivo';">Data File Name</span>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-end">
+                        <div>
+                            <img id="increaseFont" class="font-size-button" src="svg/zoom-in-button.svg">
+                            <div id="increaseFontTip" class="toolbar-tip">+ Size</div>
+                        </div>
+                        <div>
+                            <img id="decreaseFont" class="font-size-button" src="svg/zoom-out-button.svg">
+                            <div id="decreaseFontTip" class="toolbar-tip">- Size</div>
+                        </div>
+                    </div>
+                    
                 </div>
-                <div style="padding-left:80px;padding-right:10px;margin-right:10px">
-                    <h1 style="margin-top:10px">Data Annotator</h1>
-                    <hr/>
-                    <h4>Add annotations to the text below</h4>
-                    <div id="textDiv" style="min-height:50vh;max-height:85vh;overflow:auto;padding-right:80px">
+                <div class="px-4 row">
+                    <div id="textDiv" style="margin-top:20px;min-height:50vh;max-height:88vh;overflow:auto;padding-right:60px">
                         <div style="position:relative" id="textArea">
                             <!-- filled with text in script.js -->
-                        </div>
-                        <div id="font-size-controls" class="font-size-controls">
-                            <button class="font-size-button" onclick="increaseFont()"><i class="material-icons">add</i></button>
-                            <button class="font-size-button" onclick="decreaseFont()"><i class="material-icons">remove</i></button>
                         </div>
                         <!-- dropdown menu of classes -->
                         <div id="dropdown" class="dropdown" style="display:none;">
                             <div id="dropdown-content" class="dropdown-content">
                                 <div id="dropdown-links">
-                                    <a data-toggle="modal" onclick="generateColourHEX()" data-target="#exampleModal">
+                                    <a data-toggle="modal" id="dropdownAddNewClassButton" data-target="#exampleModal">
                                         <i class="material-icons" style="font-size:11px;color:rgb(43, 38, 38)">add</i>
                                         Add new class
                                     </a>
-                                    <!-- <a onclick="dropdownClassify('NAME')">
-                                        <i class="material-icons" style="font-size:11px;color: rgb(255, 45, 177)">circle</i>
-                                        NAME
-                                    </a>
-                                    <a onclick="dropdownClassify('CITY')">
-                                        <i class="material-icons" style="font-size:11px;color: rgb(48, 45, 255)">circle</i>
-                                        CITY
-                                    </a>
-                                    <a onclick="dropdownClassify('COMPANY')">
-                                        <i class="material-icons" style="font-size:11px;color: rgb(90, 255, 45)">circle</i>
-                                        COMPANY
-                                    </a>                             -->
                                 </div>
-                                <div style="border-top:solid 1px #DBDBDB;margin-top:12px">
+                                <div style="border-top:solid 1px #DBDBDB;margin-top:12px;">
                                     <a style="margin-top:2px;color:#6B6B6B">Cancel</a>
                                 </div>
-                                <!-- <select id="choice" name="choice"> -->
-                                    <!-- <option value="none">Select a class...</option> -->
-                                <!-- </select> -->
-                                <!-- <input id="submitClassification" type="submit" onclick="submitClassification(choice.value)"/> -->
                             </div>
                         </div>
-                        <!-- <div style="width:100px;height:100px;position:absolute;top:200px;left:100px;background: green;"></div> -->
+                    </div>
+                    <!-- notification -->
+                    <div id="notification" class="notification">
+                        <div id="close-notification-button" class="close-button">
+                            <img src="svg/close-button-light.svg">
+                        </div>
+                        <div id="notification-text" class="notification-text">
+                            This is a small notification
+                        </div>
                     </div>
                 </div>
-
             </div>
-            <!-- Third column -->
-            <div class="col-md-3" style="background-color: white;box-shadow: -5px 0px 20px rgba(117, 114, 114, 0.165);border-left: solid rgba(0, 0, 0, 0.098) 1px;">
-                <h2 style="margin-top:18px">Classification</h2>
+            <!-- Annotation Interface Sidebar -->
+            <div class="col-md-3" style="box-shadow: -5px 0px 5px rgba(59, 59, 59, 0.111);background-color: rgb(255, 255, 255);">
+                <h2 style="margin-top:18px;">Classification</h2>
                 <!-- TEXT FILE -->
-                <div class="text-bg-dark p-2">Text File</div>
-                <label class="custom-file-upload">
-                    <input type="file" id="fileinput">
-                    Upload File
+                <!-- <div class="text-bg-dark p-2">Text File</div> -->
+                <!-- <label class="custom-file-upload"> -->
+                    <!-- <input type="file" id="fileinput"> -->
+                    <!-- Upload File -->
                     <!-- <i class="fa fa-cloud-upload"></i> Custom Upload -->
-                </label>
+                <!-- </label> -->
                 <!-- List of all classes to use for classification -->
                 <div class="text-bg-dark p-2">Available Classes</div>
                 <div id="" style="margin-top:7px">
@@ -137,7 +178,7 @@
                 <!-- AVAILABLE CLASSES -->
                 <!-- Add new class button to trigger modal -->
                 <div style="margin-top:4px;margin-bottom:4px">
-                    <button type="button" onclick="generateColourHEX();" id="addClassButton" class="btn btn-dark" style="margin-left:5px;margin-top:5px; margin-bottom: 5px;" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" id="addClassButton" class="btn btn-dark" style="margin-left:5px;margin-top:5px; margin-bottom: 5px;" data-toggle="modal" data-target="#exampleModal">
                         Add class
                     </button>
                     <!-- Modal -->
@@ -162,15 +203,15 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" onclick="createClass(newClass.value, classColour.value)" class="btn btn-primary">Create class</button>
+                                    <button type="button" id="createClassButton" class="btn btn-primary">Create class</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- Classify button -->
-                    <button type="button" style="margin-top:5px; margin-bottom: 5px;" id="classifyButton" class="btn btn-dark" onclick="newClassify()">Classify</button>
+                    <!-- <button type="button" style="margin-top:5px; margin-bottom: 5px;" id="classifyButton" class="btn btn-dark" onclick="newClassify()">Classify</button> -->
                     <!-- View Active Classes button -->
-                    <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" onclick="viewAllActiveClasses()">View active classes</button>
+                    <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" id="viewActiveClassesButton">View active classes</button>
                 </div>
                 <!-- CLASSIFICATIONS -->
                 <div class="text-bg-dark p-2">Classifications</div>
@@ -206,6 +247,16 @@
                     <br>
                 </div>
 
+                <div class="text-bg-dark p-2">
+                    Final Step
+                </div>
+                <div style="display:flex;justify-content: center;margin-top:8px;">
+                    <div id="markDoneButton" style="transition-duration:2s;display:flex;justify-content:center;align-items:center;background-color:#939393;color:white;width:60%;height:70px;border-radius: 14px;border:none;font-family:'Source Sans 3';font-size:18px;">
+                        Mark as done
+                        <img id="doneCircle" style="margin-left:12px" src="svg/circle.svg">
+                    </div>
+                </div>
+
                 <!-- JSON Modal -->
                 <div class="modal fade" id="jsonModal" tabindex="-1" role="dialog" aria-labelledby="jsonModalLabel"
                     aria-hidden="true">
@@ -225,40 +276,22 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" onclick="exportToJSON()"
+                                <button type="button" id="exportToJSONButton"
                                     class="btn btn-primary">Export</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- EXPORT TO JSON -->
-                <!-- <div class="text-bg-dark p-2">
-                    Final Step
-                </div>
-                <div style="margin-top:8px">
-                    <button type="button" onclick="exportToJSON()" class="btn btn-primary">Export to JSON</button>
-                </div>
-                <br>
-                <span id="testSpan">Test span</span>
-                <i class="material-icons" style="font-size:10px;color: rgb(255, 45, 177)">circle</i>
 
-                <br/> -->
-
-                <!-- BOOTSTRAP COLLAPSE *NOT WORKING* -->
-                <!-- <div id="collapsible">
-                    Expand
-                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16 5L9 11L2 5" stroke="#363030" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </div> -->
             </div>
         </div>
     </div>
-    <!-- Optional JavaScript (for Modal) -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</div>
+<!-- Optional JavaScript (for Modal) -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

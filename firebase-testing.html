@@ -63,13 +63,45 @@
           })
         });
 
+        // file data
+        const filesRef = ref(database, 'Projects/P000001/Files/file01/content');
+        onValue(filesRef, (snapshot) => {
+          let content = document.getElementById("textContent");
+          content.textContent = snapshot.val();
+          setTimeout(function() {
+          let loading = document.getElementById("loadingCover");
+          loading.style.display = "none";
+        }, 1000);
+        })
+
+
+
     </script>
+    <style>
+      .loader {
+        border:16px solid #f3f3f33b;
+        border-top: 16px solid #3498dbb4;
+        border-radius: 50%;
+        width:120px;
+        height:120px;
+        animation:spin 0.5s linear infinite;
+      }
+      @keyframes spin {
+        0% {transform: rotate(0deg);}
+        100% {transform: rotate(360deg);}
+      }
+    </style>
 </head>
 <body>
+  <div>
     <h1>Firebase Realtime Database Connection</h1>
-    <p>Check your Firebase Realtime Database for the data written by this example.</p>
+    <p id="textContent">Text goes here</p>
     <div id="list">
-
     </div>
+    <div id="loadingCover" style="display:flex;justify-content:center;align-items:center;width:100vw;height:100vh;position:absolute;top:0px;left:0px;z-index:10;backdrop-filter:blur(5px)">
+      <div class="loader"></div>
+      <div></div>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Regex Testing</title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            let pre = document.getElementById("text")
+            let selectedText = "John"
+            /*
+                REGEX: (?<=^|\s|"|')john(?=['"?\s,;:.])
+                ----------
+                BREAKDOWN:
+                ----------
+                (?<=^|\\s|"|') = positive lookbehind: whatever precedes (?<=) the selected text should be the start of a new line (^) OR (|) a whitespace character ie space (\s which becomes \\s because of the terminator) OR (|) quotes (") OR (|) apostrophe (')
+                (?=['"\\s,;:.]) = positive lookahead: whatever follows the selected tet should be an apostrophe, quotation mark, whitespace, semicolon, colon, or fullstop 
+                PURPOSE:
+                This prevents finding matches of the selected text/word WITHIN OTHER WORDS. E.g. Selected text = "nate" -> find "nate" within "passionate" which is problematic. With the regex this is prevented
+            */
+            let pattern = `(?<=^|\\s|"|')${selectedText}(?=['"\\s,;:.])`
+            let reg = new RegExp(pattern, "ig")
+            let replaceMask = `<span style='background-color:blue;color:white'>$&</span>` //replace with itself +
+            pre.innerHTML = pre.innerHTML.replaceAll(reg, replaceMask)
+            // pre.innerHTML = pre.innerHTML.replaceAll("John", "Mike")
+        }
+    </script>
+    <div>
+        <pre id="text">
+John Smith, a software engineer from New York, was born on June 15th, 1985. John is passionate about technology and enjoys hiking in his free time. 
+
+George sent him a text on Tuesday, that reads: "john my fellow software engineer, how are you?" End. JOHN hangs out with nate on a daily basis.
+        </pre>
+    </div>
+
+</body>
+
+
+</html>

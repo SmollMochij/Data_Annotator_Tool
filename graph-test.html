@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Source Sans Pro' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Source Sans 3' rel='stylesheet'>
+    <title>Testing Graphs</title>
+</head>
+<body style="background-color: rgb(255, 255, 255);">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div style="margin-left:20px;margin-top:20px;padding:20px;border-radius:20px;background-color:white;box-shadow:0px 2px 10px rgba(0, 0, 0, 0.25);width:300px">
+        <span style="font-weight:bold;font-size:24px;color:#363030;font-family: Source Sans Pro;">Projects</span>
+        <hr>
+        <div style="font-family:'Source Sans 3';padding-bottom:50px;width:100%;display:grid; grid-template-columns: auto auto auto;">
+            <div style="text-align: center;">
+                <span style="font-weight:bold;display:block;color:#363030;font-size:32px">36</span>
+                <span style="display:block;color:#363030;">Total</span>
+            </div>
+            <div style="text-align: center;">
+                <span style="font-weight:bold;display:block;color:#7876D2;font-size:32px">30</span>
+                <span style="display:block;color:#7876D2;">Active</span>
+            </div>
+            <div style="text-align: center;">
+                <span style="font-weight:bold;display:block;color:#47A450;font-size:32px">6</span>
+                <span style="display:block;color:#47A450;">Done</span>
+            </div>
+        </div>
+        <div style="display:flex;width:70%;padding-bottom:20px;justify-content: center;align-items: center;margin-left:auto;margin-right:auto">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <div style="margin-left:20px;margin-top:20px;padding:20px;border-radius:20px;background-color:white;box-shadow:0px 2px 10px rgba(0, 0, 0, 0.25);width:300px;height:300px">
+        <div style="display:flex;height:100%;padding-bottom:20px;justify-content: space-between;">
+            <div style="font-family: 'Source Sans Pro';">
+                40 annotators<br>
+                30 assigned<br>
+                10 unassigned
+            </div>
+            <div>
+                <canvas id="stackedBar"></canvas>
+            </div>
+            
+        </div>
+    </div>
+        
+
+
+    <script>
+        let active = 30;
+        let done = 6;
+        const ctx = document.getElementById('myChart');
+        const doughData = {
+            labels: ['Active', 'Done'],
+            datasets: [{
+                data: [30, 6],
+                backgroundColor: [
+                    'rgba(120,118,210,1)',
+                    'rgba(135,226,92,1)',
+                ],
+                borderColor: [
+                    'rgba(120,118,210,1)',
+                    'rgba(135,226,92,1)',
+                ],
+                spacing: 5,
+            }],
+        };
+        const doughOptions = {
+            cutout: 70,
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+            scales: {
+                y: {
+                    display: false
+                }
+            }
+        }
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: doughData,
+            options: doughOptions,
+        });
+
+
+        //stacked bar
+        const bar = document.getElementById("stackedBar");
+        const barData = {
+            labels: ['Annotators'],
+            datasets: [{
+                label: 'Assigned',
+                data: [30],
+                backgroundColor: '#8BDF63',
+                borderRadius: 5
+            }, {
+                label: 'Unassigned',
+                data: [10],
+                backgroundColor: '#D64E97',
+                borderRadius: 8
+            }
+        ]
+        }
+        const barOptions = {
+            scales: {
+                x: {
+                    stacked: true,
+                    display: false,
+                },
+                y: {
+                    stacked: true,
+                    display: false,
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
+        };
+        new Chart(bar, {
+            type: "bar",
+            data: barData,
+            options: barOptions
+        })
+
+    </script>
+</body>
+</html>
