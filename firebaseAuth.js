@@ -49,24 +49,27 @@ onAuthStateChanged(auth, user => {
 // Fetch annotators from Firebase Realtime Database
 async function fetchAnnotatorsFromFirebase() {
     try {
-        const annotatorsRef = ref(db, 'annotators'); // Reference to the annotators node in the database
+        // Reference to the annotators node in the database for a specific project
+        const annotatorsRef = ref(db, 'Projects/P000001/Annotators');
         const snapshot = await get(annotatorsRef);
 
         if (snapshot.exists()) {
             const annotators = snapshot.val();
-            const dropdownMenu = document.querySelector('.dropdown-menu');  // Target the dropdown menu here
+            const userList = document.getElementById('user-list');
 
-            dropdownMenu.innerHTML = ''; // Clear the dropdown before populating
+            userList.innerHTML = ''; // Clear the list
 
             Object.keys(annotators).forEach(annotatorId => {
                 const annotator = annotators[annotatorId];
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-item');
 
-                const dropdownItem = document.createElement('a');  // Create an anchor tag for each annotator
-                dropdownItem.classList.add('dropdown-item');  // Add the class needed for Bootstrap styling
-                dropdownItem.href = '#';  // You can customize this if you want to navigate somewhere on click
-                dropdownItem.textContent = annotator.name || 'No name';
+                // Here annotator might be just the ID or the name, so adjust accordingly
+                const name = document.createElement('span');
+                name.textContent = `${annotatorId} (${annotator})`; // Display both key and value
 
-                dropdownMenu.appendChild(dropdownItem);  // Add the item to the dropdown
+                listItem.appendChild(name);
+                userList.appendChild(listItem);
             });
         } else {
             console.log("No annotators found.");
@@ -75,6 +78,7 @@ async function fetchAnnotatorsFromFirebase() {
         console.error('Error fetching annotators from Firebase:', error);
     }
 }
+
 
 // Call fetchAnnotatorsFromFirebase when the page loads
 document.addEventListener('DOMContentLoaded', fetchAnnotatorsFromFirebase);
