@@ -13,6 +13,7 @@ import {
     child,
     onValue,
     onChildAdded,
+    update,
 } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
 // Your web app's Firebase configuration
@@ -438,6 +439,7 @@ window.onload = function () {
             doneCircle.src = "./svg/circle_done.svg";
             markedDone = true;
             console.log(doneCircle)
+            markAsDone();
         } else {
             markDoneButton.style.backgroundColor = "#939393";
             markDoneButton.firstChild.textContent = "Mark as done"
@@ -447,12 +449,33 @@ window.onload = function () {
         }
     })
 
+    function markAsDone() {
 
-    // let testIcon = document.createElement("i");
-    // testIcon.setAttribute("style", "font-size:10px;color: rgb(255, 45, 177)");
-    // testIcon.setAttribute("class", "material-icons");
-    // testIcon.innerHTML = "circle";
-    // document.body.appendChild(testIcon);
+        // Get the value of a specific query parameter
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Get the filename from the URL
+        let filename = getQueryParam('filename'); 
+
+        // If the filename is not null and ends with .txt, remove the .txt extension
+        if (filename && filename.endsWith('.txt')) {
+            filename = filename.replace('.txt', '');
+        }
+
+        // Get the Project ID from the URL
+        let projectID = getQueryParam('projectID');
+
+        // Log or use the filename without the .txt
+        console.log("Filename without extension:", filename);
+        console.log("projectID:", projectID);
+
+        update(ref(database, `Projects/${projectID}/Files/${filename}`), {
+            status: "done",
+          });
+      }
 
     console.log(document.getElementById("textArea"));
     let dropdown = document.getElementById("dropdown");
