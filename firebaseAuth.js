@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, get } from "firebase/database";
 // Remove this if not using analytics
 import { getAnalytics } from "firebase/analytics";
 
@@ -22,6 +23,9 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);  // Initialize Firebase Authentication
 
+// Initialize Firebase Database
+const db = getDatabase(app); // Initialize Firebase Realtime Database
+
 // Authentication functions
 function signIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -42,43 +46,47 @@ onAuthStateChanged(auth, user => {
     }
 });
 
-// Fetch users from the backend
-async function fetchUsers() {
+// Fetch annotators from Firebase Realtime Database
+async function fetchAnnotatorsFromFirebase() {
     try {
-        const response = await fetch('/users');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        const annotatorsRef = ref(db, 'annotators'); // Reference to the annotators node in the database
+        const snapshot = await get(annotatorsRef);
+
+        if (snapshot.exists()) {
+            const annotators = snapshot.val();
+            const userList = document.getElementById('user-list');
+
+            userList.innerHTML = ''; // Clear the list
+
+            Object.keys(annotators).forEach(annotatorId => {
+                const annotator = annotators[annotatorId];
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-item');
+
+                const image = document.createElement('img');
+                image.src = annotator.photoURL || 'https://via.placeholder.com/50'; // Default placeholder image
+                image.alt = annotator.name || 'No name';
+                image.style.width = '50px';
+                image.style.height = '50px';
+                image.style.borderRadius = '50%';
+
+                const name = document.createElement('span');
+                name.textContent = annotator.name || 'No name';
+
+                listItem.appendChild(image);
+                listItem.appendChild(name);
+                userList.appendChild(listItem);
+            });
+        } else {
+            console.log("No annotators found.");
         }
-        const users = await response.json();
-        const userList = document.getElementById('user-list');
-
-        userList.innerHTML = ''; // Clear the list
-
-        users.forEach(user => {
-            const listItem = document.createElement('li');
-            listItem.classList.add('list-item');
-
-            const image = document.createElement('img');
-            image.src = user.photoURL || 'https://via.placeholder.com/50'; // Default placeholder image
-            image.alt = user.displayName || 'No name';
-            image.style.width = '50px';
-            image.style.height = '50px';
-            image.style.borderRadius = '50%';
-
-            const name = document.createElement('span');
-            name.textContent = user.displayName || 'No name';
-
-            listItem.appendChild(image);
-            listItem.appendChild(name);
-            userList.appendChild(listItem);
-        });
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching annotators from Firebase:', error);
     }
 }
 
-// Call fetchUsers when the page loads
-document.addEventListener('DOMContentLoaded', fetchUsers);
+// Call fetchAnnotatorsFromFirebase when the page loads
+document.addEventListener('DOMContentLoaded', fetchAnnotatorsFromFirebase);
 
 // Export functions for use in other files
 export { signIn, signOut, auth };
