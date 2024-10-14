@@ -54,28 +54,19 @@ async function fetchAnnotatorsFromFirebase() {
 
         if (snapshot.exists()) {
             const annotators = snapshot.val();
-            const userList = document.getElementById('user-list');
+            const dropdownMenu = document.querySelector('.dropdown-menu');  // Target the dropdown menu here
 
-            userList.innerHTML = ''; // Clear the list
+            dropdownMenu.innerHTML = ''; // Clear the dropdown before populating
 
             Object.keys(annotators).forEach(annotatorId => {
                 const annotator = annotators[annotatorId];
-                const listItem = document.createElement('li');
-                listItem.classList.add('list-item');
 
-                const image = document.createElement('img');
-                image.src = annotator.photoURL || 'https://via.placeholder.com/50'; // Default placeholder image
-                image.alt = annotator.name || 'No name';
-                image.style.width = '50px';
-                image.style.height = '50px';
-                image.style.borderRadius = '50%';
+                const dropdownItem = document.createElement('a');  // Create an anchor tag for each annotator
+                dropdownItem.classList.add('dropdown-item');  // Add the class needed for Bootstrap styling
+                dropdownItem.href = '#';  // You can customize this if you want to navigate somewhere on click
+                dropdownItem.textContent = annotator.name || 'No name';
 
-                const name = document.createElement('span');
-                name.textContent = annotator.name || 'No name';
-
-                listItem.appendChild(image);
-                listItem.appendChild(name);
-                userList.appendChild(listItem);
+                dropdownMenu.appendChild(dropdownItem);  // Add the item to the dropdown
             });
         } else {
             console.log("No annotators found.");
@@ -87,6 +78,7 @@ async function fetchAnnotatorsFromFirebase() {
 
 // Call fetchAnnotatorsFromFirebase when the page loads
 document.addEventListener('DOMContentLoaded', fetchAnnotatorsFromFirebase);
+
 
 // Export functions for use in other files
 export { signIn, signOut, auth };
