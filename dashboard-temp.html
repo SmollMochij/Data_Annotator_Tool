@@ -682,6 +682,7 @@
                   "
                 />
               </div>
+
               <div class="form-group">
                 <label
                   for="projectDescription"
@@ -755,77 +756,127 @@
                 >
                   Invite
                 </button>
-              </div>
-              <div class="form-group">
-                <label
-                  for="dataFiles"
-                  style="
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: #333;
-                    display: block;
-                    margin-bottom: 8px;
-                  "
-                  >Add data files</label
-                >
-                <p
-                  class="description"
-                  style="font-size: 12px; color: #666; margin-bottom: 10px"
-                >
-                  Optional: Upload unstructured text files to be annotated.
-                  Files can be managed later.
-                </p>
-                <input
-                  id="dataFiles"
-                  type="text"
-                  placeholder="file1.txt, file2.txt, file3.txt, ..."
-                  readonly
-                  style="
-                    width: 100%;
-                    padding: 10px;
-                    margin-top: 5px;
-                    border: 1px solid #ccc;
-                    border-radius: 6px;
-                    font-size: 14px;
-                  "
-                />
-                <button
-                  class="upload-btn"
-                  type="button"
-                  style="
-                    background-color: #007bff;
-                    color: white;
-                    padding: 8px 12px;
-                    font-size: 14px;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    margin-top: 8px;
-                  "
-                >
-                  Upload
-                </button>
-              </div>
-              <button
-                class="create-project-btn"
-                type="submit"
-                style="
-                  background-color: #28a745;
-                  color: white;
-                  padding: 12px;
-                  font-size: 16px;
-                  border: none;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  margin-top: 10px;
-                "
-              >
-                Create Project
-              </button>
-            </form>
-          </div>
+              
         </div>
+        <div class="form-group">
+          <label
+            for="projectInstruction"
+            style="
+              font-size: 16px;
+              font-weight: bold;
+              color: #333;
+              display: block;
+              margin-bottom: 8px;
+            "
+            >Instruction</label
+          >
+          <textarea
+            id="projectInstruction"
+            placeholder="Provide project instructions"
+            style="
+              width: 100%;
+              padding: 10px;
+              margin-top: 5px;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+              font-size: 14px;
+            "
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label
+            for="projectClasses"
+            style="
+              font-size: 16px;
+              font-weight: bold;
+              color: #333;
+              display: block;
+              margin-bottom: 8px;
+            "
+            >Add Classes</label
+          >
+          <div id="classContainer">
+            <input
+              type="text"
+              id="newClassInput"
+              placeholder="Enter class name"
+              style="
+                width: 70%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 14px;
+              "
+            />
+            <button
+              id="addClassBtn"
+              type="button"
+              style="
+                background-color: #007bff;
+                color: white;
+                padding: 8px 12px;
+                font-size: 14px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-left: 8px;
+              "
+              onclick="addClass()"
+            >
+              Add
+            </button>
+          </div>
+          <ul
+            id="classList"
+            style="margin-top: 10px; list-style-type: none; padding: 0"
+          ></ul>
+        </div>
+
+        <script>
+          function addClass() {
+            const classInput = document.getElementById("newClassInput");
+            const classList = document.getElementById("classList");
+            if (classInput.value.trim() !== "") {
+              const listItem = document.createElement("li");
+              listItem.textContent = classInput.value;
+              listItem.style.marginBottom = "5px";
+
+              const removeBtn = document.createElement("button");
+              removeBtn.textContent = "Remove";
+              removeBtn.style.marginLeft = "10px";
+              removeBtn.style.color = "red";
+              removeBtn.onclick = function () {
+                listItem.remove();
+              };
+
+              listItem.appendChild(removeBtn);
+              classList.appendChild(listItem);
+              classInput.value = "";
+            }
+          }
+        </script>
       </div>
+    </div>
+    <button
+      class="create-project-btn"
+      type="submit"
+      style="
+        background-color: #28a745;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 10px;
+      "
+    >
+      Create Project
+    </button>
+  </form>
+</div>
     </div>
 
     <!-- JavaScript for Direct Modal Opening on Button Click -->
