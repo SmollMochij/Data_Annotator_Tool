@@ -14,6 +14,7 @@ import {
   child,
   onValue,
   onChildAdded,
+  update,
 } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
 // Your web app's Firebase configuration
@@ -52,7 +53,7 @@ export function createUser(username, email, password, inputCode) {
               alert("User created successfully: " + user.email);
 
               // Write user's data in the database
-              writeUserData(user.uid, username, user.email);
+              writeUserData(user.uid, username, user.email, inputCode);
 
               // Mark input code as user
               markCodeAsTrue(inputCode);
@@ -76,15 +77,34 @@ export function createUser(username, email, password, inputCode) {
     });
 }
 
-function writeUserData(userId, username, email) {
-  set(ref(database, "users/" + userId), {
+
+// Write user data in database
+function writeUserData(userId, username, email, inputCode) {
+  let userType = '';
+
+  // Set to project-manager for codes starting with PM
+  if (inputCode.startsWith('PM')) {
+    userType = 'project-manager'; 
+  }
+  // Set to annotator for codes starting with AN 
+  else if (inputCode.startsWith('AN')) {
+    userType = 'annotator'; 
+  } else {
+    userType = 'general';
+  }
+
+  set(ref(getDatabase(), `Users/${userType}/${userId}`), {
     username: username,
     email: email,
+  }).then(() => {
+    console.log(`User data written to ${userType} path.`);
+  }).catch((error) => {
+    console.error("Error writing user data:", error);
   });
 }
 
 function markCodeAsTrue(inputCode) {
-  set(ref(database, `AccountCodes/` + inputCode), {
+  update(ref(database, `AccountCodes/` + inputCode), {
     Used: true,
   });
 }
