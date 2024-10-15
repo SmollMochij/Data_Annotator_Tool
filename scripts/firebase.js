@@ -114,10 +114,41 @@ export function signInUser(email, password) {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      const userId = userCredential.uid;
-      const dbRef = ref(getDatabase());
+      const userId = user.uid;;
 
-      window.location.href = "../dashboard-temp.html";
+      // Retrieve the user data from the database
+      get(ref(database, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          let userType = '';
+
+          const data = snapshot.val();
+
+          // Check user data to determine user type using bracket notation for project-manager
+          if (data["project-manager"] && data["project-manager"][userId]) {
+            userType = 'project-manager';
+          } else if (data.annotator && data.annotator[userId]) {
+            userType = 'annotator';
+          }
+
+          // Redirect to project manager dashboard
+          if (userType === 'project-manager') {
+            window.location.href = "../dashboard-temp.html"; 
+          }
+          // Redirect to annotator dashboard 
+          else if (userType === 'annotator') {
+            // To-Do: change to annotator dashboard when it's available
+            window.location.href = "../dashboard.html"; 
+          } 
+          else {
+            alert("User type not recognized."); // Handle unknown user type
+          }
+        } else {
+          alert("User data not found in the database.");
+        }
+      }).catch((error) => {
+        console.error("Error retrieving user data:", error);
+      });
+      
     })
     .catch((error) => {
       const errorCode = error.code;
