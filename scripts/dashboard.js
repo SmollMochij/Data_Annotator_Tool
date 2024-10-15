@@ -85,7 +85,7 @@ window.onload = function () {
         let newfileItem = document.createElement("div")
         newfileItem.setAttribute("class", "file-item");
         let newFileImg = document.createElement("img")
-        newFileImg.src = "upload.png"
+        newFileImg.src = "images/button-icons/upload.png"
         newFileImg.alt = "File"
         newFileImg.id = "newFileButton"
         let newFileName = document.createElement("p")
@@ -100,14 +100,19 @@ window.onload = function () {
         document.getElementById("files").appendChild(newfileItem)
 
         snapshot.forEach((childSnapshot) => {
-            // const data = childSnapshot.val();
+            const data = childSnapshot.val();
             console.log(childSnapshot.key);
 
             let fileItem = document.createElement("div")
             fileItem.setAttribute("class", "file-item");
             let img = document.createElement("img")
-            img.src = "todo.png"
-            img.alt = "File"
+            switch (data.status){
+                case "done":
+                    img.src = "images/button-icons/done.png"; break
+                default:
+                    img.src = "images/button-icons/todo.png"; break
+            }
+            img.alt = "File " + data.status;
             let name = document.createElement("p")
             name.textContent = childSnapshot.key
 
@@ -134,8 +139,9 @@ function addFileToDatabase(name, content) {
     let project = "P000001"
     name = name.substring(0, name.indexOf(".")) //remove the extension (.txt) to get the filename
     set(ref(database, `Projects/${project}/Files/${name}`), {
-        assignedAnnotator: "5lbncsVlmchrGAa2NwY6UWL5PnF3",
-        fileContent: content
+        assignedAnnotator: "",
+        fileContent: content,
+        status: "unassigned",
     }).catch((error) => {
         alert(error)
     })

@@ -14,6 +14,7 @@ import {
   child,
   onValue,
   onChildAdded,
+  update,
 } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
 // Your web app's Firebase configuration
@@ -52,7 +53,7 @@ export function createUser(username, email, password, inputCode) {
               alert("User created successfully: " + user.email);
 
               // Write user's data in the database
-              writeUserData(user.uid, username, user.email);
+              writeUserData(user.uid, username, user.email, inputCode);
 
               // Mark input code as user
               markCodeAsTrue(inputCode);
@@ -76,15 +77,34 @@ export function createUser(username, email, password, inputCode) {
     });
 }
 
-function writeUserData(userId, username, email) {
-  set(ref(database, "users/" + userId), {
+
+// Write user data in database
+function writeUserData(userId, username, email, inputCode) {
+  let userType = '';
+
+  // Set to project-manager for codes starting with PM
+  if (inputCode.startsWith('PM')) {
+    userType = 'project-manager'; 
+  }
+  // Set to annotator for codes starting with AN 
+  else if (inputCode.startsWith('AN')) {
+    userType = 'annotator'; 
+  } else {
+    userType = 'general';
+  }
+
+  set(ref(getDatabase(), `Users/${userType}/${userId}`), {
     username: username,
     email: email,
+  }).then(() => {
+    console.log(`User data written to ${userType} path.`);
+  }).catch((error) => {
+    console.error("Error writing user data:", error);
   });
 }
 
 function markCodeAsTrue(inputCode) {
-  set(ref(database, `AccountCodes/` + inputCode), {
+  update(ref(database, `AccountCodes/` + inputCode), {
     Used: true,
   });
 }
@@ -94,10 +114,41 @@ export function signInUser(email, password) {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      const userId = userCredential.uid;
-      const dbRef = ref(getDatabase());
+      const userId = user.uid;;
 
-      window.location.href = "../dashboard-temp.html";
+      // Retrieve the user data from the database
+      get(ref(database, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          let userType = '';
+
+          const data = snapshot.val();
+
+          // Check user data to determine user type using bracket notation for project-manager
+          if (data["project-manager"] && data["project-manager"][userId]) {
+            userType = 'project-manager';
+          } else if (data.annotator && data.annotator[userId]) {
+            userType = 'annotator';
+          }
+
+          // Redirect to project manager dashboard
+          if (userType === 'project-manager') {
+            window.location.href = "../dashboard-temp.html"; 
+          }
+          // Redirect to annotator dashboard 
+          else if (userType === 'annotator') {
+            // To-Do: change to annotator dashboard when it's available
+            window.location.href = "../dashboard.html"; 
+          } 
+          else {
+            alert("User type not recognized."); // Handle unknown user type
+          }
+        } else {
+          alert("User data not found in the database.");
+        }
+      }).catch((error) => {
+        console.error("Error retrieving user data:", error);
+      });
+      
     })
     .catch((error) => {
       const errorCode = error.code;
