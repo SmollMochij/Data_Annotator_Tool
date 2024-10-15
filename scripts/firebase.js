@@ -177,7 +177,6 @@ export function signInUser(email, password) {
 
 export function createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses) {
 
-  alert()
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);

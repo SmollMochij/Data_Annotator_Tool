@@ -313,7 +313,7 @@
             margin-bottom: auto;
           "
         >
-          <span class="user-type">Annotator</span>
+          <span class="user-type">Project Manager</span>
           <span style="font-size: 20px; padding-left: 20px; padding-right: 20px"
             >|</span
           >
@@ -354,7 +354,7 @@
           <nav class="side-nav">
             <div class="nav-link">
               <div>
-                <img style="width: 28px" src="images/button-icons/dashboard-button-unselected.png" />
+                <img style="width: 28px" src="images/button-icons/dashboard-button-selected.png" />
               </div>
               <div>
                 <a style="margin-left: 5px">Dashboard</a>
@@ -362,7 +362,7 @@
             </div>
             <div class="nav-link">
               <div>
-                <img style="width: 28px" src="images/button-icons/projects-button-selected.png" />
+                <img style="width: 28px" src="images/button-icons/projects-button-unselected.png" />
               </div>
               <div>
                 <a style="margin-left: 5px" ;>Projects</a>
@@ -933,5 +933,36 @@
       document.getElementById("signOutButton").addEventListener('click', signOutAccount);
       
     </script>
+
+<script>
+  var listOfClasses = [];
+  function addClass() {
+  const classInput = document.getElementById("newClassInput");
+  const classList = document.getElementById("classList");
+  if (classInput.value.trim() !== "") {
+      listOfClasses.push(classInput.value);
+      const listItem = document.createElement("li");
+      listItem.textContent = classInput.value;
+      listItem.style.marginBottom = "5px";
+
+      console.log("list of items: ", listOfClasses);
+
+      // Grabs the list of classes
+      document.getElementById("listOfClasses").innerText = JSON.stringify(listOfClasses);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "Remove";
+      removeBtn.style.marginLeft = "10px";
+      removeBtn.style.color = "red";
+      removeBtn.onclick = function () {
+      listItem.remove();
+      };
+
+      listItem.appendChild(removeBtn);
+      classList.appendChild(listItem);
+      classInput.value = "";
+  }
+  }
+</script>
   </body>
 </html>
