@@ -58,7 +58,7 @@ export function createUser(username, email, password, inputCode) {
               // Mark input code as user
               markCodeAsTrue(inputCode);
 
-              window.location.href = "/dashboard-temp.html"
+              window.location.href = `/dashboard-ann.html?${user.uid}`
             })
             .catch((error) => {
               const errorCode = error.code;
@@ -132,12 +132,12 @@ export function signInUser(email, password) {
 
           // Redirect to project manager dashboard
           if (userType === 'project-manager') {
-            window.location.href = `../dashboard-temp.html?userId=${userId}`; 
+            window.location.href = `../dashboard-pm.html?userId=${userId}`; 
           }
           // Redirect to annotator dashboard 
           else if (userType === 'annotator') {
             // To-Do: change to annotator dashboard when it's available
-            window.location.href = `../dashboard.html?userId=${userId}`; 
+            window.location.href = `../dashboard-ann.html?userId=${userId}`; 
           } 
           else {
             alert("User type not recognized."); // Handle unknown user type
@@ -177,6 +177,7 @@ export function signInUser(email, password) {
 
 export function createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses) {
 
+  alert()
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
