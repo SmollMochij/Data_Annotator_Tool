@@ -132,12 +132,12 @@ export function signInUser(email, password) {
 
           // Redirect to project manager dashboard
           if (userType === 'project-manager') {
-            window.location.href = "../dashboard-temp.html"; 
+            window.location.href = `../dashboard-temp.html?userId=${userId}`; 
           }
           // Redirect to annotator dashboard 
           else if (userType === 'annotator') {
             // To-Do: change to annotator dashboard when it's available
-            window.location.href = "../dashboard.html"; 
+            window.location.href = `../dashboard.html?userId=${userId}`; 
           } 
           else {
             alert("User type not recognized."); // Handle unknown user type
@@ -173,4 +173,40 @@ export function signInUser(email, password) {
           break;
       }
     });
+}
+
+export function createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses) {
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+  let userId = getQueryParam('userId');
+
+  writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId);
+}
+
+function writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId) {
+    const projectID = generateProjectID();
+
+    set(ref(getDatabase(), `Projects/${projectID}`), {
+      Name: projectName,
+      Description: projectDescription,
+      Annotators: annotators,
+      Instruction: projectInstruction,
+      Classes: listOfClasses,
+    }).then(() => {
+        console.log(`Project data written for project: ${projectName}`);
+    }).catch((error) => {
+        console.error("Error writing project data:", error);
+    });
+
+    set(ref(getDatabase(), `Users/project-manager/${userId}/Projects/${projectID}`), {
+      ProjectId: projectID,
+    })
+}
+
+function generateProjectID() {
+  const randomNumber = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
+  return `P${randomNumber}`;
 }

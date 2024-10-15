@@ -813,32 +813,42 @@
           ></ul>
         </div>
 
+        <div id="listOfClasses" style="display:none"></div>
         <script>
+          var listOfClasses = [];
           function addClass() {
-            const classInput = document.getElementById("newClassInput");
-            const classList = document.getElementById("classList");
-            if (classInput.value.trim() !== "") {
+          const classInput = document.getElementById("newClassInput");
+          const classList = document.getElementById("classList");
+          if (classInput.value.trim() !== "") {
+              listOfClasses.push(classInput.value);
               const listItem = document.createElement("li");
               listItem.textContent = classInput.value;
               listItem.style.marginBottom = "5px";
-
+  
+              console.log("list of items: ", listOfClasses);
+  
+              // Grabs the list of classes
+              document.getElementById("listOfClasses").innerText = JSON.stringify(listOfClasses);
+  
               const removeBtn = document.createElement("button");
               removeBtn.textContent = "Remove";
               removeBtn.style.marginLeft = "10px";
               removeBtn.style.color = "red";
               removeBtn.onclick = function () {
-                listItem.remove();
+              listItem.remove();
               };
-
+  
               listItem.appendChild(removeBtn);
               classList.appendChild(listItem);
               classInput.value = "";
-            }
           }
-        </script>
+          }
+      </script>
+  
       </div>
     </div>
     <button
+      id="createProject"
       class="create-project-btn"
       type="submit"
       style="
@@ -879,6 +889,24 @@
           }
         };
       });
+    </script>
+
+    <!-- JavaScript for new project-->
+    <script type="module">
+      import { createNewProject } from "./scripts/firebase.js";
+
+      // Grab the input from new project form
+      function clickHandling() {
+          let projectName = document.getElementById("projectName").value;
+          let projectDescription = document.getElementById("projectDescription").value;
+          let annotators = document.getElementById("annotators").value;
+          let projectInstruction = document.getElementById("projectInstruction").value;
+          let listOfClasses = JSON.parse(document.getElementById("listOfClasses").innerText);
+
+          createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses);
+      }
+
+      document.getElementById("createProject").addEventListener('click', clickHandling);
     </script>
   </body>
 </html>
