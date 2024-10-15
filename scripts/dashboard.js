@@ -18,19 +18,28 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
+const database = getDatabase();
+const annotatorRef = ref(database, 'annotators/');
 
-window.onload = function() {
+// Fetch and display the list of annotators in the dropdown
+onChildAdded(annotatorRef, (snapshot) => {
+    const annotator = snapshot.val();
+    const annotatorOption = document.createElement('option');
+    annotatorOption.value = annotator.id; // Assuming annotator has an 'id' field
+    annotatorOption.textContent = annotator.name; // Assuming annotator has a 'name' field
+    document.getElementById('annotatorDropdown').appendChild(annotatorOption);
+});
+
+window.onload = function () {
     //find the upload files button on webpage
     var uploadButton = document.getElementById("uploadButton")
     //assign an event listener to detect uploaded files
     uploadButton.addEventListener("change", function () {
         //for each file uploaded
-        for(let i = 0; i < uploadButton.files.length ; i++) {
+        for (let i = 0; i < uploadButton.files.length; i++) {
             //use the FileReader to read its contents
             let fr = new FileReader()
-            fr.onload = function() {
-                //log the FileReader's ready state (0 = EMPTY, 1 = LOADING, 2 = DONE)
+            fr.onload = function () {
                 console.log(`fr:${fr}`)
                 console.log(`fr.readyState:${fr.readyState}`)
                 console.log(`fr.result:${fr.result}`)
@@ -40,8 +49,8 @@ window.onload = function() {
 
                 let fileExtension = uploadButton.files[i].name.split('.').pop();
                 console.log(fileExtension)
-                
-                if(fileExtension == 'txt') {
+
+                if (fileExtension == 'txt') {
                     let newFileName = document.createElement("li")
                     newFileName.textContent = uploadButton.files[i].name
                     document.getElementById("listOfFileNames").appendChild(newFileName)
@@ -54,7 +63,7 @@ window.onload = function() {
                     alert(`Error: ${uploadButton.files[i].name} is not a valid text file! Please upload .txt files only`)
                 }
             }
-            fr.onerror = function(event) {
+            fr.onerror = function (event) {
                 alert(`Error reading file: ${uploadButton.files[i].name}`);
             }
             fr.readAsText(this.files[i]);
@@ -82,7 +91,7 @@ window.onload = function() {
         let newFileName = document.createElement("p")
         newFileName.textContent = "New file"
         //new file button
-        newfileItem.addEventListener("click", function(e) {
+        newfileItem.addEventListener("click", function (e) {
             document.getElementById("uploaderDiv").style.display = "block"
         })
 
@@ -105,24 +114,25 @@ window.onload = function() {
             fileItem.appendChild(img)
             fileItem.appendChild(name)
             let projectID = `P000001` //TODO: placeholder for now, update later
-            fileItem.addEventListener("click", function(e) {
+            fileItem.addEventListener("click", function (e) {
                 window.location.href = `annotation.html?projectID=${projectID}&filename=${childSnapshot.key}.txt` //TODO: change to annotation.html
             })
             document.getElementById("files").appendChild(fileItem)
         })
     });
 
-    document.getElementById("doneButton").addEventListener("click", function(e) {
+    document.getElementById("doneButton").addEventListener("click", function (e) {
         document.getElementById("uploaderDiv").style.display = "none"
     })
 }
+
 //add each uploaded file to the database
 function addFileToDatabase(name, content) {
     //Project P000001 is just a placeholder for now
     //5lbncsVlmchrGAa2NwY6UWL5PnF3 is the id from a random authentication user
     //then use file name as key
     let project = "P000001"
-    name = name.substring(0,name.indexOf(".")) //remove the extension (.txt) to get the filename
+    name = name.substring(0, name.indexOf(".")) //remove the extension (.txt) to get the filename
     set(ref(database, `Projects/${project}/Files/${name}`), {
         assignedAnnotator: "5lbncsVlmchrGAa2NwY6UWL5PnF3",
         fileContent: content

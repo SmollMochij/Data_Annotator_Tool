@@ -407,40 +407,69 @@
                         This is the project description
                       </p>
                     </div>
-                  </div>
-                </div>
-                <!-- New Card with Upload Button and File Grid -->
-                <div
-                  class="row pt-3 p-1"
-                  style="background-color: rgb(98, 37, 240, 0); height: 30%"
-                >
-                  <div class="col-md">
-                    <div class="card" style="height: 100%; padding: 20px">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <h4>Data Files</h4>
-                          <div class="d-flex flex-row mb-3">
-                            <h6 class="me-3"><strong>• All</strong></h6>
-                            <h6 class="me-3">• Done</h6>
-                            <h6 class="me-3">• Todo</h6>
-                            <h6 class="me-3">• Unassigned</h6>
-                          </div>
-                          <!-- Scroll wheel -->
-                          <div
-                            class="file-container"
-                            style="max-height: 300px; overflow-y: auto"
-                          >
-                            <!-- File Grid Layout -->
-                            <div id="files" class="file-container">
-                              <!-- Upload file button -->
-                              <div class="file-item">
-                                <img
-                                  id="newFileButton"
-                                  src="upload.png"
-                                  alt="File Icon"
-                                />
-                                <p>New file</p>
-                              </div>
+                </nav>
+            </div>
+            <!-- Annotation Interface Body -->
+            <div class="col-md-11">
+                <div class="col-md-10 mx-auto pt-5 px-3">
+                    <div class="row px-4" style="min-height:700px;">
+                        <div class="col-md" style="background-color: rgba(255, 24, 193, 0);">
+                            <div class="row pt-3 p-1" style="background-color:rgb(98, 37, 240,0);height:30%">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%; padding: 20px;">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h3 id="title">First Project</h3>
+                                            <h3 style="margin-left: auto;" id="id">Project ID: P000001</h3>
+                                        </div>
+                                        <p class="card-text" id="desc">This is the project description</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pt-3 p-1">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%; padding: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4>Assign Annotators to Project</h4>
+                                                <!-- Annotators list -->
+                                                <select id="annotatorDropdown" class="form-control">
+                                                    <!-- Options will be populated dynamically from Firebase -->
+                                                </select>
+                                                <button id="assignAnnotatorButton" class="btn btn-primary mt-3">Assign Annotator</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <!-- New Card with Upload Button and File Grid -->
+                            <div class="row pt-3 p-1" style="background-color:rgb(98, 37, 240,0);height:30%">
+                                <div class="col-md">
+                                    <div class="card" style="height:100%; padding: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4>Data Files</h4>
+                                                <div class="d-flex flex-row mb-3">
+                                                    <h6 class="me-3"><strong>• All</strong></h6>
+                                                    <h6 class="me-3">• Done</h6>
+                                                    <h6 class="me-3">• Todo</h6>
+                                                    <h6 class="me-3">• Unassigned</h6>
+                                                </div>
+                                                <!-- Scroll wheel -->
+                                                <div class="file-container"
+                                                    style="max-height: 300px; overflow-y: auto;">
+                                                    <!-- File Grid Layout -->
+                                                    <div id="files" class="file-container">
+                                                        <!-- Upload file button -->
+                                                        <div class="file-item">
+                                                            <img id="newFileButton" src="upload.png" alt="File Icon">
+                                                            <p>New file</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                           </div>
                         </div>
