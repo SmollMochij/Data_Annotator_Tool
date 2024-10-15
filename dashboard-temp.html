@@ -653,7 +653,7 @@
           style="display: flex; flex-direction: column; gap: 20px"
         >
           <div class="project-details">
-            <form>
+            <form action="javascript:void(0)">
               <div class="form-group">
                 <label
                   for="projectName"
@@ -923,7 +923,15 @@
           let projectInstruction = document.getElementById("projectInstruction").value;
           let listOfClasses = JSON.parse(document.getElementById("listOfClasses").innerText);
 
+          //validation
+          if (!projectName || !projectDescription || !annotators || !projectInstruction)
+            return;
+
           createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses);
+          alert("Project created successfully");
+          var modal = document.getElementById("newProjectModal"); 
+          modal.style.display='none';// hide modal
+          window.location.reload();// reload url to clear fields
       }
 
       document.getElementById("createProject").addEventListener('click', clickHandling);
