@@ -85,7 +85,7 @@ window.onload = function () {
         let newfileItem = document.createElement("div")
         newfileItem.setAttribute("class", "file-item");
         let newFileImg = document.createElement("img")
-        newFileImg.src = "upload.png"
+        newFileImg.src = "images/button-icons/upload.png"
         newFileImg.alt = "File"
         newFileImg.id = "newFileButton"
         let newFileName = document.createElement("p")
@@ -108,12 +108,9 @@ window.onload = function () {
             let img = document.createElement("img")
             switch (data.status){
                 case "done":
-                    img.src = "done.png"; break
-                case "todo":
-                    img.src = "todo.png"; break
-                case "unassigned":
+                    img.src = "images/button-icons/done.png"; break
                 default:
-                    img.src = "unassigned.png"; break
+                    img.src = "images/button-icons/todo.png"; break
             }
             img.alt = "File " + data.status;
             let name = document.createElement("p")
