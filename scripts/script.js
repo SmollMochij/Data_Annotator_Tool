@@ -306,7 +306,6 @@ window.onload = function () {
     //classify tool testing
     classifyToolButton.addEventListener("mouseover", function () {
         classifyToolButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
-        // document.getElementById("classifyTip").setAttribute("display", "inline-block");
         document.getElementById("classifyTip").style.display = "inline-block";
     });
     classifyToolButton.addEventListener("mouseleave", function () {
@@ -485,12 +484,7 @@ window.onload = function () {
         //if the user selects text (not just whitespace)
         if (window.getSelection().toString().trim().length > 0 && toolSelected === tool.HIGHLIGHT) {
             console.log(window.getSelection().toString().trim())
-            // alert(window.getSelection());
-            //create dropdown
-            // let dropdown = document.createElement("div");
-            // document.getElementById("textDiv").appendChild(dropdown);
 
-            // dropdown.setAttribute("style", `border-style:solid;border-width:1px;border-color:rgb(71,66,66);padding:10px;z-index:100;display:block;margin:auto;position:absolute;top:${event.pageY}px;left:${event.pageX}px;background: white;`);
             dropdown.style.display = 'block';
             dropdown.style.position = 'fixed';
             dropdown.style.left = (event.pageX - 16) + 'px';
@@ -527,53 +521,10 @@ window.onload = function () {
     // document.getElementById("textArea").setAttribute("class", "test");
     document.getElementById("textArea").setAttribute("style", "font-size:20px; word-spacing:3px; font-family:'Source Sans 3', Helvetica, sans-serif; color:#363030");
 
-    //UPLOAD TEXT FILE
-    // let uploadFileButton = document.getElementById("fileinput");
-    // uploadFileButton.addEventListener('change', () => {
-    //     let files = uploadFileButton.files;
-    //     if(files.length == 0) {
-    //         return;
-    //     }
-    //     const file = files[0];
-    //     let reader = new FileReader();
-    //     reader.onload = (e) => {
-    //         const file = e.target.result;
-    //         const lines = file.split(/\r\n |\n/);
-    //         document.getElementById("textArea").innerHTML = lines.join('\n');
-    //         //user has uploaded a text file
-    //         uploadedfile = true;
-    //         console.log("File uploaded: " + uploadedfile);
-    //         createJSON(document.getElementById("textArea").innerHTML);
-    //         document.getElementById("classifyButton").setAttribute("class", "btn btn-success");
-    //         document.getElementById("addClassButton").setAttribute("class", "btn btn-primary");
-    //         //notification
-    //         displayNotification("File uploaded succesfully!");
-
-    //     };
-    //     reader.onerror = (e) => alert("Problem reading text file!");
-    //     reader.readAsText(file);
-    // })
-
     console.log(
         'The page has the following classes:\n  .' +
         listCSSClasses().join('\n  .')
     )
-
-    //TEST SPAN
-    let testSpan = document.getElementById("testSpan");
-    // testSpan.addEventListener("mouseover", function(e){
-    //     console.log("hover!");
-    //     testSpan.setAttribute("style", "cursor: url('svg/erase_cursor.svg'), auto;text-decoration:underline");
-    // });
-    // testSpan.addEventListener("mouseout", function(e){
-    //     console.log("leave!");
-    //     testSpan.setAttribute("style", "text-decoration:none");
-    // });
-    // testSpan.addEventListener("click", function(e){
-    //     alert("click!");
-    //     //more span testing
-    //     console.log("span - " + document.getElementsByTagName("span")[0]);
-    // });
 
     //SPANS
     let spans = document.getElementsByTagName("span");
@@ -675,28 +626,6 @@ function createClass(name, colourHex) {
             console.log(document.getElementById(name));
             // classesList.appendChild(document.createElement("br"));
 
-
-            //create radio button for new class
-            // let newClassRadioButton = document.createElement("input");
-            // newClassRadioButton.setAttribute("type", "radio");
-            // newClassRadioButton.setAttribute("style", "margin-top:-5px");
-            // newClassRadioButton.setAttribute("name", "class");
-            // newClassRadioButton.setAttribute("value", name.toString());
-            // newClassRadioButton.setAttribute("id", name.toString().toLowerCase());
-
-
-
-
-            //create label for radio button
-            // let label = document.createElement("label");
-            // label.setAttribute("for", newClassRadioButton.id);
-            // label.setAttribute("style", "margin-left:5px");
-            // label.innerHTML = name.toString().toUpperCase();
-            // classesList.appendChild(newClassRadioButton);
-            // classesList.appendChild(label);
-
-
-            //equation to determine text colour
             //if highlight colour is too bright, text colour becomes black 
             let textColour = "white";
             if ((red * 0.299 + green * 0.587 + blue * 0.114) >= 186.00) {
@@ -728,12 +657,6 @@ function createClass(name, colourHex) {
             }
             `;
             document.head.appendChild(tooltipStyle);
-            //DEBUG: List all classes in index.html eg. class="row"
-            // alert(
-            // 'The page has the following classes:\n  .' +
-            // listCSSClasses().join('\n  .')
-            // )
-
 
             //insert new class into classesList
             allClasses.push(name.toUpperCase());
@@ -1068,10 +991,6 @@ function spanTest() {
         });
         //add click to remove function
         spans[i].addEventListener("click", function (e) {
-            // alert("Removing classification");
-            // var replacement = document.createTextNode('');
-            // replacement.textContent = spans[i].innerHTML;
-            // spans[i].parentNode.replaceChild(replacement, spans[i]);
             newRemoveClassification(spans[i].getAttribute("class"), spans[i].innerHTML);
         });
     }
@@ -1100,7 +1019,7 @@ function exportToJSON() {
     var blob = new Blob([stringified], { type: "application/json" });
     var url = URL.createObjectURL(blob);
 
-    var a = document.createElement("a"); //'a' is a fuckin hyperlink which refreshes the page afterward lol try to fix
+    var a = document.createElement("a");
     a.download = 'jsonFile.json';
     a.href = url;
     a.id = 'jsonFile';

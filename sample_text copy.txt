@@ -1,0 +1,4 @@
+John Smith, a software engineer from New York, was born on June 15th, 1985. 
+John is passionate about technology and enjoys hiking in his free time. 
+
+George sent him a text on Tuesday, that reads "john my fellow software engineer, how are you?" End.
