@@ -915,6 +915,119 @@
       });
     </script>
 
+    <div id="listOfClasses" style="display:none"></div>
+    <script type="module">
+      // var database = firebase.database();
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+      import {
+        getDatabase,
+        ref,
+        set,
+        get,
+        child,
+        onValue,
+        onChildAdded,
+        update,
+        query,
+        orderByChild,
+        equalTo,
+      } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+      function sendEmail(email, accessCode) {
+        const subject = "Data Annotator - Annotator Access Code";
+        const body = `Hi ${email},\n\nHere is your unique access code: ${accessCode}
+        \n\nVisit this link to create your Annotator account on Data Annotator: \nhttp://127.0.0.1:3000/create-account.html\n\n
+        Enquiries? 
+        Please contact your Project Manager\n\n-------------------\n\nData Annotator`;
+        window.open(
+          `mailto:${email}?subject=${encodeURIComponent(
+            subject
+          )}&body=${encodeURIComponent(body)}`
+        );
+      }
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+        authDomain: "data-annotator-tool.firebaseapp.com",
+        databaseURL:
+          "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "data-annotator-tool",
+        storageBucket: "data-annotator-tool.appspot.com",
+        messagingSenderId: "913657972954",
+        appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+        measurementId: "G-RWJF94GG05",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      let assignButton = document.getElementById("assignAnnotatorButton")
+      assignButton.addEventListener("click", async function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const email = document.getElementById("annotatorDropdown").value.trim();
+        console.log("Email entered:", email);
+
+        if (!email) {
+          alert("Please enter an email.");
+          return;
+        }
+
+        // Reference to the AccountCodes node
+        const accountCodesRef = ref(database, "AccountCodes");
+        const emailQuery = query(
+          accountCodesRef,
+          orderByChild("email"),
+          equalTo(email)
+        );
+
+        try {
+          // Check if email already exists
+          const emailSnapshot = await get(emailQuery);
+          if (emailSnapshot.exists()) {
+            alert("This email already has an associated access code.");
+            return;
+          }
+
+          // Generate unique Access Code
+          let newLoginCode;
+          let codeSnapshot;
+          do {
+            newLoginCode = `AN${String(Date.now()).slice(-4)}`;
+            codeSnapshot = await get(
+              ref(database, `AccountCodes/${newLoginCode}`)
+            );
+          } while (codeSnapshot.exists());
+
+          // Save to Firebase Realtime Database
+          const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
+          await set(newLoginRef, {
+            Used: false,
+          });
+
+          console.log("Data saved successfully.");
+          alert(
+            `Email successfully registered! Their access code is ${newLoginCode}.`
+          );
+
+          // Send email with access code
+          sendEmail(email, newLoginCode);
+        } catch (error) {
+          console.error("Error writing to database:", error);
+          alert("Error saving data. Please check the console.");
+        }
+      })
+
+    </script>
+
     <!-- JavaScript for new project-->
     <script type="module">
       import { createNewProject } from "./scripts/firebase.js";
