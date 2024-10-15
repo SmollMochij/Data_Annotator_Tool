@@ -900,5 +900,32 @@
         };
       });
     </script>
+
+    <!-- JavaScript for new project-->
+    <script type="module">
+        import { createUser } from "./scripts/firebase.js";
+
+        function clickHandling() {
+            let inputCode = document.getElementById("code").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let confirmpassword = document.getElementById("confirmpassword").value;
+            let username = document.getElementById("username").value;
+
+            // check if password matches confirm password
+            if (password == confirmpassword) {
+                // check if password is at least 6 characters long
+                if (password.length > 5) {
+                    createUser(username, email, password, inputCode);
+                } else {
+                    alert("Password needs to be at least 6 characters")
+                }
+            } else {
+                alert("Password does not match confirm password");
+            }
+        }
+
+        document.getElementById("SubmitButton").addEventListener('click', clickHandling);
+    </script>
   </body>
 </html>
