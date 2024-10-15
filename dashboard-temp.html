@@ -1,230 +1,255 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <!-- Page title -->
     <title>Data Annotator</title>
 
     <!-- fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Source Sans 3' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Archivo' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Source Sans Pro' rel='stylesheet'>
+    <link
+      href="https://fonts.googleapis.com/css?family=Source Sans 3"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Archivo"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Source Sans Pro"
+      rel="stylesheet"
+    />
 
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
 
     <!-- Google icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/annotation.css">
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/annotation.css" />
 
     <style>
-        @media (max-height: 500px) {
-            #logo-and-header {
-                display: none;
-                visibility: hidden;
-            }
-        }
-
-        #dash-body {
-            min-height:100vh;
-            background-image: url('images/annotation-background-gradient6.jpg');
-            background-size:cover;
-        }
-
+      @media (max-height: 500px) {
         #logo-and-header {
-            height: 10%;
-            position: relative;
-            background-color: rgb(255, 255, 255);
-            box-shadow: 0px 5px 5px rgba(59, 59, 59, 0.111);
+          display: none;
+          visibility: hidden;
         }
+      }
 
-        .card {
-            border: 0px;
-            box-shadow: 0px 4px 10px rgba(59, 59, 59, 0.25);
-            border-radius: 25px;
-            overflow: hidden;
-            padding-left: 10px;
-        }
+      #dash-body {
+        min-height: 100vh;
+        background-image: url("images/annotation-background-gradient6.jpg");
+        background-size: cover;
+      }
 
-        h4 {
-            padding-top: 4px;
-            font-family: 'Source Sans Pro';
-            font-weight: 500;
-            color: #363030;
-        }
+      #logo-and-header {
+        height: 10%;
+        position: relative;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0px 5px 5px rgba(59, 59, 59, 0.111);
+      }
 
-        .nav-a {
-            padding-left: 4%;
-            padding-top: 4px;
-            font-family: 'Source Sans 3';
-            font-size: 18px;
-        }
+      .card {
+        border: 0px;
+        box-shadow: 0px 4px 10px rgba(59, 59, 59, 0.25);
+        border-radius: 25px;
+        overflow: hidden;
+        padding-left: 10px;
+      }
 
-        .list-item {
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-        }
+      h4 {
+        padding-top: 4px;
+        font-family: "Source Sans Pro";
+        font-weight: 500;
+        color: #363030;
+      }
 
-        .list-item img {
-            border-radius: 50%;
-            margin-right: 10px;
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-        }
+      .nav-a {
+        padding-left: 4%;
+        padding-top: 4px;
+        font-family: "Source Sans 3";
+        font-size: 18px;
+      }
 
-        .list-container {
-            display: flex;
-            flex-wrap: wrap;
-            /* Allows wrapping to the next line if necessary */
-        }
+      .list-item {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+      }
 
-        .file-container {
-            display: flex;
-            flex-wrap: wrap;
-            /* Allows wrapping to the next line if there are too many items */
-            gap: 0px;
-            /* Space between items */
-        }
+      .list-item img {
+        border-radius: 50%;
+        margin-right: 10px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+      }
 
-        .file-grid-container {
-            max-height: 300px;
-            /* Adjust the height as needed */
-            overflow-y: auto;
-            /* Enables vertical scrolling */
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            /* Space between items */
-        }
+      .list-container {
+        display: flex;
+        flex-wrap: wrap;
+        /* Allows wrapping to the next line if necessary */
+      }
 
-        .file-item {
-            width: 100px;
-            /* Adjust the width as needed */
-            text-align: center;
-            border: 1px solid #ffffff;
-            /* Add a border to the file items */
-            border-radius: 5px;
-            /* Optional: rounded corners */
-            padding: 5px;
-            /* Space inside the border */
-            background-color: #fff;
-            /* Background color for file items */
-        }
+      .file-container {
+        display: flex;
+        flex-wrap: wrap;
+        /* Allows wrapping to the next line if there are too many items */
+        gap: 0px;
+        /* Space between items */
+      }
 
-        .file-item img {
-            width: 74px;
-            /* Adjust the icon size as needed */
-            height: 114px;
-            object-fit: contain;
-            /* Ensures the image is scaled correctly without distortion */
-        }
+      .file-grid-container {
+        max-height: 300px;
+        /* Adjust the height as needed */
+        overflow-y: auto;
+        /* Enables vertical scrolling */
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        /* Space between items */
+      }
 
-        .file-item p {
-            margin-top: 5px;
-            font-size: 14px;
-            /* Adjust text size as needed */
-        }
+      .file-item {
+        width: 100px;
+        /* Adjust the width as needed */
+        text-align: center;
+        border: 1px solid #ffffff;
+        /* Add a border to the file items */
+        border-radius: 5px;
+        /* Optional: rounded corners */
+        padding: 5px;
+        /* Space inside the border */
+        background-color: #fff;
+        /* Background color for file items */
+      }
 
-        .file-item:hover {
-            cursor:pointer;
-        }
+      .file-item img {
+        width: 74px;
+        /* Adjust the icon size as needed */
+        height: 114px;
+        object-fit: contain;
+        /* Ensures the image is scaled correctly without distortion */
+      }
 
-        /* Hidden file input */
-        .file-input {
-            display: none;
-        }
+      .file-item p {
+        margin-top: 5px;
+        font-size: 14px;
+        /* Adjust text size as needed */
+      }
 
-        /* Style for the upload button */
-        .upload-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 0;
-        }
+      .file-item:hover {
+        cursor: pointer;
+      }
 
-        .upload-button img {
-            width: 74px;
-            height: 114px;
-        }
+      /* Hidden file input */
+      .file-input {
+        display: none;
+      }
 
-        /* Customize the scrollbar */
-        .file-grid-container::-webkit-scrollbar {
-            width: 12px;
-            /* Width of the scrollbar */
-        }
+      /* Style for the upload button */
+      .upload-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 0;
+      }
 
-        .file-grid-container::-webkit-scrollbar-thumb {
-            background-color: #ffffff;
-            /* Color of the scrollbar thumb */
-            border-radius: 10px;
-            /* Rounded corners of the scrollbar thumb */
-        }
+      .upload-button img {
+        width: 74px;
+        height: 114px;
+      }
 
-        .file-grid-container::-webkit-scrollbar-track {
-            background-color: #f0f0f0;
-            /* Color of the scrollbar track */
-            border-radius: 10px;
-            /* Rounded corners of the scrollbar track */
-        }
+      /* Customize the scrollbar */
+      .file-grid-container::-webkit-scrollbar {
+        width: 12px;
+        /* Width of the scrollbar */
+      }
 
-        .file-grid-container::-webkit-scrollbar-thumb:hover {
-            background-color: #ffffff;
-            /* Darker color for the scrollbar thumb on hover */
-        }
+      .file-grid-container::-webkit-scrollbar-thumb {
+        background-color: #ffffff;
+        /* Color of the scrollbar thumb */
+        border-radius: 10px;
+        /* Rounded corners of the scrollbar thumb */
+      }
 
-        #desc {
-            font-size: 1.3rem;
-            font-family: 'Source Sans 3';
-        }
+      .file-grid-container::-webkit-scrollbar-track {
+        background-color: #f0f0f0;
+        /* Color of the scrollbar track */
+        border-radius: 10px;
+        /* Rounded corners of the scrollbar track */
+      }
 
-        .test {
-            color:blue;
-        }
+      .file-grid-container::-webkit-scrollbar-thumb:hover {
+        background-color: #ffffff;
+        /* Darker color for the scrollbar thumb on hover */
+      }
 
-        h3 {
-            color:rgb(70, 63, 63);
-        }
+      #desc {
+        font-size: 1.3rem;
+        font-family: "Source Sans 3";
+      }
 
-        p {
-            font-size: 1rem;
-            font-family: 'Source Sans 3';
-        }
+      .test {
+        color: blue;
+      }
 
-        input[type="file"] {
-            display:none;
-        }
-        /* .uploadFile {
+      h3 {
+        color: rgb(70, 63, 63);
+      }
+
+      p {
+        font-size: 1rem;
+        font-family: "Source Sans 3";
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+      /* .uploadFile {
             width:100px;
             height:50px;
             color:blue;
         } */
-        .uploadFile:hover {
-            cursor:pointer;
-        }
-        h2 {
-            font-weight: 500;
-            font-family: 'Share Tech';
-        }
+      .uploadFile:hover {
+        cursor: pointer;
+      }
+      h2 {
+        font-weight: 500;
+        font-family: "Share Tech";
+      }
 
-        #doneButton:hover {
-            cursor:pointer;
-        }
-        /* ol {
+      #doneButton:hover {
+        cursor: pointer;
+      }
+      /* ol {
             font-family: 'Source Sans 3';
             font-size:16px;
             list-style:none;
@@ -249,55 +274,138 @@
             display: inline-block;
         } */
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- link to javascript file -->
     <script type="module" src="scripts/dashboard.js"></script>
     <!-- <script src="scripts/script.js"></script> -->
-    <div id="top-bar" class="container-fluid" style="position:relative;z-index:2;height:6vh;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.163);">
-        <div class="row" style="height:100%;background-color: rgb(255, 255, 255);">
-            <div class="col-md-1 d-flex align-items-center justify-content-start px-4">
-                <img class="logo" src="svg/logo.svg"/>
-            </div>
-            <div class="col-md d-flex" style="font-family:'Source Sans 3';display:flex;margin-top: auto;margin-bottom: auto;">
-                <span class="user-type">Project Manager</span>
-                <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span> 
-                <span style="font-size:20px;">View Project</span>
-            </div>
-            <div class="col-md-1 align-items-center justify-content-center" style="display:flex;margin-top: auto;margin-bottom: auto;margin-left: auto;margin-right: auto;">
-                <span id="usernameSpan"><strong>Username</strong></span>
-            </div>
+    <div
+      id="top-bar"
+      class="container-fluid"
+      style="
+        position: relative;
+        z-index: 2;
+        height: 6vh;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.163);
+      "
+    >
+      <div
+        class="row"
+        style="height: 100%; background-color: rgb(255, 255, 255)"
+      >
+        <div
+          class="col-md-1 d-flex align-items-center justify-content-start px-4"
+        >
+          <img class="logo" src="svg/logo.svg" />
         </div>
+        <div
+          class="col-md d-flex"
+          style="
+            font-family: 'Source Sans 3';
+            display: flex;
+            margin-top: auto;
+            margin-bottom: auto;
+          "
+        >
+          <span class="user-type">Project Manager</span>
+          <span style="font-size: 20px; padding-left: 20px; padding-right: 20px"
+            >|</span
+          >
+          <span style="font-size: 20px">View Project</span>
+        </div>
+        <div
+          class="col-md-1 align-items-center justify-content-center"
+          style="
+            display: flex;
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            margin-right: auto;
+          "
+        >
+          <span id="usernameSpan"><strong>Username</strong></span>
+        </div>
+      </div>
     </div>
-    <div class="container-fluid" style="height:94vh;background-image: url('images/annotation-background-gradient6.jpg');background-size:cover">
-        <div class="row" style="height:100%">
-            <!-- Side Navigation Bar -->
-            <div class="col-md-1" style="z-index:1;box-shadow: 5px 0px 5px rgba(59, 59, 59, 0.111);background-color:rgb(255, 255, 255);">
-                <nav class="side-nav">
-                    <div class="nav-link">
-                        <div>
-                            <img style="width:28px;" src="images/button-icons/dashboard-button-unselected.png"/>
-                        </div>
-                        <div>
-                            <a style="margin-left:5px;">Dashboard</a>
-                        </div>
-                    </div>
-                    <div class="nav-link">
-                        <div>
-                            <img style="width:28px;" src="images/button-icons/projects-button-selected.png"/>
-                        </div>
-                        <div>
-                            <a style="margin-left:5px";>Projects</a>
-                        </div>
-                    </div>
-                    <div class="nav-link">
-                        <div>
-                            <img style="width:28px;" src="images/button-icons/annotators-button-unselected.png"/>
-                        </div>
-                        <div>
-                            <a style="margin-left:5px;">Annotators</a>
-                        </div>
+    <div
+      class="container-fluid"
+      style="
+        height: 94vh;
+        background-image: url('images/annotation-background-gradient6.jpg');
+        background-size: cover;
+      "
+    >
+      <div class="row" style="height: 100%">
+        <!-- Side Navigation Bar -->
+        <div
+          class="col-md-1"
+          style="
+            z-index: 1;
+            box-shadow: 5px 0px 5px rgba(59, 59, 59, 0.111);
+            background-color: rgb(255, 255, 255);
+          "
+        >
+          <nav class="side-nav">
+            <div class="nav-link">
+              <div>
+                <img
+                  style="width: 28px"
+                  src="images/button-icons/dashboard-button-unselected.png"
+                />
+              </div>
+              <div>
+                <a style="margin-left: 5px">Dashboard</a>
+              </div>
+            </div>
+            <div class="nav-link">
+              <div>
+                <img
+                  style="width: 28px"
+                  src="images/button-icons/projects-button-selected.png"
+                />
+              </div>
+              <div>
+                <a style="margin-left: 5px" ;>Projects</a>
+              </div>
+            </div>
+            <div class="nav-link">
+              <div>
+                <img
+                  style="width: 28px"
+                  src="images/button-icons/annotators-button-unselected.png"
+                />
+              </div>
+              <div>
+                <a style="margin-left: 5px">Annotators</a>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <!-- Annotation Interface Body -->
+        <div class="col-md-11">
+          <div class="col-md-10 mx-auto pt-5 px-3">
+            <div class="row px-4" style="min-height: 700px">
+              <div
+                class="col-md"
+                style="background-color: rgba(255, 24, 193, 0)"
+              >
+                <div
+                  class="row pt-3 p-1"
+                  style="background-color: rgb(98, 37, 240, 0); height: 30%"
+                >
+                  <div class="col-md">
+                    <div class="card" style="height: 100%; padding: 20px">
+                      <div
+                        class="d-flex justify-content-between align-items-center"
+                      >
+                        <h3 id="title">First Project</h3>
+                        <h3 style="margin-left: auto" id="id">
+                          Project ID: P000001
+                        </h3>
+                      </div>
+                      <p class="card-text" id="desc">
+                        This is the project description
+                      </p>
                     </div>
                 </nav>
             </div>
@@ -363,77 +471,464 @@
                                     </div>
                                 </div>
                             </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
-
-
-            </div>
-
-            </div>
-        </div>
-    </div>
-    <div id="uploaderDiv" style="
-    display:none;
-    position:absolute; left:0;top:0;background-color: #6d6d6d5f; min-width: 100vw; min-height: 100vh;">
-        <!-- Uploader -->
-        <div style="
-        position:absolute;
-        top:30%;
-        left:35%;
-        display:flex;
-        margin-left:auto;
-        margin-right:auto;
-        width:660px;
-        height:364px;
-        padding:12px;
-        background-color: white;
-        border-radius: 20px;
-        border:1px solid rgba(0, 0, 0, 0.133);
-        max-height:500px;">
-        <!-- contents -->
-        <div style="
-            padding-top:10px;
-            height:100%;
-            width:100%;
-            padding-left:18px;
-            padding-right:18px;
-            border: 4px solid #87E878;
-            border-radius:12px">
-            <!-- left side -->
-            <h2>Add new data files</h2>
-            <div style="float:left;width:50%">
-                <div id="fileUploadDiv">
-                    <label class="uploadFile">
-                        <img src="svg/file-upload-button.svg" style="width:100%">
-                        <input id="uploadButton" type="file" accept=".txt" multiple />
-                    </label>
+                  </div>
                 </div>
-
-                <!-- <button type="reset" id="reset">Reset</button> -->
+              </div>
             </div>
-            <!-- right side -->
-            <div style="float:left;width:50%">
-                <div id="filenames" style="margin-left:14px;max-height:300px;overflow:auto;;font-family:'Arial';line-height: 1.6rem;">
-                    <ol id="listOfFileNames" style="height:200px;max-height:200px;overflow:auto">
-                        <!-- 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="uploaderDiv"
+      style="
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: #6d6d6d5f;
+        min-width: 100vw;
+        min-height: 100vh;
+      "
+    >
+      <!-- Uploader -->
+      <div
+        style="
+          position: absolute;
+          top: 30%;
+          left: 35%;
+          display: flex;
+          margin-left: auto;
+          margin-right: auto;
+          width: 660px;
+          height: 364px;
+          padding: 12px;
+          background-color: white;
+          border-radius: 20px;
+          border: 1px solid rgba(0, 0, 0, 0.133);
+          max-height: 500px;
+        "
+      >
+        <!-- contents -->
+        <div
+          style="
+            padding-top: 10px;
+            height: 100%;
+            width: 100%;
+            padding-left: 18px;
+            padding-right: 18px;
+            border: 4px solid #87e878;
+            border-radius: 12px;
+          "
+        >
+          <!-- left side -->
+          <h2>Add new data files</h2>
+          <div style="float: left; width: 50%">
+            <div id="fileUploadDiv">
+              <label class="uploadFile">
+                <img src="svg/file-upload-button.svg" style="width: 100%" />
+                <input id="uploadButton" type="file" accept=".txt" multiple />
+              </label>
+            </div>
+
+            <!-- <button type="reset" id="reset">Reset</button> -->
+          </div>
+          <!-- right side -->
+          <div style="float: left; width: 50%">
+            <div
+              id="filenames"
+              style="
+                margin-left: 14px;
+                max-height: 300px;
+                overflow: auto;
+                font-family: 'Arial';
+                line-height: 1.6rem;
+              "
+            >
+              <ol
+                id="listOfFileNames"
+                style="height: 200px; max-height: 200px; overflow: auto"
+              >
+                <!-- 
                         <li>example1.txt</li>
                         <li>example2.txt</li>
                         <li>example2.txt</li>
                         <li>example2.txt</li> 
                         -->
-                    </ol>
-                    <div id="doneButton" style="margin-top:10px;padding:4px;border-radius:4px;float:right;text-align:center;color:white;margin-left:auto;margin-right:auto;width:50%;background-color: #72D387;">
-                        Done
-                    </div>
-                </div>
+              </ol>
+              <div
+                id="doneButton"
+                style="
+                  margin-top: 10px;
+                  padding: 4px;
+                  border-radius: 4px;
+                  float: right;
+                  text-align: center;
+                  color: white;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 50%;
+                  background-color: #72d387;
+                "
+              >
+                Done
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+    <!-- Optional JavaScript (for Modal) -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Fixed Bottom-Left New Project Button Aligned with Sidebar -->
+    <div
+      style="
+        position: fixed;
+        bottom: 20px;
+        left: 0;
+        width: 150px;
+        padding-left: 20px;
+        z-index: 1000;
+      "
+    >
+      <button
+        id="newProjectMainBtn"
+        class="btn btn-primary"
+        style="
+          width: 120px;
+          border-radius: 18px;
+          font-size: 14px;
+          font-weight: 600;
+          background-color: #4b69c3;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+          padding: 8px 10px;
+          border: none;
+        "
+      >
+        <i class="material-icons" style="font-size: 16px; margin-right: 5px"
+          >add</i
+        >
+        New Project
+      </button>
     </div>
-<!-- Optional JavaScript (for Modal) -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
+
+    <!-- Popup Modal for New Project -->
+    <div
+      class="modal"
+      id="newProjectModal"
+      style="
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        class="modal-content"
+        style="
+          background-color: #fefefe;
+          margin: 5% auto;
+          padding: 20px;
+          border: 1px solid #ddd;
+          width: 70%;
+          max-width: 800px;
+          border-radius: 12px;
+          box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        "
+      >
+        <span
+          class="close"
+          style="
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+          "
+          >×</span
+        >
+        <h2 style="font-weight: 500; font-family: 'Share Tech'">New Project</h2>
+        <div
+          class="modal-body"
+          style="display: flex; flex-direction: column; gap: 20px"
+        >
+          <div class="project-details">
+            <form>
+              <div class="form-group">
+                <label
+                  for="projectName"
+                  style="
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    display: block;
+                    margin-bottom: 8px;
+                  "
+                  >Project Name<span>*</span></label
+                >
+                <input
+                  id="projectName"
+                  type="text"
+                  placeholder="Project name"
+                  required
+                  style="
+                    width: 100%;
+                    padding: 10px;
+                    margin-top: 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    font-size: 14px;
+                  "
+                />
+              </div>
+
+              <div class="form-group">
+                <label
+                  for="projectDescription"
+                  style="
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    display: block;
+                    margin-bottom: 8px;
+                  "
+                  >Description</label
+                >
+                <textarea
+                  id="projectDescription"
+                  placeholder="Optional: Provide a project description"
+                  style="
+                    width: 100%;
+                    padding: 10px;
+                    margin-top: 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    font-size: 14px;
+                  "
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label
+                  for="annotators"
+                  style="
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    display: block;
+                    margin-bottom: 8px;
+                  "
+                  >Invite annotators<span>*</span></label
+                >
+                <p
+                  class="description"
+                  style="font-size: 12px; color: #666; margin-bottom: 10px"
+                >
+                  Assign a group of annotators to the project. Those who do not
+                  have an account will receive an email invitation.
+                </p>
+                <input
+                  id="annotators"
+                  type="text"
+                  placeholder="Annotator name / email"
+                  style="
+                    width: 100%;
+                    padding: 10px;
+                    margin-top: 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    font-size: 14px;
+                  "
+                />
+                <button
+                  class="invite-btn"
+                  type="button"
+                  style="
+                    background-color: #007bff;
+                    color: white;
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    margin-top: 8px;
+                  "
+                >
+                  Invite
+                </button>
+              
+        </div>
+        <div class="form-group">
+          <label
+            for="projectInstruction"
+            style="
+              font-size: 16px;
+              font-weight: bold;
+              color: #333;
+              display: block;
+              margin-bottom: 8px;
+            "
+            >Instruction</label
+          >
+          <textarea
+            id="projectInstruction"
+            placeholder="Provide project instructions"
+            style="
+              width: 100%;
+              padding: 10px;
+              margin-top: 5px;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+              font-size: 14px;
+            "
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label
+            for="projectClasses"
+            style="
+              font-size: 16px;
+              font-weight: bold;
+              color: #333;
+              display: block;
+              margin-bottom: 8px;
+            "
+            >Add Classes</label
+          >
+          <div id="classContainer">
+            <input
+              type="text"
+              id="newClassInput"
+              placeholder="Enter class name"
+              style="
+                width: 70%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 14px;
+              "
+            />
+            <button
+              id="addClassBtn"
+              type="button"
+              style="
+                background-color: #007bff;
+                color: white;
+                padding: 8px 12px;
+                font-size: 14px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-left: 8px;
+              "
+              onclick="addClass()"
+            >
+              Add
+            </button>
+          </div>
+          <ul
+            id="classList"
+            style="margin-top: 10px; list-style-type: none; padding: 0"
+          ></ul>
+        </div>
+
+        <script>
+          function addClass() {
+            const classInput = document.getElementById("newClassInput");
+            const classList = document.getElementById("classList");
+            if (classInput.value.trim() !== "") {
+              const listItem = document.createElement("li");
+              listItem.textContent = classInput.value;
+              listItem.style.marginBottom = "5px";
+
+              const removeBtn = document.createElement("button");
+              removeBtn.textContent = "Remove";
+              removeBtn.style.marginLeft = "10px";
+              removeBtn.style.color = "red";
+              removeBtn.onclick = function () {
+                listItem.remove();
+              };
+
+              listItem.appendChild(removeBtn);
+              classList.appendChild(listItem);
+              classInput.value = "";
+            }
+          }
+        </script>
+      </div>
+    </div>
+    <button
+      class="create-project-btn"
+      type="submit"
+      style="
+        background-color: #28a745;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 10px;
+      "
+    >
+      Create Project
+    </button>
+  </form>
+</div>
+    </div>
+
+    <!-- JavaScript for Direct Modal Opening on Button Click -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var modal = document.getElementById("newProjectModal");
+        var mainBtn = document.getElementById("newProjectMainBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        mainBtn.onclick = function () {
+          modal.style.display = "block";
+        };
+
+        span.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+      });
+    </script>
+  </body>
 </html>
