@@ -228,6 +228,19 @@ function loadFile(projectID, textfilename) {
     })
 }
 
+function viewInstructions() {
+    const queryString = window.location.search;
+    console.log(queryString)
+    const urlParams = new URLSearchParams(queryString)
+    const projectID = urlParams.get('projectID')
+
+    let instructionsP = document.getElementById("instructionsParagraph")
+    let instructionsRef = ref(database, `Projects/${projectID}/Instructions`)
+    onValue(instructionsRef, (snapshot) => {
+        instructionsP.innerHTML = snapshot.val()
+    })
+}
+
 function loadClasses(projectID) {
     let classesRef = ref(database, `Projects/${projectID}/Classes`)
     // read data
@@ -267,6 +280,10 @@ function loadClasses(projectID) {
 
 //when the window finishes loading, find the textArea div and fill it with lorem ipsum
 window.onload = function () {
+    document.getElementById("instructionsButton").addEventListener("click", function (e) {
+        viewInstructions()
+    })
+
     document.getElementById("exportToJSONButton").addEventListener("click", function (e) {
         exportToJSON()
     })
