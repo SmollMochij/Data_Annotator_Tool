@@ -14,6 +14,7 @@ import {
     onValue,
     onChildAdded,
     update,
+    off,
 } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
 // Your web app's Firebase configuration
@@ -227,16 +228,33 @@ function loadFile(projectID, textfilename) {
     })
 }
 
+function viewInstructions() {
+    const queryString = window.location.search;
+    console.log(queryString)
+    const urlParams = new URLSearchParams(queryString)
+    const projectID = urlParams.get('projectID')
+
+    let instructionsP = document.getElementById("instructionsParagraph")
+    let instructionsRef = ref(database, `Projects/${projectID}/Instructions`)
+    onValue(instructionsRef, (snapshot) => {
+        instructionsP.innerHTML = snapshot.val()
+    })
+}
+
 function loadClasses(projectID) {
     let classesRef = ref(database, `Projects/${projectID}/Classes`)
     // read data
-    onValue(classesRef, (snapshot) => {
+    get(classesRef)
+    .then((snapshot) => {
         //get each class
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
             let newElement = document.createElement("p");
-            newElement.innerHTML = `${childSnapshot.key}:<br> ${data.BackgroundHEX}<br> ${data.Classifications}<br>${data.TextColour}`;
 
+            //TODO: add to a JSON object?
+            newElement.innerHTML = `${childSnapshot.key}:<br> ${data.BackgroundHEX}<br> ${data.Classifications}<br>${data.TextColour}`;
+            console.log("KEY: " + childSnapshot.key)
+            console.log("HEX: " + data.BackgroundHEX)
             createClass(childSnapshot.key, data.BackgroundHEX)
 
             let listOfClassifications = data.Classifications.split(",")
@@ -254,6 +272,7 @@ function loadClasses(projectID) {
             console.log(listOfClassifications)
             // document.body.appendChild(newElement)
             console.log(data);
+            console.log(jsonFile)
         })
     });
     const projectRef = ref(database, `Projects/${projectID}/`)
@@ -261,6 +280,10 @@ function loadClasses(projectID) {
 
 //when the window finishes loading, find the textArea div and fill it with lorem ipsum
 window.onload = function () {
+    document.getElementById("instructionsButton").addEventListener("click", function (e) {
+        viewInstructions()
+    })
+
     document.getElementById("exportToJSONButton").addEventListener("click", function (e) {
         exportToJSON()
     })
@@ -397,10 +420,16 @@ window.onload = function () {
 
     saveChangesButton.addEventListener("click",
         function () {
-            alert("Saving changes...")
-            alert("Changes saved!")
+            saveChanges();
         }
     )
+
+    function saveChanges() {
+        console.log(jsonFile.annotations)
+        testList()
+        alert("Saving changes...")
+        alert("Changes saved!")
+    }
 
     //font size buttons
     let increaseFontButton = document.getElementById("increaseFont");
@@ -457,7 +486,7 @@ window.onload = function () {
         }
 
         // Get the filename from the URL
-        let filename = getQueryParam('filename'); 
+        let filename = getQueryParam('filename');
 
         // If the filename is not null and ends with .txt, remove the .txt extension
         if (filename && filename.endsWith('.txt')) {
@@ -473,8 +502,8 @@ window.onload = function () {
 
         update(ref(database, `Projects/${projectID}/Files/${filename}`), {
             status: "done",
-          });
-      }
+        });
+    }
 
     console.log(document.getElementById("textArea"));
     let dropdown = document.getElementById("dropdown");
@@ -578,6 +607,72 @@ function deleteClass(name) {
     }
 }
 
+function testList() {
+    let jsonObj = { "name": ["#b10234"] }
+    console.log(jsonObj.name.push("black"))
+    console.log(jsonObj.name.push("John"))
+    console.log(jsonObj.name.push("Jimmy"))
+    jsonObj["city"] = ["#d5615"]
+    console.log(jsonObj.city.push("white"))
+    console.log(jsonObj.city.push("Chicago"))
+    console.log(jsonObj)
+    console.log(jsonFile.annotations)
+
+    // Get an array of the object's keys
+    let keys = Object.keys(jsonFile.annotations);
+
+    //URLParams
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString)
+    let projectID = urlParams.get('projectID')
+    // outer loop to iterate over the keys (CLASSES)
+    for (let i = 0; i < keys.length; i++) {
+        //eg name
+        let key = keys[i];
+        console.log(key + ":");
+        //for each key, make a comma-separated list of its classifications
+        let keyHex = ""
+        let keyTextColour = ""
+        let keyClassifications = ""
+
+        // inner loop to iterate over the array of values (CLASSIFICATIONS)
+        for (let j = 0; j < jsonFile.annotations[key].length; j++) {
+            // console.log("CLASSIFICATIONS")
+            //print HEX if 0
+            if (j === 0) { 
+                console.log("  HEX: " + jsonFile.annotations[key][j])
+                keyHex = jsonFile.annotations[key][j]
+            }
+            else if (j === 1) {
+                console.log("  TextColour: " + jsonFile.annotations[key][j])
+                keyTextColour = jsonFile.annotations[key][j]
+            }
+            //print value (classification) if j != 0
+            else {
+                if (j < jsonFile.annotations[key].length - 1) {
+                    console.log("  " + jsonFile.annotations[key][j] + ",");
+                    keyClassifications += jsonFile.annotations[key][j] + ","
+                } else if (j == jsonFile.annotations[key].length - 1 ) {
+                    console.log("  " + jsonFile.annotations[key][j]);
+                    keyClassifications += jsonFile.annotations[key][j]
+                }
+            } 
+        }
+        console.log("CLASSIFICATIONS STRING (DB): " + keyClassifications)
+        //TODO: add BackgroundHEX to the database
+        //TODO: add keyClassifications to the database under "Classifications"
+        //TODO: add TextColour to the database
+
+        set(ref(database, `Projects/${projectID}/Classes/${key}`), {
+            BackgroundHEX: keyHex,
+            Classifications: keyClassifications,
+            TextColour: keyTextColour
+        })
+
+    }
+}
+
+//create a new class
 function createClass(name, colourHex) {
     if (document.getElementById("addClassButton").getAttribute("class") == "btn btn-primary") {
         name = name.replaceAll(/ /g, "");//remove any spaces
@@ -647,7 +742,7 @@ function createClass(name, colourHex) {
             `;
             document.head.appendChild(style);
 
-            //TODO: TOOLTIP
+            //TOOLTIP
             var tooltipStyle = document.createElement('style');
             tooltipStyle.innerHTML = `
             .${name.toUpperCase()}:hover {
@@ -664,6 +759,11 @@ function createClass(name, colourHex) {
 
             let newClassEntry = name.toUpperCase().toString();
             jsonFile.annotations[newClassEntry] = [];
+            //add the backgroundcolour
+            jsonFile.annotations[newClassEntry].push(colourHex)
+            //add the textcolour
+            jsonFile.annotations[newClassEntry].push(textColour)
+
             // jsonFile.annotations[newClassEntry].push("test");
             // console.log("TEST:" + JSON.stringify(jsonFile));
 
@@ -682,6 +782,24 @@ function createClass(name, colourHex) {
             document.getElementById("classColour").value = "#ffffff";
             document.getElementById("newClass").value = "";
             document.getElementById("classTest").setAttribute("style", "");
+
+            //add to firebase
+            // Get the value of a specific query parameter
+            function getQueryParam(param) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
+            }
+
+            // Get the Project ID from the URL
+            let projectID = getQueryParam('projectID');
+
+            // Log or use the filename without the .txt
+            console.log("projectID:", projectID);
+
+            // let classN = "TESTER"
+            // update(ref(database, `Projects/${projectID}/Classes/${classN}`), {
+            //     BackgroundHEX: "#c9ff00"
+            // });
 
             //close the modal
             $('#exampleModal').modal('hide');
@@ -874,32 +992,32 @@ function newRemoveClassification(classToDelete, classification) {
     console.log(classification);
     console.log(`<span data-toggle="tooltip" title="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`);
     console.log(document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`));
-    
-    if(toolSelected === tool.ERASE) {
+
+    if (toolSelected === tool.ERASE) {
         //update the textArea by replacing all occurrences of the classification
         document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`);
         document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}">${classification}</span>`, `${classification}`);
-        
+
         //remove classification from JSON file
         console.log(`Before: ${JSON.stringify(jsonFile)}`);
         // jsonFile.annotations[classToDelete].pop(classification);
         console.log(jsonFile.annotations[classToDelete]);
-        jsonFile.annotations[classToDelete] = jsonFile.annotations[classToDelete].filter(function(item) {
+        jsonFile.annotations[classToDelete] = jsonFile.annotations[classToDelete].filter(function (item) {
             return item !== classification;
         });
         console.log(`After: ${JSON.stringify(jsonFile)}`);
-    
+
         //remove classification from list of classifications
-        classificationsList = classificationsList.filter(function(item) {
+        classificationsList = classificationsList.filter(function (item) {
             console.log(item);
             console.log(`${classification} : ${classToDelete}`);
             console.log(item !== `${classification} : ${classToDelete}`);
             return item !== `${classification} : ${classToDelete}`;
         });
-    
+
         //update classifications list
         updateClassificationsList();
-    
+
         //update JSON preview
         updateJSONPreview(JSON.stringify(jsonFile));
         spanTest();

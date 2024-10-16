@@ -136,30 +136,36 @@
       }
 
       .file-item {
-        width: 100px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        width: 95%;
         /* Adjust the width as needed */
         text-align: center;
-        border: 1px solid #ffffff;
+        border: 1px solid #dadada;
         /* Add a border to the file items */
         border-radius: 5px;
         /* Optional: rounded corners */
         padding: 5px;
         /* Space inside the border */
-        background-color: #fff;
+        background-color: #ffffff;
         /* Background color for file items */
+        margin-bottom: 1rem;
       }
 
       .file-item img {
-        width: 74px;
+        width: 100px;
         /* Adjust the icon size as needed */
         height: 114px;
         object-fit: contain;
+        margin-left:10px;
         /* Ensures the image is scaled correctly without distortion */
       }
 
       .file-item p {
         margin-top: 5px;
         font-size: 14px;
+        margin-left: 20px;
         /* Adjust text size as needed */
       }
 
@@ -277,7 +283,7 @@
   </head>
   <body>
     <!-- link to javascript file -->
-    <script type="module" src="scripts/dashboard.js"></script>
+    <script type="module" src="scripts/dashboard-pm.js"></script>
     <!-- <script src="scripts/script.js"></script> -->
     <div
       id="top-bar"
@@ -311,7 +317,7 @@
           <span style="font-size: 20px; padding-left: 20px; padding-right: 20px"
             >|</span
           >
-          <span style="font-size: 20px">View Project</span>
+          <span style="font-size: 20px">Dashboard</span>
         </div>
         <div
           class="col-md-1 align-items-center justify-content-center"
@@ -348,7 +354,7 @@
           <nav class="side-nav">
             <div class="nav-link">
               <div>
-                <img style="width: 28px" src="images/button-icons/dashboard-button-unselected.png" />
+                <img style="width: 28px" src="images/button-icons/dashboard-button-selected.png" />
               </div>
               <div>
                 <a style="margin-left: 5px">Dashboard</a>
@@ -356,7 +362,7 @@
             </div>
             <div class="nav-link">
               <div>
-                <img style="width: 28px" src="images/button-icons/projects-button-selected.png" />
+                <img style="width: 28px" src="images/button-icons/projects-button-unselected.png" />
               </div>
               <div>
                 <a style="margin-left: 5px" ;>Projects</a>
@@ -373,55 +379,49 @@
           </nav>
         </div>
         <!-- Rows -->
-          <div class="col-md-9 mx-auto pt-5 px-3">
+          <div class="col-md-6 mx-auto pt-5 px-3">
               <div class="row pt-3 p-1" style="background-color: rgb(98, 37, 240, 0); height: 30%">
                 <div class="card" style="height: 100%; padding: 20px">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h3 id="title">First Project</h3>
-                    <h3 style="margin-left: auto" id="id">
-                      Project ID: #######
-                    </h3>
+                    <h3 id="profileName">Project Manager Name</h3>
                   </div>
+                  <p class="card-text" id="id">
+                    Project Manager id
+                  </p>
                   <p class="card-text" id="desc">
-                    This is the project description
+                    Project Manager description
                   </p>
                 </div>
               </div>
               <!-- row 2 ASSIGN ANNOTATORS-->
               <div class="row pt-4">
-                  <div class="card" style="height:100%; padding: 20px;">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h4>Assign Annotators to Project</h4>
-                        <!-- Annotators list -->
-                        <input type="text" id="annotatorDropdown" name="inviteAnnotator" class="form-control">
-                          <!-- Options will be populated dynamically from Firebase -->
-                        </input>
-                        <button id="assignAnnotatorButton" class="btn btn-primary mt-3">Invite Annotator</button>
-                      </div>
+                <div class="card" style="height:100%; padding: 20px;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h4>Invite Annotators to Team</h4>
+                      <!-- Annotators list -->
+                      <input type="text" id="annotatorDropdown" name="inviteAnnotator" class="form-control">
+                        <!-- Options will be populated dynamically from Firebase -->
+                      </input>
+                      <button id="assignAnnotatorButton" class="btn btn-primary mt-3">Invite Annotator</button>
                     </div>
                   </div>
-              </div>
+                </div>
+            </div>
               <!-- row 2 DATA FILES New Card with Upload Button and File Grid -->
-              <div class="row pt-4" style="background-color:rgb(98, 37, 240,0);height:30%">
+              <div class="row pt-4" style="background-color:rgb(98, 37, 240,0);height:600px">
                   <div class="card" style="padding: 20px;">
                     <div class="row">
                       <div class="col-md-12">
-                        <h4>Data Files</h4>
-                        <div class="d-flex flex-row mb-3">
-                          <h6 class="me-3"><strong>• All</strong></h6>
-                          <h6 class="me-3">• Done</h6>
-                          <h6 class="me-3">• Todo</h6>
-                          <h6 class="me-3">• Unassigned</h6>
-                        </div>
+                        <h4>Created Projects</h4>
                         <!-- Scroll wheel -->
-                        <div class="file-container" style="max-height: 300px; overflow-y: auto;">
+                        <div class="file-container" style="max-height: 500px; overflow-y: auto;">
                           <!-- File Grid Layout -->
                           <div id="files" class="file-container">
                             <!-- Upload file button -->
                             <div class="file-item">
-                              <img id="newFileButton" src="images/button-icons/upload.png" alt="File Icon">
-                              <p>New file</p>
+                              <img id="newFileButton" src="images/project_symbol.png" alt="File Icon">
+                              <p>New Project</p>
                             </div>
                           </div>
                         </div>
@@ -561,30 +561,30 @@
         z-index: 1000;
       "
     >
-      <button
-        id="newProjectMainBtn"
-        class="btn btn-primary"
-        style="
-          width: 120px;
-          border-radius: 18px;
-          font-size: 14px;
-          font-weight: 600;
-          background-color: #4b69c3;
-          color: #fff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-          padding: 8px 10px;
-          border: none;
-          margin-bottom: 20px;
-        "
-      >
-        <i class="material-icons" style="font-size: 16px; margin-right: 5px"
-          >add</i
-        >
-        New Project
-      </button>
+    <button
+    id="newProjectMainBtn"
+    class="btn btn-primary"
+    style="
+      width: 120px;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 600;
+      background-color: #4b69c3;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 8px 10px;
+      border: none;
+      margin-bottom: 20px;
+    "
+  >
+    <i class="material-icons" style="font-size: 16px; margin-right: 5px"
+      >add</i
+    >
+    New Project
+  </button>
       <button
         id="signOutButton"
         class="btn btn-primary"
@@ -838,118 +838,6 @@
         </div>
 
         <div id="listOfClasses" style="display:none"></div>
-        <script type="module">
-          // var database = firebase.database();
-          import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-          import {
-            getAuth,
-            createUserWithEmailAndPassword,
-            signInWithEmailAndPassword,
-          } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-
-          import {
-            getDatabase,
-            ref,
-            set,
-            get,
-            child,
-            onValue,
-            onChildAdded,
-            update,
-            query,
-            orderByChild,
-            equalTo,
-          } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
-
-          function sendEmail(email, accessCode) {
-            const subject = "Data Annotator - Annotator Access Code";
-            const body = `Hi ${email},\n\nHere is your unique access code: ${accessCode}
-            \n\nVisit this link to create your Annotator account on Data Annotator: \nhttp://127.0.0.1:3000/create-account.html\n\n
-            Enquiries? 
-            Please contact your Project Manager\n\n-------------------\n\nData Annotator`;
-            window.open(
-              `mailto:${email}?subject=${encodeURIComponent(
-                subject
-              )}&body=${encodeURIComponent(body)}`
-            );
-          }
-
-          // Your web app's Firebase configuration
-          const firebaseConfig = {
-            apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
-            authDomain: "data-annotator-tool.firebaseapp.com",
-            databaseURL:
-              "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "data-annotator-tool",
-            storageBucket: "data-annotator-tool.appspot.com",
-            messagingSenderId: "913657972954",
-            appId: "1:913657972954:web:94e337e257d3452d7f3de3",
-            measurementId: "G-RWJF94GG05",
-          };
-
-          // Initialize Firebase
-          const app = initializeApp(firebaseConfig);
-          const database = getDatabase(app);
-
-          let assignButton = document.getElementById("assignAnnotatorButton")
-          assignButton.addEventListener("click", async function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const email = document.getElementById("annotatorDropdown").value.trim();
-            console.log("Email entered:", email);
-
-            if (!email) {
-              alert("Please enter an email.");
-              return;
-            }
-
-            // Reference to the AccountCodes node
-            const accountCodesRef = ref(database, "AccountCodes");
-            const emailQuery = query(
-              accountCodesRef,
-              orderByChild("email"),
-              equalTo(email)
-            );
-
-            try {
-              // Check if email already exists
-              const emailSnapshot = await get(emailQuery);
-              if (emailSnapshot.exists()) {
-                alert("This email already has an associated access code.");
-                return;
-              }
-
-              // Generate unique Access Code
-              let newLoginCode;
-              let codeSnapshot;
-              do {
-                newLoginCode = `AN${String(Date.now()).slice(-4)}`;
-                codeSnapshot = await get(
-                  ref(database, `AccountCodes/${newLoginCode}`)
-                );
-              } while (codeSnapshot.exists());
-
-              // Save to Firebase Realtime Database
-              const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
-              await set(newLoginRef, {
-                Used: false,
-              });
-
-              console.log("Data saved successfully.");
-              alert(
-                `Email successfully registered! Their access code is ${newLoginCode}.`
-              );
-
-              // Send email with access code
-              sendEmail(email, newLoginCode);
-            } catch (error) {
-              console.error("Error writing to database:", error);
-              alert("Error saving data. Please check the console.");
-            }
-          })
-        
-        </script>
-
         <script>
           var listOfClasses = [];
           function addClass() {
@@ -1027,6 +915,119 @@
       });
     </script>
 
+    <div id="listOfClasses" style="display:none"></div>
+    <script type="module">
+      // var database = firebase.database();
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+      import {
+        getDatabase,
+        ref,
+        set,
+        get,
+        child,
+        onValue,
+        onChildAdded,
+        update,
+        query,
+        orderByChild,
+        equalTo,
+      } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+      function sendEmail(email, accessCode) {
+        const subject = "Data Annotator - Annotator Access Code";
+        const body = `Hi ${email},\n\nHere is your unique access code: ${accessCode}
+        \n\nVisit this link to create your Annotator account on Data Annotator: \nhttp://127.0.0.1:3000/create-account.html\n\n
+        Enquiries? 
+        Please contact your Project Manager\n\n-------------------\n\nData Annotator`;
+        window.open(
+          `mailto:${email}?subject=${encodeURIComponent(
+            subject
+          )}&body=${encodeURIComponent(body)}`
+        );
+      }
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDsAD7cYKC7boqne9MLZ2y7b9AANgWk5OE",
+        authDomain: "data-annotator-tool.firebaseapp.com",
+        databaseURL:
+          "https://data-annotator-tool-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "data-annotator-tool",
+        storageBucket: "data-annotator-tool.appspot.com",
+        messagingSenderId: "913657972954",
+        appId: "1:913657972954:web:94e337e257d3452d7f3de3",
+        measurementId: "G-RWJF94GG05",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      let assignButton = document.getElementById("assignAnnotatorButton")
+      assignButton.addEventListener("click", async function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const email = document.getElementById("annotatorDropdown").value.trim();
+        console.log("Email entered:", email);
+
+        if (!email) {
+          alert("Please enter an email.");
+          return;
+        }
+
+        // Reference to the AccountCodes node
+        const accountCodesRef = ref(database, "AccountCodes");
+        const emailQuery = query(
+          accountCodesRef,
+          orderByChild("email"),
+          equalTo(email)
+        );
+
+        try {
+          // Check if email already exists
+          const emailSnapshot = await get(emailQuery);
+          if (emailSnapshot.exists()) {
+            alert("This email already has an associated access code.");
+            return;
+          }
+
+          // Generate unique Access Code
+          let newLoginCode;
+          let codeSnapshot;
+          do {
+            newLoginCode = `AN${String(Date.now()).slice(-4)}`;
+            codeSnapshot = await get(
+              ref(database, `AccountCodes/${newLoginCode}`)
+            );
+          } while (codeSnapshot.exists());
+
+          // Save to Firebase Realtime Database
+          const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
+          await set(newLoginRef, {
+            Used: false,
+          });
+
+          console.log("Data saved successfully.");
+          alert(
+            `Email successfully registered! Their access code is ${newLoginCode}.`
+          );
+
+          // Send email with access code
+          sendEmail(email, newLoginCode);
+        } catch (error) {
+          console.error("Error writing to database:", error);
+          alert("Error saving data. Please check the console.");
+        }
+      })
+
+    </script>
+
     <!-- JavaScript for new project-->
     <script type="module">
       import { createNewProject } from "./scripts/firebase.js";
@@ -1058,5 +1059,36 @@
       document.getElementById("signOutButton").addEventListener('click', signOutAccount);
       
     </script>
+
+<script>
+  var listOfClasses = [];
+  function addClass() {
+  const classInput = document.getElementById("newClassInput");
+  const classList = document.getElementById("classList");
+  if (classInput.value.trim() !== "") {
+      listOfClasses.push(classInput.value);
+      const listItem = document.createElement("li");
+      listItem.textContent = classInput.value;
+      listItem.style.marginBottom = "5px";
+
+      console.log("list of items: ", listOfClasses);
+
+      // Grabs the list of classes
+      document.getElementById("listOfClasses").innerText = JSON.stringify(listOfClasses);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "Remove";
+      removeBtn.style.marginLeft = "10px";
+      removeBtn.style.color = "red";
+      removeBtn.onclick = function () {
+      listItem.remove();
+      };
+
+      listItem.appendChild(removeBtn);
+      classList.appendChild(listItem);
+      classInput.value = "";
+  }
+  }
+</script>
   </body>
 </html>
