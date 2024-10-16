@@ -28,19 +28,19 @@
       const database = getDatabase(app);
 
       window.onload = function () {
-        const testRef = ref(database, "testConnection");
+        // const testRef = ref(database, "testConnection");
 
-        set(testRef, {
-          message: "Hello, Firebase!",
-        })
-          .then(() => {
-            console.log("Data saved successfully.");
-            alert("Firebase connection is successful!");
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert("Error saving data. Please check the console.");
-          });
+        // set(testRef, {
+        //   message: "Hello, Firebase!",
+        // })
+        //   .then(() => {
+        //     console.log("Data saved successfully.");
+        //     alert("Firebase connection is successful!");
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error:", error);
+        //     alert("Error saving data. Please check the console.");
+        //   });
       };
     </script>
   </head>

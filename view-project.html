@@ -277,7 +277,7 @@
   </head>
   <body>
     <!-- link to javascript file -->
-    <script type="module" src="scripts/dashboard.js"></script>
+    <script type="module" src="scripts/view-project.js"></script>
     <!-- <script src="scripts/script.js"></script> -->
     <div
       id="top-bar"
@@ -396,8 +396,8 @@
                         <!-- Annotators list -->
                         <input type="text" id="annotatorDropdown" name="inviteAnnotator" class="form-control">
                           <!-- Options will be populated dynamically from Firebase -->
-                        </input>
-                        <button id="assignAnnotatorButton" class="btn btn-primary mt-3">Invite Annotator</button>
+                        </select>
+                        <button id="assignAnnotatorButton" class="btn btn-primary mt-3">Assign Annotator</button>
                       </div>
                     </div>
                   </div>
@@ -503,12 +503,6 @@
                 id="listOfFileNames"
                 style="height: 200px; max-height: 200px; overflow: auto"
               >
-                <!-- 
-                        <li>example1.txt</li>
-                        <li>example2.txt</li>
-                        <li>example2.txt</li>
-                        <li>example2.txt</li> 
-                        -->
               </ol>
               <div
                 id="doneButton"
@@ -837,6 +831,7 @@
           ></ul>
         </div>
 
+        
         <div id="listOfClasses" style="display:none"></div>
         <script type="module">
           // var database = firebase.database();
@@ -1039,7 +1034,6 @@
           let projectInstruction = document.getElementById("projectInstruction").value;
           let listOfClasses = JSON.parse(document.getElementById("listOfClasses").innerText);
 
-          //validation
           if (!projectName || !projectDescription || !annotators || !projectInstruction)
             return;
 
