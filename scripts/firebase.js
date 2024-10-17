@@ -193,8 +193,9 @@ function writeProjectData(projectName, projectDescription, annotators, projectIn
       Name: projectName,
       Description: projectDescription,
       Annotators: annotators,
-      Instruction: projectInstruction,
+      Instructions: projectInstruction,
       Classes: listOfClasses,
+      ProjectID: projectID,
     }).then(() => {
         console.log(`Project data written for project: ${projectName}`);
     }).catch((error) => {

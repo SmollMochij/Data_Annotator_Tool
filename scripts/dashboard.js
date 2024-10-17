@@ -72,7 +72,7 @@ window.onload = function () {
 
     const projectRef = ref(database, `Projects/P000001`)
     onValue(projectRef, (snapshot) => {
-        document.getElementById("title").textContent = snapshot.val().ProjectTitle
+        document.getElementById("title").textContent = snapshot.val().Name
         document.getElementById("desc").textContent = snapshot.val().Description
         document.getElementById("id").textContent = `Project ID: ${snapshot.val().ProjectID}`
     })
