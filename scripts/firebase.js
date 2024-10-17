@@ -58,7 +58,7 @@ export function createUser(username, email, password, inputCode) {
               // Mark input code as user
               markCodeAsTrue(inputCode);
 
-              window.location.href = `/sign-in.html?${user.uid}`
+              window.location.href = `/sign-in.html?`
             })
             .catch((error) => {
               const errorCode = error.code;
