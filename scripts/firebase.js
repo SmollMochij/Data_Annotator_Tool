@@ -45,6 +45,7 @@ export function createUser(username, email, password, inputCode) {
       // Checks if the code used is in the database and false
       if (snapshot.exists()) {
         const codeData = snapshot.val();
+        const assignedProjects = codeData.AssignedProjects;
         if (codeData.Used === false) {
           console.log("Code is valid");
           createUserWithEmailAndPassword(auth, email, password)
@@ -53,7 +54,7 @@ export function createUser(username, email, password, inputCode) {
               alert("User created successfully: " + user.email);
 
               // Write user's data in the database
-              writeUserData(user.uid, username, user.email, inputCode);
+              writeUserData(user.uid, username, user.email, inputCode, assignedProjects);
 
               // Mark input code as user
               markCodeAsTrue(inputCode);
@@ -79,28 +80,48 @@ export function createUser(username, email, password, inputCode) {
 
 
 // Write user data in database
-function writeUserData(userId, username, email, inputCode) {
+function writeUserData(userId, username, email, inputCode, assignedProjects) {
   let userType = '';
+  // let assignedProjects = '';
 
   // Set to project-manager for codes starting with PM
   if (inputCode.startsWith('PM')) {
     userType = 'project-manager'; 
+    set(ref(getDatabase(), `Users/${userType}/${userId}`), {
+      username: username,
+      email: email,
+    }).then(() => {
+      console.log(`User data written to ${userType} path.`);
+    }).catch((error) => {
+      console.error("Error writing user data:", error);
+    }); 
   }
   // Set to annotator for codes starting with AN 
   else if (inputCode.startsWith('AN')) {
-    userType = 'annotator'; 
+    userType = 'annotator';
+      //add assigned projects
+      set(ref(getDatabase(), `Users/${userType}/${userId}`), {
+        username: username,
+        email: email,
+        AssignedProjects: assignedProjects,
+      }).then(() => {
+        console.log(`User data written to ${userType} path.`);
+      }).catch((error) => {
+        console.error("Error writing user data:", error);
+      }); 
   } else {
     userType = 'general';
+    set(ref(getDatabase(), `Users/${userType}/${userId}`), {
+      username: username,
+      email: email,
+    }).then(() => {
+      console.log(`User data written to ${userType} path.`);
+    }).catch((error) => {
+      console.error("Error writing user data:", error);
+    }); 
   }
 
-  set(ref(getDatabase(), `Users/${userType}/${userId}`), {
-    username: username,
-    email: email,
-  }).then(() => {
-    console.log(`User data written to ${userType} path.`);
-  }).catch((error) => {
-    console.error("Error writing user data:", error);
-  });
+
 }
 
 function markCodeAsTrue(inputCode) {
@@ -175,7 +196,7 @@ export function signInUser(email, password) {
     });
 }
 
-export function createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses) {
+export function createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses, projectID) {
 
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -183,11 +204,11 @@ export function createNewProject(projectName, projectDescription, annotators, pr
   }
   let userId = getQueryParam('userId');
 
-  writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId);
+  writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId, projectID);
 }
 
-function writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId) {
-    const projectID = generateProjectID();
+function writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId, projectID) {
+    // const projectID = generateProjectID();
 
     set(ref(getDatabase(), `Projects/${projectID}`), {
       Name: projectName,
@@ -207,7 +228,7 @@ function writeProjectData(projectName, projectDescription, annotators, projectIn
     })
 }
 
-function generateProjectID() {
+export function generateProjectID() {
   const randomNumber = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
   return `P${randomNumber}`;
 }

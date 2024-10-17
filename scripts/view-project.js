@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getDatabase, ref, set, onValue, onChildAdded } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+import { getDatabase, ref, set, onValue, onChildAdded, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -70,19 +70,49 @@ window.onload = function () {
         }
     })
 
+    //get url parameters
     const queryString = window.location.search;
     console.log(queryString)
     const urlParams = new URLSearchParams(queryString)
-    const filename = urlParams.get('filename')
+    // const filename = urlParams.get('filename')
+    //grab project ID to find project in database
     const project = urlParams.get('projectID')
-    console.log(filename)
+    const userID = urlParams.get('userID')
+    const isAProjectManager = urlParams.get('PM')
+    console.log(userID)
+    console.log(isAProjectManager)
 
     const projectRef = ref(database, `Projects/${project}`)
     onValue(projectRef, (snapshot) => {
         document.getElementById("title").textContent = snapshot.val().Name
         document.getElementById("desc").textContent = snapshot.val().Description
         document.getElementById("id").textContent = `Project ID: ${snapshot.val().ProjectID}`
+        document.getElementById("instructionsBox").textContent = `${snapshot.val().Instructions}`
     })
+
+    
+    //edit instructions button
+    let instructionsButton = document.getElementById("editInstructionsButton")
+    instructionsButton.addEventListener('click', function(e) {
+        let newInstructionsPrompt = prompt("Please enter new instructions:", document.getElementById("instructionsBox").textContent)
+        if(newInstructionsPrompt != null && newInstructionsPrompt.trim() != "") {
+            alert("New instructions: " + newInstructionsPrompt)
+            const currentProjectRef = ref(database, `Projects/${project}/Instructions`)
+            update(ref(getDatabase(), `Projects/${project}`), {
+                Instructions: newInstructionsPrompt.trim(),
+            })
+        } else {
+            alert("No changes made")
+        }
+    })
+
+    //if the annotator is viewing the page, hide the edit buttons
+    if(isAProjectManager == "false") {
+        instructionsButton.style.display='none'
+        document.getElementById("assignAnnotatorsRow").style.display="none"
+        document.getElementById("newProjectMainBtn").style.display="none"
+    }
+    
 
     // read data
     const projectFilesRef = ref(database, `Projects/${project}/Files`);
@@ -105,6 +135,10 @@ window.onload = function () {
         newfileItem.appendChild(newFileImg)
         newfileItem.appendChild(newFileName)
         document.getElementById("files").appendChild(newfileItem)
+        //if the annotator is viewing the page, hide the "New File" button
+        if(isAProjectManager == "false") {
+            newfileItem.style.display="none"
+        }
 
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
@@ -125,9 +159,8 @@ window.onload = function () {
 
             fileItem.appendChild(img)
             fileItem.appendChild(name)
-            let projectID = `P000001` //TODO: placeholder for now, update later
             fileItem.addEventListener("click", function (e) {
-                window.location.href = `annotation.html?projectID=${projectID}&filename=${childSnapshot.key}.txt` //TODO: change to annotation.html
+                window.location.href = `annotation.html?projectID=${project}&filename=${childSnapshot.key}.txt&userID=${userID}&PM=${isAProjectManager}` //TODO: change to annotation.html
             })
             document.getElementById("files").appendChild(fileItem)
         })

@@ -377,18 +377,36 @@
               <div class="row pt-3 p-1" style="background-color: rgb(98, 37, 240, 0); height: 30%">
                 <div class="card" style="height: 100%; padding: 20px">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h3 id="title">First Project</h3>
+                    <h3 id="title">Project Name</h3>
                     <h3 style="margin-left: auto" id="id">
                       Project ID: #######
                     </h3>
                   </div>
                   <p class="card-text" id="desc">
-                    This is the project description
+                    Description
                   </p>
                 </div>
               </div>
-              <!-- row 2 ASSIGN ANNOTATORS-->
+              <!-- row 2 VIEW INSTRUCTIONS-->
               <div class="row pt-4">
+                  <div class="card" style="height:100%; padding: 20px;">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4>Project Instructions</h4>
+                        <!-- Annotators list -->
+                        <!-- <input type="text" id="annotatorDropdown" name="inviteAnnotator" class="form-control"> -->
+                        <div id="instructionsBox" class="form-control">
+                          Instructions for this project...
+                        </div>
+                          <!-- Options will be populated dynamically from Firebase -->
+                        </select>
+                        <button id="editInstructionsButton" class="btn btn-primary mt-3">Edit Instructions</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <!-- row 3 ASSIGN ANNOTATORS -->
+              <div class="row pt-4" id="assignAnnotatorsRow">
                   <div class="card" style="height:100%; padding: 20px;">
                     <div class="row">
                       <div class="col-md-12">
@@ -396,13 +414,12 @@
                         <!-- Annotators list -->
                         <input type="text" id="annotatorDropdown" name="inviteAnnotator" class="form-control">
                           <!-- Options will be populated dynamically from Firebase -->
-                        </select>
                         <button id="assignAnnotatorButton" class="btn btn-primary mt-3">Assign Annotator</button>
                       </div>
                     </div>
                   </div>
               </div>
-              <!-- row 2 DATA FILES New Card with Upload Button and File Grid -->
+              <!-- row 4 DATA FILES New Card with Upload Button and File Grid -->
               <div class="row pt-4" style="background-color:rgb(98, 37, 240,0);height:30%">
                   <div class="card" style="padding: 20px;">
                     <div class="row">
@@ -942,6 +959,11 @@
               alert("Error saving data. Please check the console.");
             }
           })
+
+
+
+
+
         
         </script>
 
@@ -1038,7 +1060,7 @@
             return;
 
           createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses);
-          alert("Project created successfully");
+          alert(`Project (${projectName}) created successfully`);
           var modal = document.getElementById("newProjectModal"); 
           modal.style.display='none';// hide modal
           window.location.reload();// reload url to clear fields
