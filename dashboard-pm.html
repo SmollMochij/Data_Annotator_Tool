@@ -1041,7 +1041,7 @@
           let listOfClasses = JSON.parse(document.getElementById("listOfClasses").innerText);
 
           //validation
-          if (!projectName || !projectDescription || !annotators || !projectInstruction)
+          if (!projectName || !projectDescription || !projectInstruction)
             return;
 
           createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses);
