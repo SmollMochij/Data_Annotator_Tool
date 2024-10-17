@@ -304,6 +304,10 @@ window.onload = function () {
         viewAllActiveClasses()
     })
 
+    document.getElementById("goBackButton").addEventListener("click", function (e) {
+        goBack()
+    })
+
     let newClassField = document.getElementById("newClass")
     let classColourField = document.getElementById("classColour")
     document.getElementById("createClassButton").addEventListener("click", function (e) {
@@ -312,9 +316,12 @@ window.onload = function () {
 
     const queryString = window.location.search;
     console.log(queryString)
+    //get URL parameters (eg projectID=P000001)
     const urlParams = new URLSearchParams(queryString)
     const filename = urlParams.get('filename')
     const projectID = urlParams.get('projectID')
+    const userID = urlParams.get('userID')
+    const isAProjectManager = urlParams.get('PM')
     console.log(filename)
     if (projectID == null || filename == null) {
         alert("Error: Text file not selected. Please return to the project page and select a text file from there.")
@@ -455,6 +462,32 @@ window.onload = function () {
     });
 
     //mark as done button
+    let doneStatus;
+    //get files 'done' status
+    onValue(ref(database, `Projects/${projectID}/Files/${filename.substring(0,filename.indexOf(".txt"))}`), (snapshot) => {
+        doneStatus = snapshot.val().status
+        //if the file is marked done
+        console.log(doneStatus == "done")
+        if(doneStatus == "done") {
+            markedDone = true
+            markDoneButton.style.backgroundColor = "#47DE56";
+            markDoneButton.firstChild.textContent = "Marked done!"
+            doneCircle.src = "./svg/circle_done.svg";
+            markedDone = true;
+            console.log(doneCircle)
+            markAsDone();
+        } else {
+            markedDone = false
+            markDoneButton.style.backgroundColor = "#939393";
+            markDoneButton.firstChild.textContent = "Mark as done"
+            doneCircle.src = "./svg/circle.svg";
+            markedDone = false;
+            console.log(doneCircle)
+        }
+        console.log(markedDone)
+    })
+    
+
     let markDoneButton = document.getElementById("markDoneButton");
     let doneCircle = document.getElementById("doneCircle");
     markDoneButton.addEventListener("mouseover", function () {
@@ -474,8 +507,29 @@ window.onload = function () {
             doneCircle.src = "./svg/circle.svg";
             markedDone = false;
             console.log(doneCircle)
+            //in the future, "unassigned" should be "in progress" or something similar
+            update(ref(database, `Projects/${projectID}/Files/${filename.substring(0,filename.indexOf(".txt"))}`), {
+                status: "unassigned",
+            });
         }
     })
+
+    function goBack() {
+        //get url parameters
+        const queryString = window.location.search;
+        console.log(queryString)
+        const urlParams = new URLSearchParams(queryString)
+        // const filename = urlParams.get('filename')
+        //grab project ID to find project in database
+        const project = urlParams.get('projectID')
+        const userID = urlParams.get('userID')
+        const isAProjectManager = urlParams.get('PM')
+        console.log(userID)
+        console.log(isAProjectManager)
+        
+        //redirect (go back) to view project page
+        window.location.href = `view-project.html?projectID=${project}&userID=${userID}&PM=${isAProjectManager}` //change to annotation.html
+    }
 
     function markAsDone() {
 

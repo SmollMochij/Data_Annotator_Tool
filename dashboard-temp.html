@@ -1044,7 +1044,7 @@
             return;
 
           createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses);
-          alert("Project created successfully");
+          alert(`Project (${projectName}) created successfully`);
           var modal = document.getElementById("newProjectModal"); 
           modal.style.display='none';// hide modal
           window.location.reload();// reload url to clear fields

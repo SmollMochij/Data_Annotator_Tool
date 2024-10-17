@@ -77,9 +77,11 @@ window.onload = function () {
     console.log(filename)
 
     const userID = urlParams.get('userId')
-    const projectRef = ref(database, `Users/project-manager/${userID}`)
-    onValue(projectRef, (snapshot) => {
+    const pmRef = ref(database, `Users/project-manager/${userID}`)
+    onValue(pmRef, (snapshot) => {
         document.getElementById("profileName").textContent = snapshot.val().username
+        document.getElementById("usernameSpan").textContent = snapshot.val().username
+
         document.getElementById("desc").textContent = snapshot.val().bio
         document.getElementById("id").textContent = `User ID: ${snapshot.key}`
     })
@@ -117,7 +119,7 @@ window.onload = function () {
             fileItem.appendChild(name)
             let projectID = `${childSnapshot.key}` 
             fileItem.addEventListener("click", function (e) {
-                window.location.href = `view-project.html?projectID=${projectID}` //change to annotation.html
+                window.location.href = `view-project.html?projectID=${projectID}&userID=${userID}&PM=true` //change to annotation.html
             })
             document.getElementById("files").appendChild(fileItem)
         })
@@ -130,7 +132,7 @@ window.onload = function () {
 
 //add each uploaded file to the database
 function addFileToDatabase(name, content) {
-    //Project P000001 is just a placeholder for now
+    //TODO: Project P000001 is just a placeholder for now
     //5lbncsVlmchrGAa2NwY6UWL5PnF3 is the id from a random authentication user
     //then use file name as key
     let project = "P000001"
