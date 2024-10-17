@@ -60,7 +60,6 @@ var selectedText = "";
 function createJSON(textContent) {
     //CREATE JSON (filler annotatorID)
     jsonFile = {
-        "annotatorID": `${annotatorID}`,
         "textContent": textContent,
         "annotations":
             {}
@@ -80,7 +79,7 @@ function updateJSONPreview(stringifiedJson) {
 
     //Show annotatorID
     console.log(stringifiedJson.substring(1, stringifiedJson.indexOf("textContent")));
-    document.getElementById("annotatorIDCollapse").textContent = stringifiedJson.substring(1, stringifiedJson.indexOf("textContent") - 2);
+    // document.getElementById("annotatorIDCollapse").textContent = stringifiedJson.substring(1, stringifiedJson.indexOf("textContent") - 2);
     //show Text Content
     // console.log(stringifiedJson.substring(stringifiedJson.indexOf("textContent")+13,stringifiedJson.indexOf(`,\"annotations\"`)));
     document.getElementById("textCollapse").textContent = stringifiedJson.substring(stringifiedJson.indexOf("textContent") + 13, stringifiedJson.indexOf(`,\"annotations\"`));

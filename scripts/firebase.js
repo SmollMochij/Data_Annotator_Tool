@@ -210,12 +210,13 @@ export function createNewProject(projectName, projectDescription, annotators, pr
 function writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId, projectID) {
     // const projectID = generateProjectID();
 
+    //ignoring listOfClasses for now, too buggy
+
     set(ref(getDatabase(), `Projects/${projectID}`), {
       Name: projectName,
       Description: projectDescription,
       Annotators: annotators,
       Instructions: projectInstruction,
-      Classes: listOfClasses,
       ProjectID: projectID,
     }).then(() => {
         console.log(`Project data written for project: ${projectName}`);

@@ -45,7 +45,7 @@ window.onload = function () {
                 console.log(`fr.result:${fr.result}`)
                 console.log(`uploadButton.files[i].name ${uploadButton.files[i].name}`)
 
-                addFileToDatabase(uploadButton.files[i].name, fr.result)
+                addFileToDatabase(projectID, uploadButton.files[i].name, fr.result)
 
                 let fileExtension = uploadButton.files[i].name.split('.').pop();
                 console.log(fileExtension)
@@ -132,11 +132,10 @@ window.onload = function () {
 }
 
 //add each uploaded file to the database
-function addFileToDatabase(name, content) {
+function addFileToDatabase(project, name, content) {
     //Project P000001 is just a placeholder for now
     //5lbncsVlmchrGAa2NwY6UWL5PnF3 is the id from a random authentication user
     //then use file name as key
-    let project = "P000001"
     name = name.substring(0, name.indexOf(".")) //remove the extension (.txt) to get the filename
     set(ref(database, `Projects/${project}/Files/${name}`), {
         assignedAnnotator: "",

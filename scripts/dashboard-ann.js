@@ -31,44 +31,6 @@ onChildAdded(annotatorRef, (snapshot) => {
 });
 
 window.onload = function () {
-    //find the upload files button on webpage
-    var uploadButton = document.getElementById("uploadButton")
-    //assign an event listener to detect uploaded files
-    uploadButton.addEventListener("change", function () {
-        //for each file uploaded
-        for (let i = 0; i < uploadButton.files.length; i++) {
-            //use the FileReader to read its contents
-            let fr = new FileReader()
-            fr.onload = function () {
-                console.log(`fr:${fr}`)
-                console.log(`fr.readyState:${fr.readyState}`)
-                console.log(`fr.result:${fr.result}`)
-                console.log(`uploadButton.files[i].name ${uploadButton.files[i].name}`)
-
-                addFileToDatabase(uploadButton.files[i].name, fr.result)
-
-                let fileExtension = uploadButton.files[i].name.split('.').pop();
-                console.log(fileExtension)
-
-                if (fileExtension == 'txt') {
-                    let newFileName = document.createElement("li")
-                    newFileName.textContent = uploadButton.files[i].name
-                    document.getElementById("listOfFileNames").appendChild(newFileName)
-
-                    let newContent = document.createElement("li")
-                    newContent.textContent = fr.result;
-                    console.log(newContent.textContent)
-                    console.log(`Success: ${uploadButton.files[i].name} is a text file`)
-                } else {
-                    alert(`Error: ${uploadButton.files[i].name} is not a valid text file! Please upload .txt files only`)
-                }
-            }
-            fr.onerror = function (event) {
-                alert(`Error reading file: ${uploadButton.files[i].name}`);
-            }
-            fr.readAsText(this.files[i]);
-        }
-    })
     const queryString = window.location.search;
     console.log(queryString)
     const urlParams = new URLSearchParams(queryString)

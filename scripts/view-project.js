@@ -31,6 +31,18 @@ onChildAdded(annotatorRef, (snapshot) => {
 });
 
 window.onload = function () {
+    
+    //get url parameters
+    const queryString = window.location.search;
+    console.log(queryString)
+    const urlParams = new URLSearchParams(queryString)
+    // const filename = urlParams.get('filename')
+    //grab project ID to find project in database
+    const project = urlParams.get('projectID')
+    const userID = urlParams.get('userID')
+    const isAProjectManager = urlParams.get('PM')
+    console.log(userID)
+    console.log(isAProjectManager)
     //find the upload files button on webpage
     var uploadButton = document.getElementById("uploadButton")
     //assign an event listener to detect uploaded files
@@ -45,7 +57,7 @@ window.onload = function () {
                 console.log(`fr.result:${fr.result}`)
                 console.log(`uploadButton.files[i].name ${uploadButton.files[i].name}`)
 
-                addFileToDatabase(uploadButton.files[i].name, fr.result)
+                addFileToDatabase(project, uploadButton.files[i].name, fr.result)
 
                 let fileExtension = uploadButton.files[i].name.split('.').pop();
                 console.log(fileExtension)
@@ -70,17 +82,6 @@ window.onload = function () {
         }
     })
 
-    //get url parameters
-    const queryString = window.location.search;
-    console.log(queryString)
-    const urlParams = new URLSearchParams(queryString)
-    // const filename = urlParams.get('filename')
-    //grab project ID to find project in database
-    const project = urlParams.get('projectID')
-    const userID = urlParams.get('userID')
-    const isAProjectManager = urlParams.get('PM')
-    console.log(userID)
-    console.log(isAProjectManager)
 
     const projectRef = ref(database, `Projects/${project}`)
     onValue(projectRef, (snapshot) => {
@@ -172,11 +173,9 @@ window.onload = function () {
 }
 
 //add each uploaded file to the database
-function addFileToDatabase(name, content) {
-    //Project P000001 is just a placeholder for now
-    //5lbncsVlmchrGAa2NwY6UWL5PnF3 is the id from a random authentication user
+function addFileToDatabase(projectID, name, content) {
     //then use file name as key
-    let project = "P000001"
+    let project = projectID
     name = name.substring(0, name.indexOf(".")) //remove the extension (.txt) to get the filename
     set(ref(database, `Projects/${project}/Files/${name}`), {
         assignedAnnotator: "",
