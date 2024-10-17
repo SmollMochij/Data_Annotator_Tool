@@ -308,8 +308,6 @@
                 }
             })
 
-
-
             const projectRef = ref(database, `Projects/P000001`)
             onValue(projectRef, (snapshot) => {
                 document.getElementById("title").textContent = snapshot.val().ProjectTitle

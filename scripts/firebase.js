@@ -58,7 +58,7 @@ export function createUser(username, email, password, inputCode) {
               // Mark input code as user
               markCodeAsTrue(inputCode);
 
-              window.location.href = `/dashboard-ann.html?${user.uid}`
+              window.location.href = `/sign-in.html?`
             })
             .catch((error) => {
               const errorCode = error.code;
@@ -193,8 +193,9 @@ function writeProjectData(projectName, projectDescription, annotators, projectIn
       Name: projectName,
       Description: projectDescription,
       Annotators: annotators,
-      Instruction: projectInstruction,
+      Instructions: projectInstruction,
       Classes: listOfClasses,
+      ProjectID: projectID,
     }).then(() => {
         console.log(`Project data written for project: ${projectName}`);
     }).catch((error) => {

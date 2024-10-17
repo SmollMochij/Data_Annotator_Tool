@@ -197,8 +197,8 @@ function loadFile(projectID, textfilename) {
     get(projectRef).then((snapshot) => {
         console.log(`Filename: ${textfilename}`)
         console.log(`Project ID: ${snapshot.val().ProjectID}`)
-        console.log(`Project name: ${snapshot.val().ProjectTitle}`)
-        let projectTitle = snapshot.val().ProjectTitle
+        console.log(`Project name: ${snapshot.val().Name}`)
+        let name = snapshot.val().Name
         textfilename = textfilename.substring(0, textfilename.length - 4)
         console.log(textfilename)
         let fileRef = ref(database, `Projects/${projectID}/Files/${textfilename}`)
@@ -215,7 +215,7 @@ function loadFile(projectID, textfilename) {
 
             //update Project Name | Data File Name
             document.getElementById("dataFileNameSpan").textContent = textfilename
-            document.getElementById("projectNameSpan").textContent = projectTitle
+            document.getElementById("projectNameSpan").textContent = name
 
             //create JSON file
             createJSON(document.getElementById("textArea").innerHTML);
