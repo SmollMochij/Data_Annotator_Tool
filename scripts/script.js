@@ -70,6 +70,7 @@ function createJSON(textContent) {
 }
 
 function updateJSONPreview(stringifiedJson) {
+    console.log(jsonFile)
     let jsonString = JSON.stringify(jsonFile, null, 2);
     jsonString = jsonString.replace('textContent\":', 'textContent":<br>');
     document.getElementById('jsonPreviewText').innerHTML = jsonString;
@@ -327,6 +328,24 @@ window.onload = function () {
     } else {
         console.log(`Project: ${projectID} | File selected: ${filename}`)
     }
+
+    //navbar: dashboard link (for PM and ANN accounts)
+    document.getElementById("dashboard-link").addEventListener("click", function(e) {
+        if(isAProjectManager == "true") {
+            window.location = `/dashboard-pm.html?userId=${userID}`
+        } else {
+            window.location = `/dashboard-ann.html?userId=${userID}`
+        }
+    })
+
+    //navbar: dashboard link (for PM and ANN accounts)
+    document.getElementById("projects-link").addEventListener("click", function(e) {
+        if(isAProjectManager == "true") {
+            window.location.href = `view-project.html?projectID=${projectID}&userID=${userID}&PM=true` //change to annotation.html
+        } else {
+            window.location.href = `view-project.html?projectID=${projectID}&userID=${userID}&PM=false` //change to annotation.html
+        }
+    })
 
     loadFile(projectID, filename)
     // loadClasses(projectID)

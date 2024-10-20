@@ -36,6 +36,11 @@ window.onload = function () {
     const urlParams = new URLSearchParams(queryString)
     const userID = urlParams.get('userId')
 
+    //navbar: dashboard link
+    document.getElementById("dashboard-link").addEventListener("click", function(e) {
+        window.location = `/dashboard-ann.html?userId=${userID}`
+    })
+    
     //get annotators's assigned projects
     const userRef = ref(database, `Users/annotator/${userID}`)
     //retrieve user's attributes from db

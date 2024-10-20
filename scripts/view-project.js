@@ -43,6 +43,17 @@ window.onload = function () {
     const isAProjectManager = urlParams.get('PM')
     console.log(userID)
     console.log(isAProjectManager)
+
+    //navbar: dashboard link (for PM and ANN accounts)
+    document.getElementById("dashboard-link").addEventListener("click", function(e) {
+        if(isAProjectManager == "true") {
+            window.location = `/dashboard-pm.html?userId=${userID}`
+        } else {
+            window.location = `/dashboard-ann.html?userId=${userID}`
+        }
+    })
+
+
     //find the upload files button on webpage
     var uploadButton = document.getElementById("uploadButton")
     //assign an event listener to detect uploaded files

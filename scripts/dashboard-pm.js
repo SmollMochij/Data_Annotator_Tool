@@ -37,6 +37,12 @@ window.onload = function () {
     const filename = urlParams.get('filename')
     const project = urlParams.get('project')
     console.log(filename)
+
+    //navbar: dashboard link
+    document.getElementById("dashboard-link").addEventListener("click", function(e) {
+        window.location = `/dashboard-pm.html?userId=${userID}`
+    })
+
     //find the upload files button on webpage
     var uploadButton = document.getElementById("uploadButton")
     //assign an event listener to detect uploaded files
