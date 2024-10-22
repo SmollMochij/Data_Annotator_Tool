@@ -1034,13 +1034,13 @@
         }
         
       }
+      
       //main Invite Annotator button
       let assignButton = document.getElementById("assignAnnotatorButton")
       let inviteButton = document.getElementById("invite-btn")
 
       assignButton.addEventListener("click", function(e) {
-        let email = document.getElementById("annotatorDropdown").value.trim();
-        invite(email)
+        alert("Inviting annotators to your team will come in a future update! For now, you can invite annotators to a project instead, by using the invite field when you click New Project.")
       })
       inviteButton.addEventListener("click", function(e) {
         let email = document.getElementById("annotators").value.trim();
@@ -1091,7 +1091,7 @@
         listItem.textContent = classInput.value;
         listItem.style.marginBottom = "5px";
 
-        console.log("list of items: ", listOfClasses);
+        console.log("list of classes: ", listOfClasses);
 
         // Grabs the list of classes
         document.getElementById("listOfClasses").innerText = JSON.stringify(listOfClasses);

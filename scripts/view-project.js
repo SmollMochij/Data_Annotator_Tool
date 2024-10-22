@@ -102,6 +102,22 @@ window.onload = function () {
         document.getElementById("instructionsBox").textContent = `${snapshot.val().Instructions}`
     })
 
+    //display username in top right
+    if(isAProjectManager == "true") {
+        const pmRef = ref(database, `Users/project-manager/${userID}`)
+        onValue(pmRef, (snapshot) => {
+            document.getElementById("usernameSpan").textContent = snapshot.val().username
+        })
+        //eg Project Manager | View Project
+        document.getElementById("accountType").textContent = "Project Manager"
+    } else {
+        const annRef = ref(database, `Users/annotator/${userID}`)
+        onValue(annRef, (snapshot) => {
+            document.getElementById("usernameSpan").textContent = snapshot.val().username
+        })
+        //eg Annotator | View Project
+        document.getElementById("accountType").textContent = "Annotator"
+    }
     
     //edit instructions button
     let instructionsButton = document.getElementById("editInstructionsButton")
@@ -172,7 +188,7 @@ window.onload = function () {
             fileItem.appendChild(img)
             fileItem.appendChild(name)
             fileItem.addEventListener("click", function (e) {
-                window.location.href = `annotation.html?projectID=${project}&filename=${childSnapshot.key}.txt&userID=${userID}&PM=${isAProjectManager}` //TODO: change to annotation.html
+                window.location.href = `annotation.html?projectID=${project}&filename=${childSnapshot.key}.txt&userID=${userID}&PM=${isAProjectManager}`
             })
             document.getElementById("files").appendChild(fileItem)
         })

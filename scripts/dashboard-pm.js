@@ -82,7 +82,7 @@ window.onload = function () {
         }
     })
 
-
+    //display username & bio
     const userID = urlParams.get('userId')
     const pmRef = ref(database, `Users/project-manager/${userID}`)
     onValue(pmRef, (snapshot) => {

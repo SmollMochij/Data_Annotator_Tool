@@ -835,7 +835,7 @@ function exportToJSON() {
     var blob = new Blob([stringified], {type: "application/json"});
     var url = URL.createObjectURL(blob);
     
-    var a = document.createElement("a"); //'a' is a fuckin hyperlink which refreshes the page afterward lol try to fix
+    var a = document.createElement("a"); //'a' is a hyperlink which refreshes the page afterward lol try to fix
     a.download = 'jsonFile.json';
     a.href = url;
     a.id = 'jsonFile';

@@ -1,9 +1,4 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
 import {
     getDatabase,
@@ -80,38 +75,22 @@ function updateJSONPreview(stringifiedJson) {
 
     //Show annotatorID
     console.log(stringifiedJson.substring(1, stringifiedJson.indexOf("textContent")));
-    // document.getElementById("annotatorIDCollapse").textContent = stringifiedJson.substring(1, stringifiedJson.indexOf("textContent") - 2);
     //show Text Content
-    // console.log(stringifiedJson.substring(stringifiedJson.indexOf("textContent")+13,stringifiedJson.indexOf(`,\"annotations\"`)));
     document.getElementById("textCollapse").textContent = stringifiedJson.substring(stringifiedJson.indexOf("textContent") + 13, stringifiedJson.indexOf(`,\"annotations\"`));
     //show annotations
     console.log(stringifiedJson.substring(stringifiedJson.indexOf(`,\"annotations\"`) + 15, stringifiedJson.length - 1));
     document.getElementById("classificationsCollapse").textContent = stringifiedJson.substring(stringifiedJson.indexOf(`,\"annotations\"`) + 15, stringifiedJson.length - 1);
     console.log(jsonFile);
-
 }
-
-function submitClassification(className) {
-    console.log(`Classification: ${className}`);
-    let dropdown = document.getElementById("dropdown");
-    dropdown.style.display = "none";
-    // dropdown.setAttribute("style", `display:none;`);
-    dropdownClassify(className);
-}
-
 
 function dropdownClassify(className) {
     console.log(toolSelected);
     console.log(toolSelected === tool.HIGHLIGHT);
-    // alert(className);
-    // let selectedText = window.getSelection().toString().trim();
-    // alert(selectedText);
-    console.log("STEXT: " + selectedText);
+    console.log("Selected Text: " + selectedText);
     //check if text file has been uploaded first
     if (uploadedfile) {
         //check if selection actually contains text
         if (selectedText.length > 0) {
-            console.log("SELECTED TEXT: " + selectedText);
             if (selectedText.includes(",")) {
                 alert("Error: Please select text with no commas")
             } else {
@@ -129,39 +108,24 @@ function dropdownClassify(className) {
                 //then add new classification to the list
                 classificationsList.push(`${selectedText} : ${className}`);
                 console.log(classificationsList);
-                // classificationsHTMLList.appendChild(newItem);
 
-                //add new span to the text
-                // let searchMask = selectedText;
-                // let regex = new RegExp(searchMask, "ig"); //ig = case insensitive https://regex101.com/
-                // let replaceMask = `$&`;
-                // document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(regex,
-                //     `<span data-toggle='tooltip' title='${className}' class='${className}'>${replaceMask}</span>`);
-                // console.log(document.getElementById("textArea").innerHTML);   
-
-                //NEW
+                //regex pattern
                 let pattern = `(?<=^|\\s|"|')${selectedText}(?=['"\\s,;:.])`
                 let reg = new RegExp(pattern, "ig")
                 let replaceMask = `<span data-toggle='tooltip' title=${className} class='${className}'>$&</span>` //replace with itself +
                 document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(reg, replaceMask)
-                // document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(reg,
-                //     `<span data-toggle='tooltip' title='${className}' class='${className}'>${replaceMask}</span>`);
 
                 let name = className.toUpperCase();
                 console.log("Name: " + name);
-                // jsonFile.annotations[name].push(range.extractContents());
                 jsonFile.annotations[name].push(selectedText);
-                console.log("TEST2:" + JSON.stringify(jsonFile));
-                // document.getElementById("jsonPreview").innerHTML = JSON.stringify(jsonFile);
+                console.log("JSON:" + JSON.stringify(jsonFile));
+
                 updateJSONPreview(JSON.stringify(jsonFile));
 
                 updateClassificationsList();
                 spanTest();
 
                 displayNotification(`New classification: ${className} - ${selectedText}`);
-
-                // console.log(document.getElementById("textArea").innerHTML);
-                // console.log(document.getElementById("textArea").textContent);
             }
         }
     }
@@ -192,15 +156,16 @@ function displayNotification(message) {
 
 //also loads assigned annotator's details
 function loadFile(projectID, textfilename) {
-    let fileContent;
     const projectRef = ref(database, `Projects/${projectID}`)
     get(projectRef).then((snapshot) => {
         console.log(`Filename: ${textfilename}`)
         console.log(`Project ID: ${snapshot.val().ProjectID}`)
         console.log(`Project name: ${snapshot.val().Name}`)
+
         let name = snapshot.val().Name
         textfilename = textfilename.substring(0, textfilename.length - 4)
         console.log(textfilename)
+        
         let fileRef = ref(database, `Projects/${projectID}/Files/${textfilename}`)
         get(fileRef).then((snapshot) => {
             console.log(snapshot.val().fileContent)
@@ -251,7 +216,6 @@ function loadClasses(projectID) {
             const data = childSnapshot.val();
             let newElement = document.createElement("p");
 
-            //TODO: add to a JSON object?
             newElement.innerHTML = `${childSnapshot.key}:<br> ${data.BackgroundHEX}<br> ${data.Classifications}<br>${data.TextColour}`;
             console.log("KEY: " + childSnapshot.key)
             console.log("HEX: " + data.BackgroundHEX)
@@ -270,12 +234,10 @@ function loadClasses(projectID) {
                 dropdownClassify(className)
             }
             console.log(listOfClassifications)
-            // document.body.appendChild(newElement)
             console.log(data);
             console.log(jsonFile)
         })
     });
-    const projectRef = ref(database, `Projects/${projectID}/`)
 }
 
 //when the window finishes loading, find the textArea div and fill it with lorem ipsum
@@ -300,9 +262,6 @@ window.onload = function () {
     document.getElementById("dropdownAddNewClassButton").addEventListener("click", function (e) {
         generateColourHEX();
     })
-    document.getElementById("viewActiveClassesButton").addEventListener("click", function (e) {
-        viewAllActiveClasses()
-    })
 
     document.getElementById("goBackButton").addEventListener("click", function (e) {
         goBack()
@@ -314,27 +273,38 @@ window.onload = function () {
         createClass(newClassField.value, classColourField.value)
     })
 
+    
+    //get URL parameters (eg projectID=P000001)
     const queryString = window.location.search;
     console.log(queryString)
-    //get URL parameters (eg projectID=P000001)
     const urlParams = new URLSearchParams(queryString)
     const filename = urlParams.get('filename')
     const projectID = urlParams.get('projectID')
     const userID = urlParams.get('userID')
     const isAProjectManager = urlParams.get('PM')
     console.log(filename)
+
     if (projectID == null || filename == null) {
         alert("Error: Text file not selected. Please return to the project page and select a text file from there.")
     } else {
         console.log(`Project: ${projectID} | File selected: ${filename}`)
     }
 
+    //eg Project Manager | Annotation
+    if(isAProjectManager == "true") {
+        document.getElementById("accountType").textContent = "Project Manager"
+    } else {
+        document.getElementById("accountType").textContent = "Annotator"
+    }
+
     //navbar: dashboard link (for PM and ANN accounts)
     document.getElementById("dashboard-link").addEventListener("click", function(e) {
         if(isAProjectManager == "true") {
             window.location = `/dashboard-pm.html?userId=${userID}`
+            document.getElementById("accountType").textContent = "Project Manager"
         } else {
             window.location = `/dashboard-ann.html?userId=${userID}`
+            document.getElementById("accountType").textContent = "Annotator"
         }
     })
 
@@ -348,10 +318,9 @@ window.onload = function () {
     })
 
     loadFile(projectID, filename)
-    // loadClasses(projectID)
 
     let classifyToolButton = document.getElementById("classifyToolButton");
-    //classify tool testing
+    //classify tool
     classifyToolButton.addEventListener("mouseover", function () {
         classifyToolButton.setAttribute("style", "border-radius:4px;background-color:rgba(80, 168, 226, 0.3);width:26px;cursor: url('svg/pointer_cursor.svg'), auto");
         document.getElementById("classifyTip").style.display = "inline-block";
@@ -456,7 +425,7 @@ window.onload = function () {
         alert("Changes saved!")
     }
 
-    //font size buttons
+    //increase/decrease font size buttons
     let increaseFontButton = document.getElementById("increaseFont");
     increaseFontButton.addEventListener("mouseover", function () {
         increaseFontButton.style.borderRadius = "4px";
@@ -472,7 +441,6 @@ window.onload = function () {
         decreaseFontButton.style.borderRadius = "4px";
         decreaseFontButton.style.backgroundColor = "rgba(80,168,226,0.3)";
         document.getElementById("decreaseFontTip").style.display = "inline-block";
-        // document.getElementById("decreaseFontTip").style.zIndex = "10";
     });
     decreaseFontButton.addEventListener("mouseleave", function () {
         decreaseFontButton.setAttribute("style", "");
@@ -484,6 +452,7 @@ window.onload = function () {
     //get files 'done' status
     onValue(ref(database, `Projects/${projectID}/Files/${filename.substring(0,filename.indexOf(".txt"))}`), (snapshot) => {
         doneStatus = snapshot.val().status
+
         //if the file is marked done
         console.log(doneStatus == "done")
         if(doneStatus == "done") {
@@ -508,9 +477,11 @@ window.onload = function () {
 
     let markDoneButton = document.getElementById("markDoneButton");
     let doneCircle = document.getElementById("doneCircle");
+
     markDoneButton.addEventListener("mouseover", function () {
         markDoneButton.style.cursor = "pointer";
     })
+
     markDoneButton.addEventListener("click", function () {
         if (!markedDone) {
             markDoneButton.style.backgroundColor = "#47DE56";
@@ -537,7 +508,7 @@ window.onload = function () {
         const queryString = window.location.search;
         console.log(queryString)
         const urlParams = new URLSearchParams(queryString)
-        // const filename = urlParams.get('filename')
+
         //grab project ID to find project in database
         const project = urlParams.get('projectID')
         const userID = urlParams.get('userID')
@@ -546,11 +517,10 @@ window.onload = function () {
         console.log(isAProjectManager)
         
         //redirect (go back) to view project page
-        window.location.href = `view-project.html?projectID=${project}&userID=${userID}&PM=${isAProjectManager}` //change to annotation.html
+        window.location.href = `view-project.html?projectID=${project}&userID=${userID}&PM=${isAProjectManager}`
     }
 
     function markAsDone() {
-
         // Get the value of a specific query parameter
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -604,7 +574,6 @@ window.onload = function () {
     })
 
     updateClassificationsList();
-    // createJSON("");
 
     document.getElementById("textArea").innerHTML = "<strong>This is filler text. Upload a file to replace it!</strong><br>Minim officia mollit" +
         " non officia minim cupidatat ullamco. Reprehenderit tempor sunt non aliqua aute mollit" +
@@ -619,7 +588,6 @@ window.onload = function () {
         " exercitation est anim irure duis deserunt amet adipisicing. Eu veniam aute pariatur" +
         " incididunt exercitation incididunt. Culpa quis do do velit exercitation dolore est occaecat non." +
         " Elit anim reprehenderit incididunt excepteur exercitation ut elit ea culpa sunt sunt do.";
-    // document.getElementById("textArea").setAttribute("class", "test");
     document.getElementById("textArea").setAttribute("style", "font-size:20px; word-spacing:3px; font-family:'Source Sans 3', Helvetica, sans-serif; color:#363030");
 
     console.log(
@@ -637,7 +605,6 @@ window.onload = function () {
     }
 
     //CLASS HIGHLIGHT PREVIEW
-    // console.log(document.getElementById("classTest"));
     let selectedColour = document.getElementById("classColour");
     selectedColour.addEventListener("change", function (e) {
         console.log("COLOUR: " + selectedColour.value);
@@ -672,10 +639,8 @@ function deleteClass(name) {
         removeClassFromDropdown(name);
         //TODO: delete all classifications
         displayNotification(`Class deleted: ${name}`);
-        // alert("Class deleted!");
     } else {
         displayNotification("Class not found!");
-        // alert("Class not found!");
     }
 }
 
@@ -709,7 +674,6 @@ function testList() {
 
         // inner loop to iterate over the array of values (CLASSIFICATIONS)
         for (let j = 0; j < jsonFile.annotations[key].length; j++) {
-            // console.log("CLASSIFICATIONS")
             //print HEX if 0
             if (j === 0) { 
                 console.log("  HEX: " + jsonFile.annotations[key][j])
@@ -731,9 +695,6 @@ function testList() {
             } 
         }
         console.log("CLASSIFICATIONS STRING (DB): " + keyClassifications)
-        //TODO: add BackgroundHEX to the database
-        //TODO: add keyClassifications to the database under "Classifications"
-        //TODO: add TextColour to the database
 
         set(ref(database, `Projects/${projectID}/Classes/${key}`), {
             BackgroundHEX: keyHex,
@@ -744,10 +705,12 @@ function testList() {
     }
 }
 
-//create a new class
+//create a new class, given a class name (supplied by user) and a colour chosen by the user (in HEX)
 function createClass(name, colourHex) {
+    //if the "Add class" button is active (basically checking if an actual text file is currently open)
     if (document.getElementById("addClassButton").getAttribute("class") == "btn btn-primary") {
         name = name.replaceAll(/ /g, "");//remove any spaces
+        //if the class name is not already present in the list (preventing duplicates)
         if (!allClasses.includes(name.toUpperCase())) {
             //find HTML unordered list of classes
             let classesList = document.getElementById("allClasses");
@@ -759,39 +722,39 @@ function createClass(name, colourHex) {
             let blue = parseInt(colourHex.substr(5, 2), 16);
             console.log(`${red}, ${green}, ${blue}`);
 
-            //create new class list item
+            //create new class list item to display on right sidebar
             let newClassListItem = document.createElement("li");
             newClassListItem.setAttribute("id", name);
 
-
-            //add icon
+            //add coloured icon for the class list item
             let icon = document.createElement("i");
             icon.setAttribute("class", "material-icons");
             icon.setAttribute("style", `margin-right:5px; font-size:12px;color:rgb(${red}, ${green}, ${blue})`);
             icon.innerHTML = "circle";
             newClassListItem.appendChild(icon);
 
-            //add class text
+            //add class text to the class list item
             newClassListItem.appendChild(document.createTextNode(`${name.toString()}`));
             classesList.append(newClassListItem);
 
-            //add delete button
+            //add delete button for deleting the class
             let deleteButton = document.createElement("img");
             deleteButton.src = `svg/delete_button.svg`;
             // deleteButton.setAttribute("onclick", `deleteClass('${name}')`);
             deleteButton.addEventListener("click", function (e) {
+                //confirm if the user actually wants to delete the class and its classifications
                 if (window.confirm(`Delete class: ${name}?`)) {
                     deleteClass(`${name}`)
                 }
             })
+            //delete button styling
             deleteButton.setAttribute("style", `margin-left:5px;margin-top:-3px`);
+            //on hover: change cursor to pointer
             deleteButton.addEventListener("mouseover", function () {
                 deleteButton.setAttribute("style", "cursor: url('svg/pointer_cursor.svg'), auto;margin-left:5px;margin-top:-3px");;
             });
+            //add a delete button next to each class list item
             newClassListItem.appendChild(deleteButton);
-
-            console.log(document.getElementById(name));
-            // classesList.appendChild(document.createElement("br"));
 
             //if highlight colour is too bright, text colour becomes black 
             let textColour = "white";
@@ -812,9 +775,10 @@ function createClass(name, colourHex) {
                 font-weight: 500;
             }
             `;
+            //add the style to the page's stylesheet
             document.head.appendChild(style);
 
-            //TOOLTIP
+            //TOOLTIP (to show while hovering over a classification)
             var tooltipStyle = document.createElement('style');
             tooltipStyle.innerHTML = `
             .${name.toUpperCase()}:hover {
@@ -830,25 +794,15 @@ function createClass(name, colourHex) {
             // allClasses.forEach(printClass);
 
             let newClassEntry = name.toUpperCase().toString();
+            //add new class to the json file
             jsonFile.annotations[newClassEntry] = [];
             //add the backgroundcolour
             jsonFile.annotations[newClassEntry].push(colourHex)
             //add the textcolour
             jsonFile.annotations[newClassEntry].push(textColour)
 
-            // jsonFile.annotations[newClassEntry].push("test");
-            // console.log("TEST:" + JSON.stringify(jsonFile));
-
             //add to dropdown menu
             addClassToDropdown(newClassEntry, red, green, blue);
-
-            //insert new class into JSON
-            // jsonFile.annotations[name.toUpperCase()] = "";
-
-            //new class name
-            // let testClass = "NEWCLASS";
-            //create class in json
-            //put the value into that class in json
 
             //reset the input values
             document.getElementById("classColour").value = "#ffffff";
@@ -868,118 +822,31 @@ function createClass(name, colourHex) {
             // Log or use the filename without the .txt
             console.log("projectID:", projectID);
 
-            // let classN = "TESTER"
-            // update(ref(database, `Projects/${projectID}/Classes/${classN}`), {
-            //     BackgroundHEX: "#c9ff00"
-            // });
-
             //close the modal
             $('#exampleModal').modal('hide');
         }
         else {
+            //display error if the new class's name is not unique
             alert("Class with the same name already exists!");
         }
     } else {
+        //display error if a text file hasn't been detected
         alert("Please upload a text file first!");
     }
 }
 
-function viewAllActiveClasses() {
-    alert(
-        'The page has the following classes:\n  .' +
-        listCSSClasses().join('\n  .')
-    )
-}
-
-//NEW classify function (hopefully)
-function newClassify() {
-    //TODO: DISALLOW CLASSIFICATIONS WITH COMMAS
-    //get the selected text
-    let selectedText = window.getSelection().toString().trim();
-    //check if the selection actually contains words
-    if (document.getElementById("classifyButton").getAttribute("class") == "btn btn-success") {
-        if (selectedText.length > 0) {
-            //log the selected text
-            console.log("TEXT: " + selectedText);
-            //get the main text body
-            let textArea = document.getElementById("textArea");
-            //find the classifications list
-            var classificationsHTMLList = document.getElementById("classifications-list");
-
-            //log the (proposed) method of placing each occurrence of the selected text within a span element
-            //PROBLEM with this method is that it replaces lowercase occurrences with uppercase (or vice versa)
-            let searchMask = selectedText;
-            let regex = new RegExp(searchMask, "ig");
-            let replaceMask = `$&`;
-            console.log(textArea.innerHTML.replaceAll(regex, replaceMask));
-            //add new classification to the classifications list
-            var radioGroup = document.getElementsByName("class");
-            let radioSelection = false;
-            //check if a class has been selected first
-            for (i = 0; i < radioGroup.length; i++) {
-                //find the selected class
-                if (radioGroup[i].checked) {
-                    //create new list item
-                    let newItem = document.createElement("li");
-                    newItem.appendChild(document.createTextNode(`${selectedText} : ${radioGroup[i].value}`));
-                    //add list item to the end of the list
-                    let clist = document.getElementById("classifications-list");
-                    //if there have been no classifications made yet, first reset the list
-                    if (clist.innerHTML.trim().toLowerCase() === "<li>No classifications yet!</li>".toLowerCase()) {
-                        clist.innerHTML = "";
-                    }
-                    //then add new classification to the list
-                    classificationsList.push(`${selectedText} : ${radioGroup[i].value}`);
-                    console.log(classificationsList);
-                    // classificationsHTMLList.appendChild(newItem);
-                    //user has selected a class
-                    radioSelection = true;
-
-                    //add new span to the text
-                    document.getElementById("textArea").innerHTML = textArea.innerHTML.replaceAll(regex,
-                        `<span data-toggle='tooltip' title='${radioGroup[i].value.toUpperCase()}' class='${radioGroup[i].value.toUpperCase()}'>${replaceMask}</span>`);
-                    console.log(document.getElementById("textArea").innerHTML);
-
-                    let name = radioGroup[i].value.toUpperCase();
-                    console.log("Name: " + name);
-                    // jsonFile.annotations[name].push(range.extractContents());
-                    jsonFile.annotations[name].push(selectedText);
-                    console.log("TEST2:" + JSON.stringify(jsonFile));
-                    // document.getElementById("jsonPreview").innerHTML = JSON.stringify(jsonFile);
-                    updateJSONPreview(JSON.stringify(jsonFile));
-
-                    updateClassificationsList();
-                    spanTest();
-
-                    console.log(document.getElementById("textArea").innerHTML);
-                    console.log(document.getElementById("textArea").textContent);
-
-                    //break out of loop
-                    break;
-                }
-            }
-            //if the user has not selected a class before attempting to classify
-            if (!radioSelection) {
-                alert("Please select a class first!");
-            }
-        } else {
-            alert("Select text first!");
-        }
-    }
-    else {
-        alert("Please upload a text file first!");
-    }
-}
-
+//Update the classifications list with any new classifications
 function updateClassificationsList() {
     let clist = document.getElementById("classifications-list");
     //log the list as it is
     console.log("vvv Classifications HTML list vvv");
     console.log(clist);
-    //reset list
+    //reset the list entirely
     clist.innerHTML = "";
     console.log(clist.innerHTML);
+    //start creating the list from scratch
     if (classificationsList.length < 1) {
+        //if there are no active classifications
         let newItem = document.createElement("li");
         newItem.appendChild(document.createTextNode("No classifications yet!"));
         clist.appendChild(newItem);
@@ -994,6 +861,7 @@ function updateClassificationsList() {
     }
 }
 
+//Converts given RGB values (r, g, b) to HEX
 function RGBtoHex(r, g, b) {
     const rgb2hex = (r, g, b) => {
         return '#' +
@@ -1008,63 +876,71 @@ function RGBtoHex(r, g, b) {
     return rgb2hex(r, g, b);
 }
 
+//generates a HEX colour
 function generateColourHEX() {
-    //need a 500ms delay to focus on the text input field - dont ask me why i dont fucking know 
+    //need a 500ms delay to focus on the text input field - it works, but doesn't work without this.
+    //I don't know why, so I have to keep it
     setTimeout(function () {
-        // document.getElementById("newClass").value = " ";
         document.getElementById("newClass").focus();
     }, 500);
 
-
-
-    // let colour = Math.floor(Math.random()*16777215).toString(16);
+    //generate random RGB values (0-255) for red, green, and blue
     let red = Math.floor(Math.random() * 256);
     let green = Math.floor(Math.random() * 256);
     let blue = Math.floor(Math.random() * 256);
-    // console.log(colour);
 
+    //convert the rgb to hex to use as the new class's colour
     let newColour = RGBtoHex(red, green, blue);
     console.log(`${newColour}`);
     document.getElementById("classColour").value = `${newColour}`;
 
-    // let red = parseInt(colour.substring(1,2),16);
-    // let green = parseInt(colour.substring(3,2), 16);
-    // let blue = parseInt(colour.substring(5,2), 16);
-    //determine if text colour should be white or black
+    //determine if text colour should be white or black, based on the highlight colour
+    //for readability
     let textColour = "white";
     if ((red * 0.299 + green * 0.587 + blue * 0.114) >= 186.00) {
         textColour = "black";
     }
+    //show a preview of the new class, with its highlight colour and text colour
+    //so the user can confirm if they want to keep it or change it
     let highlightPreview = document.getElementById("classTest");
     highlightPreview.setAttribute("style", `font-weight:500;padding-bottom:2px;padding-left:4px;padding-right:4px;color:${textColour};background-color: ${newColour};border-radius:5px`);
 }
 
+//button increase size of the text file's contents for better readability (+ button)
 function increaseFont() {
+    //grab the current font size
     let fontSize = document.getElementById("textArea").style.fontSize;
     let size = parseInt(fontSize.toString().substring(0, 2));
+    //if the font size isn't at its maximum (size 40)
     if (size < 40) {
+        //increase by 2px
         document.getElementById("textArea").style.fontSize = `${size + 2}px`;
     }
 }
 
+//button to decrease size of the text file's contents for better readability (- button)
 function decreaseFont() {
+    //grab the current font size
     let fontSize = document.getElementById("textArea").style.fontSize;
     let size = parseInt(fontSize.toString().substring(0, 2));
+    //if the font size isn't at its minimum (size 12)
     if (size > 12) {
+        //decrease by 2px
         document.getElementById("textArea").style.fontSize = `${size - 2}px`;
     }
 }
 
 //NEW REMOVE CLASSIFICATION
 function newRemoveClassification(classToDelete, classification) {
-    //TODO: update function to remove classifications with CASE INSENSITIVITY included
-    //debugging
+    //TODO in the future: update function to remove classifications with CASE INSENSITIVITY included
+    //debugging statements
     console.log(document.getElementById("textArea").innerHTML);
     console.log(classToDelete);
     console.log(classification);
     console.log(`<span data-toggle="tooltip" title="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`);
     console.log(document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`));
 
+    //if the user has selected the ERASE tool first from the toolbar
     if (toolSelected === tool.ERASE) {
         //update the textArea by replacing all occurrences of the classification
         document.getElementById("textArea").innerHTML = document.getElementById("textArea").innerHTML.replaceAll(`<span data-toggle="tooltip" title="${classToDelete}" class="${classToDelete}" style="cursor: url('svg/pointer_cursor.svg'), auto">${classification}</span>`, `${classification}`);
@@ -1094,71 +970,12 @@ function newRemoveClassification(classToDelete, classification) {
         updateJSONPreview(JSON.stringify(jsonFile));
         spanTest();
 
-        //notification
+        //display confirmation notification
         displayNotification(`Removed classification: ${classification}`);
     } else {
+        //if the tool is not selected when the user clicks on a classification
+        //then simply display the classification and what class it is under
         alert(`${classification} : ${classToDelete}`);
-    }
-}
-
-function classify() {
-    let selectedText = window.getSelection().toString();
-    if (selectedText.length > 0) {
-        console.log(`Text: ${selectedText.innerHTML}`);
-        //check the existence of the classifications list
-        // alert(document.getElementById("classifications-list"));
-        //find the classifications list
-        // var classificationsList = document.getElementById("classifications-list");        
-
-        //create a new list item
-        var newItem = document.createElement("li");
-        //make the selected text the content of the new list item
-        newItem.appendChild(document.createTextNode(selectedText));
-
-        // alert(document.getElementById("person"));
-        var radioGroup = document.getElementsByName("class");
-        let radioSelection = false;
-        for (i = 0; i < radioGroup.length; i++) {
-            if (radioGroup[i].checked) {
-                newItem.appendChild(document.createTextNode(": " + radioGroup[i].value));
-                //add list item to the end of the list
-                let clist = document.getElementById("classifications-list");
-                if (clist.innerHTML.trim().toLowerCase() === "<li>No classifications yet!</li>".toLowerCase()) {
-                    clist.innerHTML = "";
-                }
-                // classificationsList.appendChild(newItem);
-                radioSelection = true;
-                //alter text appearance
-                let selection = window.getSelection();
-                let range = selection.getRangeAt(0);
-                //use the HTML span tag to highlight the text
-                let span = document.createElement('span');
-                //assign the class to the mark
-                span.className = radioGroup[i].value.toUpperCase();
-                let newClassificaion = range.extractContents();
-                span.appendChild(newClassificaion);
-                // data-toggle="tooltip" title="test"
-                span.setAttribute("data-toggle", "tooltip");
-                span.setAttribute("title", radioGroup[i].value.toUpperCase());
-                //insert the node which highlights the selected text
-                range.insertNode(span);
-                //TODO:add to JSON
-                let name = radioGroup[i].value.toUpperCase();
-                console.log(name);
-                // jsonFile.annotations[name].push(range.extractContents());
-                jsonFile.annotations[name].push(selectedText);
-                console.log("TEST2:" + JSON.stringify(jsonFile));
-                document.getElementById("jsonPreview").innerHTML = JSON.stringify(jsonFile);
-
-                spanTest();
-            }
-        }
-        if (!radioSelection) {
-            alert("Please select a class first!");
-        }
-    }
-    else {
-        alert("Please select text first!");
     }
 }
 
@@ -1186,10 +1003,6 @@ function spanTest() {
     }
 }
 
-function printClass(item, index) {
-    console.log(`${index}. ${item}\n`);
-}
-
 //DEBUG: List all classes in index.html eg. class="row"
 function listCSSClasses() {
     let classes = new Set();
@@ -1202,52 +1015,97 @@ function listCSSClasses() {
     return [...classes].sort();
 }
 
+//Export the text and its annotations to a downloadable JSON file 
 function exportToJSON() {
-    //TODO: convert all classifications to lowercase?
-    // alert(JSON.stringify(jsonFile));
-    let stringified = JSON.stringify(jsonFile, null, 2);
+    let newJson = window.structuredClone(jsonFile)
+
+    // Get an array of the object's keys
+    let keys = Object.keys(newJson.annotations);
+    // outer loop to iterate over the keys (CLASSES)
+    for (let i = 0; i < keys.length; i++) {
+        //eg name
+        let key = keys[i];
+        console.log(key + ":");
+        //for each key, make a comma-separated list of its classifications
+        let keyTextColour = ""
+        let keyClassifications = ""
+
+        //inner loop to iterate over the array of values (CLASSIFICATIONS)
+        //start the new JSON file with a clean slate for each class
+        delete newJson.annotations[key]
+        newJson.annotations[key] = []
+        //j = 2 because index 0 & 1 are the backgroundHEX and textColour respectively, which we don't want
+        //to add to the json export
+        for (let j = 2; j < jsonFile.annotations[key].length; j++) {
+            //push each key (class eg NAME) to the new json file
+            newJson.annotations[key].push(jsonFile.annotations[key][j])
+            //DEBUG: add to the classifications string
+            if (j < newJson.annotations[key].length - 1) {
+                console.log("  " + newJson.annotations[key][j] + ",");
+                keyClassifications += newJson.annotations[key][j] + ","
+            } else if (j == newJson.annotations[key].length - 1 ) {
+                console.log("  " + newJson.annotations[key][j]);
+                keyClassifications += newJson.annotations[key][j]
+
+            }
+        }
+        //DEBUG: print classifications string to the console
+        console.log("CLASSIFICATIONS STRING (DB): " + keyClassifications)
+        console.log("KEY TEXT COLOUR: " + keyTextColour)
+        console.log(newJson)
+    }
+    //stringify the new JSON object
+    let stringified = JSON.stringify(newJson, null, 2);
     var blob = new Blob([stringified], { type: "application/json" });
     var url = URL.createObjectURL(blob);
+    const jsonString = JSON.stringify(newJson, (key, value) => {
+        return value === null ? "" : value;
+    });
+    console.log(jsonString);
 
+    //make a downloadable blob out of the JSON
     var a = document.createElement("a");
     a.download = 'jsonFile.json';
     a.href = url;
     a.id = 'jsonFile';
+    //add the "link" to the page and force click it, to automatically begin downloading the JSON file
     document.body.appendChild(a);
     a.click();
+    //after that, remove this "link" from the page
     document.body.removeChild(a);
 }
 
+//Add a new class to the dropdown menu
 function addClassToDropdown(newClassName, red, green, blue) {
-    //TESTING: adding classes to dropdown menu
-    // let newClass = document.createElement("option");
-    // newClass.innerHTML = `<option value='${newClassName}'>${newClassName}</option>`;
-
-    // let selectMenu = document.getElementById("choice");
-    // selectMenu.appendChild(newClass);
+    //add the new class as a link in the dropdown menu
     let newClass = document.createElement("a");
-    // newClass.setAttribute('onclick', `dropdownClassify('${newClassName}')`);
+    //when that link is clicked on
     newClass.addEventListener('click', function (e) {
+        //classify the selected body of text
         dropdownClassify(newClassName)
     })
     newClass.setAttribute('id', `${newClassName}_dropdown`);
-    // newClass.onclick = dropdownClassify("Test");
-    // newClass.addEventListener("click", dropdownClassify(`${newClassName}`));
+    //add a circle that represents the colour of the class
     let icon = document.createElement("i");
     icon.setAttribute("style", `margin-right:5px;font-size:11px;color: rgb(${red}, ${green}, ${blue})`);
     icon.setAttribute("class", "material-icons");
     icon.innerHTML = "circle";
     newClass.appendChild(icon);
-
+    //add the class's name
     newClass.appendChild(document.createTextNode(newClassName));
+    //add everything to the class dropdown menu
     document.getElementById("dropdown-links").appendChild(newClass);
 }
 
+//remove an existing class from the dropdown menu
 function removeClassFromDropdown(className) {
+    //get the class by its name
     let toRemove = document.getElementById(`${className}_dropdown`);
     console.log(toRemove);
+    //get the dropdown menu's links
     let dropdownLinks = document.getElementById("dropdown-links");
     console.log(dropdownLinks)
+    //delete the class and remove it from the dropdown menu
     dropdownLinks.removeChild(toRemove);
     console.log(dropdownLinks)
 }

@@ -207,12 +207,62 @@ export function createNewProject(projectName, projectDescription, annotators, pr
   writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId, projectID);
 }
 
+//Converts given RGB values (r, g, b) to HEX
+function RGBtoHex(r, g, b) {
+  const rgb2hex = (r, g, b) => {
+      return '#' +
+          (
+              (1 << 24) +
+              (r << 16) +
+              (g << 8) +
+              b
+          )
+              .toString(16).slice(1);
+  };
+  return rgb2hex(r, g, b);
+}
+
+//generates a HEX colour
+function generateColourHEX() {
+  //need a 500ms delay to focus on the text input field - dont ask me why i dont know 
+  setTimeout(function () {
+      // document.getElementById("newClass").value = " ";
+      document.getElementById("newClass").focus();
+  }, 500);
+
+  let red = Math.floor(Math.random() * 256);
+  let green = Math.floor(Math.random() * 256);
+  let blue = Math.floor(Math.random() * 256);
+
+  let newColour = RGBtoHex(red, green, blue);
+  console.log(`${newColour}`);
+
+  //determine if text colour should be white or black
+  let textColour = "white";
+  if ((red * 0.299 + green * 0.587 + blue * 0.114) >= 186.00) {
+      textColour = "black";
+  }
+
+  let returnColour = [newColour, textColour]
+  return returnColour
+}
+
 function writeProjectData(projectName, projectDescription, annotators, projectInstruction, listOfClasses, userId, projectID) {
     // const projectID = generateProjectID();
 
-    //ignoring listOfClasses for now, too buggy
+    //preparing listOfClasses by generating colours
+    for(let className of listOfClasses) {
+      className = className.toUpperCase()
+      let colourHEX = generateColourHEX()
+      console.log(`${className} - ${colourHEX[0]} : ${colourHEX[1]}`)
+      set(ref(getDatabase(), `Projects/${projectID}/Classes/${className}`), {
+        BackgroundHEX: colourHEX[0],
+        Classifications: '',
+        TextColour: colourHEX[1],
+      })
+    }
 
-    set(ref(getDatabase(), `Projects/${projectID}`), {
+    update(ref(getDatabase(), `Projects/${projectID}`), {
       Name: projectName,
       Description: projectDescription,
       Annotators: annotators,

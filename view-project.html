@@ -307,7 +307,7 @@
             margin-bottom: auto;
           "
         >
-          <span class="user-type">Project Manager</span>
+          <span id="accountType" class="user-type">Project Manager</span>
           <span style="font-size: 20px; padding-left: 20px; padding-right: 20px"
             >|</span
           >
@@ -903,11 +903,20 @@
           const app = initializeApp(firebaseConfig);
           const database = getDatabase(app);
 
-          let assignButton = document.getElementById("assignAnnotatorButton")
-          assignButton.addEventListener("click", async function(event) {
-            event.preventDefault(); // Prevent default form submission
+          //address bar arguments
+          const queryString = window.location.search;
+          console.log(queryString)
+          const urlParams = new URLSearchParams(queryString)
+          const userID = urlParams.get('userId')
+          const projectID = urlParams.get('projectID')
+          console.log(projectID)
 
-            const email = document.getElementById("annotatorDropdown").value.trim();
+          //assign annotators button (to existing project)
+          let assignButton = document.getElementById("assignAnnotatorButton")
+
+          //invite annotator to the project
+          async function invite(projectID, email) {
+            console.log("ProjectID:", projectID);
             console.log("Email entered:", email);
 
             if (!email) {
@@ -941,10 +950,12 @@
                 );
               } while (codeSnapshot.exists());
 
+
               // Save to Firebase Realtime Database
               const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
               await set(newLoginRef, {
                 Used: false,
+                AssignedProjects: projectID,
               });
 
               console.log("Data saved successfully.");
@@ -958,7 +969,70 @@
               console.error("Error writing to database:", error);
               alert("Error saving data. Please check the console.");
             }
+            
+          }
+
+          assignButton.addEventListener("click", async function(event) {
+            let email = document.getElementById("annotatorDropdown").value.trim();
+            invite(projectID, email)
           })
+
+
+          // assignButton.addEventListener("click", async function(event) {
+          //   event.preventDefault(); // Prevent default form submission
+
+          //   const email = document.getElementById("annotatorDropdown").value.trim();
+          //   console.log("Email entered:", email);
+
+          //   if (!email) {
+          //     alert("Please enter an email.");
+          //     return;
+          //   }
+
+          //   // Reference to the AccountCodes node
+          //   const accountCodesRef = ref(database, "AccountCodes");
+          //   const emailQuery = query(
+          //     accountCodesRef,
+          //     orderByChild("email"),
+          //     equalTo(email)
+          //   );
+
+          //   try {
+          //     // Check if email already exists
+          //     const emailSnapshot = await get(emailQuery);
+          //     if (emailSnapshot.exists()) {
+          //       alert("This email already has an associated access code.");
+          //       return;
+          //     }
+
+          //     // Generate unique Access Code
+          //     let newLoginCode;
+          //     let codeSnapshot;
+          //     do {
+          //       newLoginCode = `AN${String(Date.now()).slice(-4)}`;
+          //       codeSnapshot = await get(
+          //         ref(database, `AccountCodes/${newLoginCode}`)
+          //       );
+          //     } while (codeSnapshot.exists());
+
+          //     // Save to Firebase Realtime Database
+          //     const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
+          //     await set(newLoginRef, {
+          //       Used: false,
+          //     });
+
+          //     console.log("Data saved successfully.");
+          //     alert(
+          //       `Email successfully registered! Their access code is ${newLoginCode}.`
+          //     );
+
+          //     // Send email with access code
+          //     sendEmail(email, newLoginCode);
+          //   } catch (error) {
+          //     console.error("Error writing to database:", error);
+          //     alert("Error saving data. Please check the console.");
+          //   }
+          // })
 
 
 
