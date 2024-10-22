@@ -329,8 +329,8 @@
             margin-right: auto;
           "
         >
-          <span id="usernameSpan"><strong>Username</strong></span>
-        </div>
+        <span id="usernameSpan" style="font-weight: 600;">Username</span>
+      </div>
       </div>
     </div>
     <div
@@ -357,7 +357,7 @@
                 <img style="width: 28px" src="images/button-icons/dashboard-button-selected.png" />
               </div>
               <div>
-                <a style="margin-left: 5px">Dashboard</a>
+                <a id="dashboard-link" style="margin-left: 5px">Dashboard</a>
               </div>
             </div>
             <div class="nav-link">
@@ -380,7 +380,7 @@
         </div>
         <!-- Rows -->
           <div class="col-md-6 mx-auto pt-5 px-3">
-              <div class="row pt-3 p-1" style="background-color: rgb(98, 37, 240, 0); height: 30%">
+              <div class="row pt-3 p-1" style="max-height:200px;background-color: rgb(98, 37, 240, 0); height: 30%">
                 <div class="card" style="height: 100%; padding: 20px">
                   <div class="d-flex justify-content-between align-items-center">
                     <h3 id="profileName">Project Manager Name</h3>
@@ -409,13 +409,13 @@
                 </div>
             </div>
               <!-- row 2 DATA FILES New Card with Upload Button and File Grid -->
-              <div class="row pt-4" style="background-color:rgb(98, 37, 240,0);height:600px">
+              <div class="row pt-4" style="background-color:rgb(98, 37, 240,0);">
                   <div class="card" style="padding: 20px;">
                     <div class="row">
                       <div class="col-md-12">
                         <h4>Created Projects</h4>
                         <!-- Scroll wheel -->
-                        <div class="file-container" style="max-height: 500px; overflow-y: auto;">
+                        <div class="file-container" style="max-height: 500px; overflow-y: auto;max-height: 300px;">
                           <!-- File Grid Layout -->
                           <div id="files" class="file-container">
                             <!-- Upload file button -->
@@ -651,11 +651,12 @@
           "
           >×</span
         >
-        <h2 style="font-weight: 500; font-family: 'Share Tech'">New Project</h2>
         <div
-          class="modal-body"
-          style="display: flex; flex-direction: column; gap: 20px"
+        class="modal-body"
+        style="display: flex; flex-direction: column; gap: 20px"
         >
+          <h2 style="font-weight: 500; font-family: 'Share Tech'">New Project</h2>
+          <span id="newProjectId">#</span>
           <div class="project-details">
             <form action="javascript:void(0)">
               <div class="form-group">
@@ -745,6 +746,7 @@
                 />
                 <button
                   class="invite-btn"
+                  id="invite-btn"
                   type="button"
                   style="
                     background-color: #007bff;
@@ -891,33 +893,13 @@
   </form>
 </div>
     </div>
+    <div id="listOfClasses" style="display:none"></div>
+
 
     <!-- JavaScript for Direct Modal Opening on Button Click -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var modal = document.getElementById("newProjectModal");
-        var mainBtn = document.getElementById("newProjectMainBtn");
-        var span = document.getElementsByClassName("close")[0];
-
-        mainBtn.onclick = function () {
-          modal.style.display = "block";
-        };
-
-        span.onclick = function () {
-          modal.style.display = "none";
-        };
-
-        window.onclick = function (event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        };
-      });
-    </script>
-
-    <div id="listOfClasses" style="display:none"></div>
     <script type="module">
-      // var database = firebase.database();
+      import { generateProjectID } from "/scripts/firebase.js"
+            // var database = firebase.database();
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
       import {
         getAuth,
@@ -968,12 +950,37 @@
       // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
+      var projectID;
 
-      let assignButton = document.getElementById("assignAnnotatorButton")
-      assignButton.addEventListener("click", async function(event) {
-        event.preventDefault(); // Prevent default form submission
 
-        const email = document.getElementById("annotatorDropdown").value.trim();
+      //actual code
+      document.addEventListener("DOMContentLoaded", function () {
+        var modal = document.getElementById("newProjectModal");
+        var mainBtn = document.getElementById("newProjectMainBtn");
+        var span = document.getElementsByClassName("close")[0];
+
+        //new project button
+        mainBtn.onclick = function () {
+          modal.style.display = "block"
+          projectID = generateProjectID();
+          console.log(projectID)
+          console.log(document.getElementById("newProjectId"))
+          document.getElementById("newProjectId").innerHTML = `<strong>Project ID:</strong> ${projectID}`;
+        };
+
+        span.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        window.onclick = function (event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+      });
+
+      //invite annotator button
+      async function invite(email) {
         console.log("Email entered:", email);
 
         if (!email) {
@@ -1011,6 +1018,7 @@
           const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
           await set(newLoginRef, {
             Used: false,
+            AssignedProjects: projectID,
           });
 
           console.log("Data saved successfully.");
@@ -1024,71 +1032,83 @@
           console.error("Error writing to database:", error);
           alert("Error saving data. Please check the console.");
         }
+        
+      }
+      
+      //main Invite Annotator button
+      let assignButton = document.getElementById("assignAnnotatorButton")
+      let inviteButton = document.getElementById("invite-btn")
+
+      assignButton.addEventListener("click", function(e) {
+        alert("Inviting annotators to your team will come in a future update! For now, you can invite annotators to a project instead, by using the invite field when you click New Project.")
+      })
+      inviteButton.addEventListener("click", function(e) {
+        let email = document.getElementById("annotators").value.trim();
+        invite(email)
       })
 
-    </script>
 
-    <!-- JavaScript for new project-->
-    <script type="module">
-      import { createNewProject } from "./scripts/firebase.js";
+      import { createNewProject} from "./scripts/firebase.js";
+
 
       // Grab the input from new project form
-      function clickHandling() {
-          let projectName = document.getElementById("projectName").value;
-          let projectDescription = document.getElementById("projectDescription").value;
-          let annotators = document.getElementById("annotators").value;
-          let projectInstruction = document.getElementById("projectInstruction").value;
-          let listOfClasses = JSON.parse(document.getElementById("listOfClasses").innerText);
+      function clickHandling(projectID) {
+        let projectName = document.getElementById("projectName").value;
+        let projectDescription = document.getElementById("projectDescription").value;
+        let annotators = document.getElementById("annotators").value;
+        console.log(annotators)
+        let projectInstruction = document.getElementById("projectInstruction").value;
+        let listOfClasses = JSON.parse(document.getElementById("listOfClasses").innerText);
 
-          //validation
-          if (!projectName || !projectDescription || !projectInstruction)
-            return;
+        //validation
+        if (!projectName || !projectDescription || !projectInstruction)
+          return;
 
-          createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses);
-          alert("Project created successfully");
-          var modal = document.getElementById("newProjectModal"); 
-          modal.style.display='none';// hide modal
-          window.location.reload();// reload url to clear fields
+        createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses, projectID);
+        alert(`Project (${projectName}) created successfully`);
+        var modal = document.getElementById("newProjectModal"); 
+        modal.style.display='none';// hide modal
+        window.location.reload();// reload url to clear fields
       }
 
-      document.getElementById("createProject").addEventListener('click', clickHandling);
+      document.getElementById("createProject").addEventListener('click', function(e) {
+        clickHandling(projectID);
+      })  
       
       function signOutAccount() {
         window.location = "/sign-in.html"
       }
       document.getElementById("signOutButton").addEventListener('click', signOutAccount);
       
-    </script>
 
-<script>
-  var listOfClasses = [];
-  function addClass() {
-  const classInput = document.getElementById("newClassInput");
-  const classList = document.getElementById("classList");
-  if (classInput.value.trim() !== "") {
-      listOfClasses.push(classInput.value);
-      const listItem = document.createElement("li");
-      listItem.textContent = classInput.value;
-      listItem.style.marginBottom = "5px";
+    var listOfClasses = [];
+    function addClass() {
+    const classInput = document.getElementById("newClassInput");
+    const classList = document.getElementById("classList");
+    if (classInput.value.trim() !== "") {
+        listOfClasses.push(classInput.value);
+        const listItem = document.createElement("li");
+        listItem.textContent = classInput.value;
+        listItem.style.marginBottom = "5px";
 
-      console.log("list of items: ", listOfClasses);
+        console.log("list of classes: ", listOfClasses);
 
-      // Grabs the list of classes
-      document.getElementById("listOfClasses").innerText = JSON.stringify(listOfClasses);
+        // Grabs the list of classes
+        document.getElementById("listOfClasses").innerText = JSON.stringify(listOfClasses);
 
-      const removeBtn = document.createElement("button");
-      removeBtn.textContent = "Remove";
-      removeBtn.style.marginLeft = "10px";
-      removeBtn.style.color = "red";
-      removeBtn.onclick = function () {
-      listItem.remove();
-      };
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+        removeBtn.style.marginLeft = "10px";
+        removeBtn.style.color = "red";
+        removeBtn.onclick = function () {
+        listItem.remove();
+        };
 
-      listItem.appendChild(removeBtn);
-      classList.appendChild(listItem);
-      classInput.value = "";
-  }
+        listItem.appendChild(removeBtn);
+        classList.appendChild(listItem);
+        classInput.value = "";
+    }
   }
 </script>
-  </body>
+</body>
 </html>

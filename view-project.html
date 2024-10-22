@@ -307,7 +307,7 @@
             margin-bottom: auto;
           "
         >
-          <span class="user-type">Project Manager</span>
+          <span id="accountType" class="user-type">Project Manager</span>
           <span style="font-size: 20px; padding-left: 20px; padding-right: 20px"
             >|</span
           >
@@ -351,7 +351,7 @@
                 <img style="width: 28px" src="images/button-icons/dashboard-button-unselected.png" />
               </div>
               <div>
-                <a style="margin-left: 5px">Dashboard</a>
+                <a id="dashboard-link" style="margin-left: 5px">Dashboard</a>
               </div>
             </div>
             <div class="nav-link">
@@ -377,18 +377,36 @@
               <div class="row pt-3 p-1" style="background-color: rgb(98, 37, 240, 0); height: 30%">
                 <div class="card" style="height: 100%; padding: 20px">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h3 id="title">First Project</h3>
+                    <h3 id="title">Project Name</h3>
                     <h3 style="margin-left: auto" id="id">
                       Project ID: #######
                     </h3>
                   </div>
                   <p class="card-text" id="desc">
-                    This is the project description
+                    Description
                   </p>
                 </div>
               </div>
-              <!-- row 2 ASSIGN ANNOTATORS-->
+              <!-- row 2 VIEW INSTRUCTIONS-->
               <div class="row pt-4">
+                  <div class="card" style="height:100%; padding: 20px;">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4>Project Instructions</h4>
+                        <!-- Annotators list -->
+                        <!-- <input type="text" id="annotatorDropdown" name="inviteAnnotator" class="form-control"> -->
+                        <div id="instructionsBox" class="form-control">
+                          Instructions for this project...
+                        </div>
+                          <!-- Options will be populated dynamically from Firebase -->
+                        </select>
+                        <button id="editInstructionsButton" class="btn btn-primary mt-3">Edit Instructions</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <!-- row 3 ASSIGN ANNOTATORS -->
+              <div class="row pt-4" id="assignAnnotatorsRow">
                   <div class="card" style="height:100%; padding: 20px;">
                     <div class="row">
                       <div class="col-md-12">
@@ -396,13 +414,12 @@
                         <!-- Annotators list -->
                         <input type="text" id="annotatorDropdown" name="inviteAnnotator" class="form-control">
                           <!-- Options will be populated dynamically from Firebase -->
-                        </select>
                         <button id="assignAnnotatorButton" class="btn btn-primary mt-3">Assign Annotator</button>
                       </div>
                     </div>
                   </div>
               </div>
-              <!-- row 2 DATA FILES New Card with Upload Button and File Grid -->
+              <!-- row 4 DATA FILES New Card with Upload Button and File Grid -->
               <div class="row pt-4" style="background-color:rgb(98, 37, 240,0);height:30%">
                   <div class="card" style="padding: 20px;">
                     <div class="row">
@@ -886,11 +903,20 @@
           const app = initializeApp(firebaseConfig);
           const database = getDatabase(app);
 
-          let assignButton = document.getElementById("assignAnnotatorButton")
-          assignButton.addEventListener("click", async function(event) {
-            event.preventDefault(); // Prevent default form submission
+          //address bar arguments
+          const queryString = window.location.search;
+          console.log(queryString)
+          const urlParams = new URLSearchParams(queryString)
+          const userID = urlParams.get('userId')
+          const projectID = urlParams.get('projectID')
+          console.log(projectID)
 
-            const email = document.getElementById("annotatorDropdown").value.trim();
+          //assign annotators button (to existing project)
+          let assignButton = document.getElementById("assignAnnotatorButton")
+
+          //invite annotator to the project
+          async function invite(projectID, email) {
+            console.log("ProjectID:", projectID);
             console.log("Email entered:", email);
 
             if (!email) {
@@ -924,10 +950,12 @@
                 );
               } while (codeSnapshot.exists());
 
+
               // Save to Firebase Realtime Database
               const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
               await set(newLoginRef, {
                 Used: false,
+                AssignedProjects: projectID,
               });
 
               console.log("Data saved successfully.");
@@ -941,7 +969,75 @@
               console.error("Error writing to database:", error);
               alert("Error saving data. Please check the console.");
             }
+            
+          }
+
+          assignButton.addEventListener("click", async function(event) {
+            let email = document.getElementById("annotatorDropdown").value.trim();
+            invite(projectID, email)
           })
+
+
+          // assignButton.addEventListener("click", async function(event) {
+          //   event.preventDefault(); // Prevent default form submission
+
+          //   const email = document.getElementById("annotatorDropdown").value.trim();
+          //   console.log("Email entered:", email);
+
+          //   if (!email) {
+          //     alert("Please enter an email.");
+          //     return;
+          //   }
+
+          //   // Reference to the AccountCodes node
+          //   const accountCodesRef = ref(database, "AccountCodes");
+          //   const emailQuery = query(
+          //     accountCodesRef,
+          //     orderByChild("email"),
+          //     equalTo(email)
+          //   );
+
+          //   try {
+          //     // Check if email already exists
+          //     const emailSnapshot = await get(emailQuery);
+          //     if (emailSnapshot.exists()) {
+          //       alert("This email already has an associated access code.");
+          //       return;
+          //     }
+
+          //     // Generate unique Access Code
+          //     let newLoginCode;
+          //     let codeSnapshot;
+          //     do {
+          //       newLoginCode = `AN${String(Date.now()).slice(-4)}`;
+          //       codeSnapshot = await get(
+          //         ref(database, `AccountCodes/${newLoginCode}`)
+          //       );
+          //     } while (codeSnapshot.exists());
+
+          //     // Save to Firebase Realtime Database
+          //     const newLoginRef = ref(database, `AccountCodes/${newLoginCode}`);
+          //     await set(newLoginRef, {
+          //       Used: false,
+          //     });
+
+          //     console.log("Data saved successfully.");
+          //     alert(
+          //       `Email successfully registered! Their access code is ${newLoginCode}.`
+          //     );
+
+          //     // Send email with access code
+          //     sendEmail(email, newLoginCode);
+          //   } catch (error) {
+          //     console.error("Error writing to database:", error);
+          //     alert("Error saving data. Please check the console.");
+          //   }
+          // })
+
+
+
+
+
         
         </script>
 
@@ -1038,7 +1134,7 @@
             return;
 
           createNewProject(projectName, projectDescription, annotators, projectInstruction, listOfClasses);
-          alert("Project created successfully");
+          alert(`Project (${projectName}) created successfully`);
           var modal = document.getElementById("newProjectModal"); 
           modal.style.display='none';// hide modal
           window.location.reload();// reload url to clear fields

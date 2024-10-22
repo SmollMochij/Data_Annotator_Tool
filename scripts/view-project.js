@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getDatabase, ref, set, onValue, onChildAdded } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+import { getDatabase, ref, set, onValue, onChildAdded, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -31,6 +31,29 @@ onChildAdded(annotatorRef, (snapshot) => {
 });
 
 window.onload = function () {
+    
+    //get url parameters
+    const queryString = window.location.search;
+    console.log(queryString)
+    const urlParams = new URLSearchParams(queryString)
+    // const filename = urlParams.get('filename')
+    //grab project ID to find project in database
+    const project = urlParams.get('projectID')
+    const userID = urlParams.get('userID')
+    const isAProjectManager = urlParams.get('PM')
+    console.log(userID)
+    console.log(isAProjectManager)
+
+    //navbar: dashboard link (for PM and ANN accounts)
+    document.getElementById("dashboard-link").addEventListener("click", function(e) {
+        if(isAProjectManager == "true") {
+            window.location = `/dashboard-pm.html?userId=${userID}`
+        } else {
+            window.location = `/dashboard-ann.html?userId=${userID}`
+        }
+    })
+
+
     //find the upload files button on webpage
     var uploadButton = document.getElementById("uploadButton")
     //assign an event listener to detect uploaded files
@@ -45,7 +68,7 @@ window.onload = function () {
                 console.log(`fr.result:${fr.result}`)
                 console.log(`uploadButton.files[i].name ${uploadButton.files[i].name}`)
 
-                addFileToDatabase(uploadButton.files[i].name, fr.result)
+                addFileToDatabase(project, uploadButton.files[i].name, fr.result)
 
                 let fileExtension = uploadButton.files[i].name.split('.').pop();
                 console.log(fileExtension)
@@ -70,19 +93,54 @@ window.onload = function () {
         }
     })
 
-    const queryString = window.location.search;
-    console.log(queryString)
-    const urlParams = new URLSearchParams(queryString)
-    const filename = urlParams.get('filename')
-    const project = urlParams.get('projectID')
-    console.log(filename)
 
     const projectRef = ref(database, `Projects/${project}`)
     onValue(projectRef, (snapshot) => {
         document.getElementById("title").textContent = snapshot.val().Name
         document.getElementById("desc").textContent = snapshot.val().Description
         document.getElementById("id").textContent = `Project ID: ${snapshot.val().ProjectID}`
+        document.getElementById("instructionsBox").textContent = `${snapshot.val().Instructions}`
     })
+
+    //display username in top right
+    if(isAProjectManager == "true") {
+        const pmRef = ref(database, `Users/project-manager/${userID}`)
+        onValue(pmRef, (snapshot) => {
+            document.getElementById("usernameSpan").textContent = snapshot.val().username
+        })
+        //eg Project Manager | View Project
+        document.getElementById("accountType").textContent = "Project Manager"
+    } else {
+        const annRef = ref(database, `Users/annotator/${userID}`)
+        onValue(annRef, (snapshot) => {
+            document.getElementById("usernameSpan").textContent = snapshot.val().username
+        })
+        //eg Annotator | View Project
+        document.getElementById("accountType").textContent = "Annotator"
+    }
+    
+    //edit instructions button
+    let instructionsButton = document.getElementById("editInstructionsButton")
+    instructionsButton.addEventListener('click', function(e) {
+        let newInstructionsPrompt = prompt("Please enter new instructions:", document.getElementById("instructionsBox").textContent)
+        if(newInstructionsPrompt != null && newInstructionsPrompt.trim() != "") {
+            alert("New instructions: " + newInstructionsPrompt)
+            const currentProjectRef = ref(database, `Projects/${project}/Instructions`)
+            update(ref(getDatabase(), `Projects/${project}`), {
+                Instructions: newInstructionsPrompt.trim(),
+            })
+        } else {
+            alert("No changes made")
+        }
+    })
+
+    //if the annotator is viewing the page, hide the edit buttons
+    if(isAProjectManager == "false") {
+        instructionsButton.style.display='none'
+        document.getElementById("assignAnnotatorsRow").style.display="none"
+        document.getElementById("newProjectMainBtn").style.display="none"
+    }
+    
 
     // read data
     const projectFilesRef = ref(database, `Projects/${project}/Files`);
@@ -105,6 +163,10 @@ window.onload = function () {
         newfileItem.appendChild(newFileImg)
         newfileItem.appendChild(newFileName)
         document.getElementById("files").appendChild(newfileItem)
+        //if the annotator is viewing the page, hide the "New File" button
+        if(isAProjectManager == "false") {
+            newfileItem.style.display="none"
+        }
 
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
@@ -125,9 +187,8 @@ window.onload = function () {
 
             fileItem.appendChild(img)
             fileItem.appendChild(name)
-            let projectID = `P000001` //TODO: placeholder for now, update later
             fileItem.addEventListener("click", function (e) {
-                window.location.href = `annotation.html?projectID=${projectID}&filename=${childSnapshot.key}.txt` //TODO: change to annotation.html
+                window.location.href = `annotation.html?projectID=${project}&filename=${childSnapshot.key}.txt&userID=${userID}&PM=${isAProjectManager}`
             })
             document.getElementById("files").appendChild(fileItem)
         })
@@ -139,11 +200,9 @@ window.onload = function () {
 }
 
 //add each uploaded file to the database
-function addFileToDatabase(name, content) {
-    //Project P000001 is just a placeholder for now
-    //5lbncsVlmchrGAa2NwY6UWL5PnF3 is the id from a random authentication user
+function addFileToDatabase(projectID, name, content) {
     //then use file name as key
-    let project = "P000001"
+    let project = projectID
     name = name.substring(0, name.indexOf(".")) //remove the extension (.txt) to get the filename
     set(ref(database, `Projects/${project}/Files/${name}`), {
         assignedAnnotator: "",

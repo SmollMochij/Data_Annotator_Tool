@@ -36,7 +36,7 @@
                 <img class="logo" src="svg/logo.svg"/>
             </div>
             <div class="col-md d-flex" style="font-family:'Source Sans 3';display:flex;margin-top: auto;margin-bottom: auto;">
-                <span class="user-type">Project Manager</span>
+                <span id="accountType" class="user-type">Project Manager</span>
                 <span style="font-size:20px;padding-left:20px;padding-right:20px">|</span> 
                 <span style="font-size:20px;">Annotation</span>
             </div>
@@ -52,7 +52,7 @@
                             <img style="width:28px;" src="images/button-icons/dashboard-button-unselected.png"/>
                         </div>
                         <div>
-                            <a style="margin-left:5px;">Dashboard</a>
+                            <a id="dashboard-link" style="margin-left:5px;">Dashboard</a>
                         </div>
                     </div>
                     <div class="nav-link">
@@ -60,7 +60,7 @@
                             <img style="width:28px;" src="images/button-icons/projects-button-selected.png"/>
                         </div>
                         <div>
-                            <a style="margin-left:5px";>Projects</a>
+                            <a id="projects-link" style="margin-left:5px";>Projects</a>
                         </div>
                     </div>
                     <div class="nav-link">
@@ -103,7 +103,7 @@
                     </div>
                     <!-- Back button & project name | file name -->
                     <div class="col-md-5">
-                        <img src="svg/back_arrow.svg" class="back-arrow" onclick="window.location = 'dashboard-temp.html'">
+                        <img src="svg/back_arrow.svg" class="back-arrow" id="goBackButton">
                         <span id="projectNameSpan" style="color:#453737;font-size:18px;font-family:'Archivo'">Project Name</span>
                         <span style="color:#cbc4c4;font-size:22px;padding-left:10px;padding-right:10px">|</span> 
                         <span id="dataFileNameSpan" style="color:#4e6fa2;font-size:18px;font-family:'Archivo';">Data File Name</span>
@@ -208,10 +208,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Classify button -->
-                    <!-- <button type="button" style="margin-top:5px; margin-bottom: 5px;" id="classifyButton" class="btn btn-dark" onclick="newClassify()">Classify</button> -->
-                    <!-- View Active Classes button -->
-                    <button type="button" style="margin-top:5px; margin-bottom: 5px;"class="btn btn-secondary" id="viewActiveClassesButton">View active classes</button>
                 </div>
                 <!-- CLASSIFICATIONS -->
                 <div class="text-bg-dark p-2">Classifications</div>
@@ -220,13 +216,6 @@
                     <li>No classifications yet!</li>
                 </ol>
 
-                <!-- OLD JSON PREVIEW -->
-                <!-- <div class="text-bg-dark p-2">
-                    JSON Preview
-                </div>
-                <div style="margin:5px;border-style: solid;border-width:2px; border-color: rgba(29, 87, 106, 0.276); border-radius: 7px;">
-                    <p id="jsonPreview" style="padding-top:5px;padding-left:5px;padding-right:5px;color:rgba(0, 0, 0, 0.423)">Upload a text file and start annotating to see the preview.</p>
-                </div> -->
 
                 <!-- NEW JSON PREVIEW -->
                 <div class="text-bg-dark p-2">
@@ -234,9 +223,9 @@
                 </div>
                 <div style="padding:10px;margin:5px;margin-top:8px;margin-bottom:8px;border-style: solid;border-width:2px; border-color: rgba(29, 87, 106, 0.276); border-radius: 7px;">
                     <!-- Annotator ID collapsible -->
-                    <button data-toggle="collapse" class="collapsible-button" data-target="#annotatorIDCollapse">Annotator ID</button>
-                    <div id="annotatorIDCollapse" class="collapse">Upload a text file to see the preview. The file will use your annotator ID.</div>
-                    <br>
+                    <!-- <button data-toggle="collapse" class="collapsible-button" data-target="#annotatorIDCollapse">Annotator ID</button> -->
+                    <!-- <div id="annotatorIDCollapse" class="collapse">Upload a text file to see the preview. The file will use your annotator ID.</div> -->
+                    <!-- <br> -->
                     <!-- Text Content collapsible -->
                     <button data-toggle="collapse" class="collapsible-button" data-target="#textCollapse">Text</button>
                     <div id="textCollapse" class="collapse">Upload a text file to see the preview.</div>
